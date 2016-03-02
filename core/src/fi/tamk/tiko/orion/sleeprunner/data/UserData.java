@@ -20,6 +20,7 @@ public abstract class UserData {
 
     /**
      * Constructor for user data
+     *
      * @param width = width used in rectangle
      * @param height = height used in rectangle
      */

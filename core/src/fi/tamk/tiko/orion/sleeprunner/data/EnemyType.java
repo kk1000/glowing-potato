@@ -25,6 +25,7 @@ public enum EnemyType {
 
     /**
      * Constructor for setting data
+     *
      * @param width = width used in rectangle
      * @param height = height used in rectangle
      * @param x = x-position

@@ -23,6 +23,7 @@ public abstract class GameObject extends Actor {
 
     /**
      * Constructor for game objects.
+     *
      * @param body used for updating.
      */
     public GameObject(Body body) {
@@ -33,6 +34,8 @@ public abstract class GameObject extends Actor {
 
     /**
      * Act method, updates body's rectangle if it's not null (outside of screen).
+     * Removes the body if null.
+     *
      * @param delta = delta timer (1/60)
      */
     @Override
@@ -62,6 +65,7 @@ public abstract class GameObject extends Actor {
 
     /**
      * Transforms the metric values to screen values with WORLD_TO_SCREEN attribute.
+     *
      * @param n = metric value from updateRectangle-method
      * @return the multiplied value
      */

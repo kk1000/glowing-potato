@@ -22,6 +22,7 @@ public class PlayerUserData extends UserData {
 
     /**
      * Constructor for player user data
+     *
      * @param width = width used in rectangle
      * @param height = height used in rectangle
      */
@@ -40,6 +41,7 @@ public class PlayerUserData extends UserData {
 
     /**
      * Set linear impulse strength
+     *
      * @param jumpingLinearImpulse from constructor
      */
     public void setJumpingLinearImpulse(Vector2 jumpingLinearImpulse){
@@ -48,6 +50,7 @@ public class PlayerUserData extends UserData {
 
     /**
      * Angular impulse when player hits an obstacle
+     *
      * @return angular impulse from Constants
      */
     public float getHitAngularImpulse(){
@@ -56,6 +59,7 @@ public class PlayerUserData extends UserData {
 
     /**
      *  Angle for player's rectangle when player dodges
+     *
      * @return dodge angle
      */
     public float getDodgeAngle(){

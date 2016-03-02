@@ -12,6 +12,7 @@ public class EnemyUserData extends UserData{
 
     /**
      * Constructor for enemy user data
+     *
      * @param width = width used in rectangle
      * @param height = height used in rectangle
      * @param path = texture imagepath

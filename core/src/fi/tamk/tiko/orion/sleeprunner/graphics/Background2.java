@@ -10,10 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 
 /**
- * Game screen's background.
+ * Game screen's second background.
  * Background is split to two textureregions for the endless movement visual effect.
  */
-public class Background extends Actor {
+public class Background2 extends Actor {
 
     // textureregion used for whole texture image
     private final TextureRegion textureRegion;
@@ -22,24 +22,25 @@ public class Background extends Actor {
     // second half of the background
     private Rectangle textureRegionBounds2;
     // background's movement speed
-    private int speed = 10;
+    private int speed = 100;
 
     /**
      * Constructor for background.
      * Texture for textureregion, rectangles for the split regions.
      */
-    public Background(){
-        textureRegion = new TextureRegion(new Texture(Gdx.files.internal(Constants.BACKGROUND_IMAGE_PATH)));
+    public Background2(){
+        textureRegion = new TextureRegion(new Texture(Gdx.files.internal(Constants.BACKGROUND_CLOUDS_IMAGE_PATH)));
         textureRegionBounds1 = new Rectangle(0 - Constants.APP_WIDTH / 2, 0, Constants.APP_WIDTH, Constants.APP_HEIGHT);
         textureRegionBounds2 = new Rectangle(Constants.APP_WIDTH / 2, 0, Constants.APP_WIDTH, Constants.APP_HEIGHT);
     }
+
 
     /**
      * Sets value for speed.
      *
      * @param s = value for speed
      */
-    public void setSpeed(int s){
+    public void SetSpeed(int s){
         s = this.speed;
     }
 
@@ -88,6 +89,7 @@ public class Background extends Actor {
         textureRegionBounds1.x += delta*speed;
         textureRegionBounds2.x += delta*speed;
     }
+
 
     /**
      * Resets bounds when called.
