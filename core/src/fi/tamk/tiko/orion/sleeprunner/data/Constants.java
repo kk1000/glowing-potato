@@ -55,10 +55,10 @@ public class Constants {
     public static final String BACKGROUND_CLOUDS_IMAGE_PATH = "clouds.png";
     public static final String GROUND_IMAGE_PATH = "ground_texture.png";
 
-    public static final String RUNNER_RUNNING_IMAGE_PATH = "running.png";
-    public static final String RUNNER_DODGING_IMAGE_PATH = "dodge.png";
-    public static final String RUNNER_JUMPING_IMAGE_PATH = "jump.png";
-    public static final String RUNNER_HIT_IMAGE_PATH = "hit.png";
+    public static final String PLAYER_RUNNING_IMAGE_PATH = "running.png";
+    public static final String PLAYER_DODGING_IMAGE_PATH = "dodge.png";
+    public static final String PLAYER_JUMPING_IMAGE_PATH = "jump.png";
+    public static final String PLAYER_HIT_IMAGE_PATH = "hit.png";
 
     public static final String ENEMY_SMALL_IMAGE_PATH = "enemy_small.png";
     public static final String ENEMY_BIG_IMAGE_PATH = "enemy_big.png";

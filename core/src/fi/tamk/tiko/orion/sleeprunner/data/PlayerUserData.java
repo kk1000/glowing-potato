@@ -29,7 +29,7 @@ public class PlayerUserData extends UserData {
     public PlayerUserData(float width, float height) {
         super(width,height);
         jumpingLinearImpulse = Constants.PLAYER_JUMPING_LINEAR_IMPULSE;
-        userDataType = UserDataType.RUNNER;
+        userDataType = UserDataType.PLAYER;
     }
 
     /**

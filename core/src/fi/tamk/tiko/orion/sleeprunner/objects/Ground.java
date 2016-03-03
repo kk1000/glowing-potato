@@ -1,46 +1,47 @@
-package fi.tamk.tiko.orion.sleeprunner.graphics;
+package fi.tamk.tiko.orion.sleeprunner.objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.physics.box2d.Body;
 
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
+import fi.tamk.tiko.orion.sleeprunner.data.GroundUserData;
+
 
 /**
- * Game screen's background.
- * Background is split to two textureregions for the endless movement visual effect.
+ * Ground actor class.
+ * Ground texture is split to two textureregions for the endless movement visual effect.
+ * Extended from GameObject.
  */
-public class Background extends Actor {
+public class Ground extends GameObject {
 
-    // textureregion used for whole texture image
     private final TextureRegion textureRegion;
-    // first half of the background
     private Rectangle textureRegionBounds1;
-    // second half of the background
     private Rectangle textureRegionBounds2;
-    // background's movement speed
     private int speed = 10;
 
     /**
-     * Constructor for background.
+     * Constructor for Ground.
      * Texture for textureregion, rectangles for the split regions.
+     *
+     * @param body = body of the ground object
      */
-    public Background(){
-        textureRegion = new TextureRegion(new Texture(Gdx.files.internal(Constants.BACKGROUND_IMAGE_PATH)));
-        textureRegionBounds1 = new Rectangle(0 - Constants.APP_WIDTH / 2, 0, Constants.APP_WIDTH, Constants.APP_HEIGHT);
-        textureRegionBounds2 = new Rectangle(Constants.APP_WIDTH / 2, 0, Constants.APP_WIDTH, Constants.APP_HEIGHT);
+    public Ground(Body body) {
+        super(body);
+        textureRegion = new TextureRegion(new Texture(Gdx.files.internal(Constants.GROUND_IMAGE_PATH)));
+        textureRegionBounds1 = new Rectangle(0 - getUserData().getWidth() / 2, 0, getUserData().getWidth(), getUserData().getHeight());
+        textureRegionBounds2 = new Rectangle(getUserData().getWidth() / 2, 0, getUserData().getWidth(), getUserData().getWidth());
     }
 
     /**
-     * Sets value for speed.
-     *
-     * @param s = value for speed
+     * @return ground user data
      */
-    public void setSpeed(int s){
-        s = this.speed;
+    @Override
+    public GroundUserData getUserData() {
+        return (GroundUserData) userData;
     }
 
     /**
@@ -51,12 +52,14 @@ public class Background extends Actor {
      */
     @Override
     public void act(float delta){
+        super.act(delta);
         if(leftBoundsReached(delta)){
             resetBounds();
         }else{
             updateXBounds(-delta);
         }
     }
+
 
     /**
      * Draw method.
@@ -67,8 +70,8 @@ public class Background extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha){
         super.draw(batch, parentAlpha);
-        batch.draw(textureRegion, textureRegionBounds1.x, textureRegionBounds1.y, Constants.APP_WIDTH, Constants.APP_HEIGHT);
-        batch.draw(textureRegion, textureRegionBounds2.x, textureRegionBounds2.y, Constants.APP_WIDTH, Constants.APP_HEIGHT);
+        batch.draw(textureRegion, textureRegionBounds1.x, screenRectangle.y, screenRectangle.getWidth(), screenRectangle.getHeight());
+        batch.draw(textureRegion, textureRegionBounds2.x, screenRectangle.y, screenRectangle.getWidth(), screenRectangle.getHeight());
     }
 
     /**
@@ -96,7 +99,7 @@ public class Background extends Actor {
      */
     private void resetBounds(){
         textureRegionBounds1 = textureRegionBounds2;
-        textureRegionBounds2 = new Rectangle(Constants.APP_WIDTH,0,Constants.APP_WIDTH,Constants.APP_HEIGHT);
+        textureRegionBounds2 = new Rectangle(textureRegionBounds1.x+screenRectangle.width,0,screenRectangle.width,screenRectangle.height);
     }
 
 }
