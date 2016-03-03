@@ -21,8 +21,8 @@ public abstract class UserData {
     /**
      * Constructor for user data
      *
-     * @param width = width used in rectangle
-     * @param height = height used in rectangle
+     * @param width   Width used in rectangle
+     * @param height  Height used in rectangle
      */
     public UserData(float width, float height){
         this.width = width;

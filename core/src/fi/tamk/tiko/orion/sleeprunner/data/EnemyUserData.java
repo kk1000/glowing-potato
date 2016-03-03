@@ -8,25 +8,24 @@ import com.badlogic.gdx.math.Vector2;
 public class EnemyUserData extends UserData{
 
     private Vector2 linearVelocity;
-    private String texturepath;
+    private String texturePath;
 
     /**
      * Constructor for enemy user data
      *
-     * @param width = width used in rectangle
-     * @param height = height used in rectangle
-     * @param path = texture imagepath
+     * @param width   Width used in rectangle
+     * @param height  Height used in rectangle
+     * @param path    Texture imagepath
      */
-    public EnemyUserData(float width, float height, String path){
-
+    public EnemyUserData(float width, float height, String path) {
         super(width, height);
+        this.texturePath = path;
         userDataType = UserDataType.ENEMY;
         linearVelocity = Constants.ENEMY_LINEAR_VELOCITY;
-        this.texturepath = path;
-
     }
+
     /**
-     * sets linear velocity used in box2d physics
+     * Sets linear velocity used in box2d physics
      */
     public void setLinearVelocity(Vector2 linearVelocity){
         this.linearVelocity = linearVelocity;
@@ -42,7 +41,7 @@ public class EnemyUserData extends UserData{
     /**
      * @return texture imagepath
      */
-    public String getTexturepath(){
-        return texturepath;
+    public String getTexturePath(){
+        return texturePath;
     }
 }

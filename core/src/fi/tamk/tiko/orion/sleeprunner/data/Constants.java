@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class Constants {
 
-
     // screen
 
     public static final int APP_WIDTH = 800;
@@ -76,6 +75,5 @@ public class Constants {
 
     public static final String PLAYER_RUN_SOUND_PATH = "runner_run.mp3";
     public static final String GAME_MUSIC_PATH = "play_music.mp3";
-
 
 }
