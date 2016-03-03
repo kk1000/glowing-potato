@@ -276,6 +276,11 @@ public class GameStage extends Stage implements ContactListener {
 
     }
 
+    /**
+     * Begins the contact-event.
+     *
+     * @param contact
+     */
     @Override
     public void beginContact(Contact contact) {
 
