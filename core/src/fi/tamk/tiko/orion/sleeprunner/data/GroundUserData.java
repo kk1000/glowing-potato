@@ -8,8 +8,8 @@ public class GroundUserData extends UserData{
     /**
      * Constructor for ground user data
      *
-     * @param width = width used in rectangle
-     * @param height = height used in rectangle
+     * @param width    Width used in rectangle
+     * @param height   Height used in rectangle
      */
     public GroundUserData(float width, float height) {
         super(width,height);

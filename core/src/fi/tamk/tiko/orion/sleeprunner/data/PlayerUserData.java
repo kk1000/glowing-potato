@@ -23,8 +23,8 @@ public class PlayerUserData extends UserData {
     /**
      * Constructor for player user data
      *
-     * @param width = width used in rectangle
-     * @param height = height used in rectangle
+     * @param width    Width used in rectangle
+     * @param height   Height used in rectangle
      */
     public PlayerUserData(float width, float height) {
         super(width,height);

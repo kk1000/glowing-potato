@@ -37,7 +37,7 @@ public class Background extends Actor {
     /**
      * Sets value for speed.
      *
-     * @param s = value for speed
+     * @param s Value for speed
      */
     public void setSpeed(int s){
         s = this.speed;
@@ -46,7 +46,8 @@ public class Background extends Actor {
     /**
      * Resets bounds if the leftest textureregion hits left side of screen.
      * Updates both textureregion's x-position (-delta = left, delta = right).
-     * @param delta = delta timer (1/60)
+     *
+     * @param delta Delta timer (1/60)
      */
     @Override
     public void act(float delta){
@@ -60,8 +61,8 @@ public class Background extends Actor {
     /**
      * Draw method.
      *
-     * @param batch = spritebatch
-     * @param parentAlpha = alpha level (default value)
+     * @param batch         Spritebatch
+     * @param parentAlpha   Alpha level (default value)
      */
     @Override
     public void draw(Batch batch, float parentAlpha){
@@ -73,7 +74,7 @@ public class Background extends Actor {
     /**
      * Checks if left side of screen is reached.
      *
-     * @param delta = delta timer (1/60)
+     * @param delta Delta timer (1/60)
      * @return boolean
      */
     private boolean leftBoundsReached(float delta){
@@ -82,7 +83,7 @@ public class Background extends Actor {
 
     /**
      * Updates both textureregion's x-position with @param delta.
-     * @param delta = delta timer (1/60)
+     * @param delta Delta timer (1/60)
      */
     private void updateXBounds(float delta){
         textureRegionBounds1.x += delta*speed;
