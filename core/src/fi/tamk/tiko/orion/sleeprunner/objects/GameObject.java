@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -32,7 +31,6 @@ public abstract class GameObject extends Actor {
     protected float height;
 
     protected TextureRegion textureRegion;
-    protected Rectangle screenRectangle;
     protected Body body;
     protected float textureWidth;
     protected float textureHeight;
@@ -68,7 +66,6 @@ public abstract class GameObject extends Actor {
         this.textureHeight = this.textureRegion.getRegionHeight() / 100f;
         this.width = width;
         this.height = height;
-        screenRectangle = new Rectangle();
         createBody(bodyType);
     }
 
@@ -100,7 +97,6 @@ public abstract class GameObject extends Actor {
         this.textureHeight = this.texture.getHeight() / 100f;
         this.width = width;
         this.height = height;
-        screenRectangle = new Rectangle();
         hasAnimation = true;
         createAnimation();
         createBody(bodyType);
@@ -161,22 +157,20 @@ public abstract class GameObject extends Actor {
             stateTime += Gdx.graphics.getDeltaTime();
             currentFrame = animation.getKeyFrame(stateTime, true);
             batch.draw(currentFrame,
-                    body.getPosition().x - currentFrame.getRegionWidth() / 2,
-                    body.getPosition().y - currentFrame.getRegionHeight() / 2,
+                    body.getPosition().x - currentFrame.getRegionWidth() / 100f / 2,
+                    body.getPosition().y - currentFrame.getRegionHeight() / 100f / 2,
                     Constants.WORLD_TO_SCREEN / 2,
                     Constants.WORLD_TO_SCREEN / 2,
                     currentFrame.getRegionWidth() / 100f,
-                    currentFrame.getRegionWidth() / 100f,
+                    currentFrame.getRegionHeight() / 100f,
                     1.0f,
                     1.0f,
-                    body.getTransform().getRotation() * MathUtils.radiansToDegrees,
-                    false);
+                    body.getTransform().getRotation() * MathUtils.radiansToDegrees);
         } else {
             float tileSize = Constants.WORLD_TO_SCREEN / 100f;
             for (int i = 0; i < width * 100f; i += 32) {
                 float x = (body.getPosition().x - tileSize / 2) - (width / 2 - tileSize / 2) + i / 100f;
-                float y = body.getPosition().y;
-                Gdx.app.log("GameObject", "Drawing to [" + x + "," + y + "]");
+                float y = body.getPosition().y - tileSize / 2;
                 batch.draw(textureRegion,
                         x,
                         y,

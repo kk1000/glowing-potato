@@ -18,9 +18,7 @@ public class Tools {
      * @return Transformed 1D array
      */
     public static TextureRegion[] toTextureArray( TextureRegion [][]tr, int cols, int rows ) {
-        TextureRegion [] frames
-                = new TextureRegion[cols * rows];
-
+        TextureRegion[] frames = new TextureRegion[cols * rows];
         int index = 0;
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {

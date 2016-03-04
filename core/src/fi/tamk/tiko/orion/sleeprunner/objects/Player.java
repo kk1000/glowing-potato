@@ -30,10 +30,10 @@ public class Player extends GameObject {
      */
     public Player(World world) {
         super(world, (Constants.WORLD_TO_SCREEN * 2) / 100f, (Constants.WORLD_TO_SCREEN * 4) / 100f,
-                Constants.WORLD_TO_SCREEN / 100f, Constants.WORLD_TO_SCREEN / 100f,
+                Constants.WORLD_TO_SCREEN / 100f, (Constants.WORLD_TO_SCREEN * 2) / 100f,
                 Constants.PLAYER_DENSITY,
                 new Texture(Gdx.files.internal(Constants.PLAYER_RUNNING_IMAGE_PATH)),
-                5, 1, 1 / 60f, BodyDef.BodyType.DynamicBody);
+                2, 1, 1 / 60f, BodyDef.BodyType.DynamicBody);
 
         userData = new PlayerUserData(width, height);
         body.setUserData(userData);

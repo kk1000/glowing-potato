@@ -50,7 +50,7 @@ public class Constants {
     public static final String MOVING_BACKGROUND_IMAGE_PATH = "moving_background.png";
     public static final String BACKGROUND_CLOUDS_IMAGE_PATH = "clouds.png";
     public static final String GROUND_IMAGE_PATH = "ground_texture.png";
-    public static final String PLAYER_RUNNING_IMAGE_PATH = "running.png";
+    public static final String PLAYER_RUNNING_IMAGE_PATH = "player_placeholder.png";
 
 
     // paths to images

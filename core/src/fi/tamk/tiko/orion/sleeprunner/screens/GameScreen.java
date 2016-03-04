@@ -47,7 +47,7 @@ public class GameScreen implements Screen{
 
         scoreFont = new BitmapFont(Gdx.files.internal(Constants.GAME_FONT_PATH));
         game = g;
-        stage = new GameStage(game, camera);
+        stage = new GameStage(game, camera, batch);
     }
 
     @Override
@@ -64,16 +64,15 @@ public class GameScreen implements Screen{
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        batch.setProjectionMatrix(uiCamera.combined);
-
-        batch.begin();
-        score += delta*10;
-
-        scoreFont.draw(batch, "Score:" + (int) score, Constants.WORLD_TO_SCREEN, Constants.APP_HEIGHT);
-
         batch.setProjectionMatrix(camera.combined);
         stage.draw();
         stage.act();
+
+        // UI.
+        batch.setProjectionMatrix(uiCamera.combined);
+        batch.begin();
+        score += delta * 10;
+        scoreFont.draw(batch, "Score:" + (int) score, Constants.WORLD_TO_SCREEN, Constants.APP_HEIGHT - 10);
         batch.end();
 
     }

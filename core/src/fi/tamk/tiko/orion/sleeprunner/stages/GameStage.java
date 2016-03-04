@@ -6,6 +6,7 @@ package fi.tamk.tiko.orion.sleeprunner.stages;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
@@ -19,6 +20,8 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.viewport.ScalingViewport;
 
 import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
@@ -62,7 +65,8 @@ public class GameStage extends Stage implements ContactListener {
      *
      * @param g Game created from the SleepRunner main class
      */
-    public GameStage(SleepRunner g, OrthographicCamera worldCamera) {
+    public GameStage(SleepRunner g, OrthographicCamera worldCamera, Batch batch) {
+        super(new ScalingViewport(Scaling.stretch, Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT, worldCamera), batch);
         game = g;
 
         setupWorld();
@@ -106,8 +110,8 @@ public class GameStage extends Stage implements ContactListener {
         world = new World(Constants.WORLD_GRAVITY, true);
         world.setContactListener(this);
 
-        setupBackground();
-        setupMovingBackground();
+        //setupBackground();
+        //setupMovingBackground();
         createObjectsToBodies(MapGenerator.generateObjects(chunkGrid, Constants.GROUND_BLOCK, "ground-object"));
         setupPlayer();
         //setupEnemy();
