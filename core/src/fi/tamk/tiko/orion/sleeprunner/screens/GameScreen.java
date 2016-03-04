@@ -37,14 +37,13 @@ public class GameScreen implements Screen{
      * @param g = Game-class from SleepRunner main class
      */
     public GameScreen(SleepRunner g){
-
         game = g;
 
         width = Gdx.graphics.getWidth();
         height = Gdx.graphics.getHeight();
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, width, height);
+        camera.setToOrtho(false, Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
 
         batch = game.getBatch();
 
@@ -65,8 +64,9 @@ public class GameScreen implements Screen{
      */
     @Override
     public void render(float delta) {
-
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        batch.setProjectionMatrix(camera.combined);
         batch.begin();
         score += delta*10;
         scorefont.draw(batch, "Score" + ": " + (int)score, width * 0.7f, height * 0.8f);

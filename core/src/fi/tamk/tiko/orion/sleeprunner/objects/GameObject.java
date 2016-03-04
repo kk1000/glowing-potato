@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -109,21 +110,29 @@ public abstract class GameObject extends Actor {
      * Creates Box2D body to the world.
      */
     protected void createBody(BodyDef.BodyType bodyType) {
-        // Create game object body.
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = bodyType;
         bodyDef.position.set(new Vector2(this.x, this.y));
 
         PolygonShape shape = new PolygonShape();
-
-        shape.setAsBox(this.width, this.height);
+        shape.setAsBox(this.width / 2, this.height / 2);
 
         Body body = this.world.createBody(bodyDef);
-        body.createFixture(shape, this.density);
-        body.resetMassData();
+
+        if (bodyType == BodyDef.BodyType.DynamicBody) {
+            // Dynamic body has more specific details.
+            FixtureDef fixtureDef = new FixtureDef();
+            fixtureDef.restitution = 0.005f;
+            fixtureDef.friction = 0.0f;
+            fixtureDef.density = this.density;
+            fixtureDef.shape = shape;
+            body.createFixture(fixtureDef);
+        } else {
+            body.createFixture(shape, this.density);
+            body.resetMassData();
+        }
 
         // Remember to set body's userdata!
-        // This is pretty badly designed...
 
         shape.dispose();
         this.body = body;
@@ -148,7 +157,6 @@ public abstract class GameObject extends Actor {
      * Draws game object.
      */
     public void draw(Batch batch, float parentAlpha) {
-        Gdx.app.log("GameObject", "Drawing!");
         if (hasAnimation) {
             stateTime += Gdx.graphics.getDeltaTime();
             currentFrame = animation.getKeyFrame(stateTime, true);
@@ -165,17 +173,21 @@ public abstract class GameObject extends Actor {
                     false);
         } else {
             float tileSize = Constants.WORLD_TO_SCREEN / 100f;
-            batch.draw(textureRegion,
-                    body.getPosition().x - tileSize / 2,
-                    body.getPosition().y - tileSize / 2,
-                    Constants.WORLD_TO_SCREEN / 2,
-                    Constants.WORLD_TO_SCREEN / 2,
-                    tileSize,
-                    tileSize,
-                    1.0f,
-                    1.0f,
-                    body.getTransform().getRotation() * MathUtils.radiansToDegrees,
-                    false);
+            for (int i = 0; i < width * 100f; i += 32) {
+                float x = (body.getPosition().x - tileSize / 2) - (width / 2 - tileSize / 2) + i / 100f;
+                float y = body.getPosition().y;
+                Gdx.app.log("GameObject", "Drawing to [" + x + "," + y + "]");
+                batch.draw(textureRegion,
+                        x,
+                        y,
+                        Constants.WORLD_TO_SCREEN / 2,
+                        Constants.WORLD_TO_SCREEN / 2,
+                        tileSize,
+                        tileSize,
+                        1.0f,
+                        1.0f,
+                        0);
+            }
         }
     }
 

@@ -24,7 +24,7 @@ public class Constants {
 
     // Map chunk
 
-    public static final int CHUNK_MAX_TILES_WIDTH = 50;
+    public static final int CHUNK_MAX_TILES_WIDTH = 75;
     public static final int CHUNK_MAX_TILES_HEIGHT = 15;
 
     public static final Texture TILESET = new Texture(Gdx.files.internal("tileset_placeholder.png"));
@@ -36,12 +36,8 @@ public class Constants {
 
     // Player
 
-    public static final float PLAYER_X = WORLD_TO_SCREEN / 100f;
-    public static final float PLAYER_Y = WORLD_TO_SCREEN / 100f;
-    public static final float PLAYER_WIDTH = 1f;
-    public static final float PLAYER_HEIGHT = 2f;
     public static final float PLAYER_GRAVITY_SCALE = 3f;
-    public static final Vector2 PLAYER_JUMPING_LINEAR_IMPULSE = new Vector2(0,13f);
+    public static final Vector2 PLAYER_JUMPING_LINEAR_IMPULSE = new Vector2(0, 0.30f);
     public static final float PLAYER_HIT_ANGULAR_IMPULSE = 10f;
     public static final float ENEMY_X = 25f;
     public static final float RUNNING_SHORT_ENEMY_Y = 1.5f;
@@ -49,7 +45,7 @@ public class Constants {
 
     // enemy and obstacles
     public static final float FLYING_ENEMY_Y = 3f;
-    public static final float ENEMY_SPEED = 0.8f;
+    public static final float ENEMY_SPEED = 0.05f;
     public static final String BACKGROUND_IMAGE_PATH = "background.png";
     public static final String MOVING_BACKGROUND_IMAGE_PATH = "moving_background.png";
     public static final String BACKGROUND_CLOUDS_IMAGE_PATH = "clouds.png";
@@ -78,7 +74,6 @@ public class Constants {
 
     // paths to sounds
     public static float PLAYER_DODGE_Y = 1.5f;
-    public static Vector2 ENEMY_LINEAR_VELOCITY = new Vector2(-10.0f, 0);
-    public static Vector2 PLAYER_LINEAR_VELOCITY = new Vector2(0.13f, 0);
+    public static Vector2 ENEMY_LINEAR_VELOCITY = new Vector2(-0.05f, 0);
 
 }

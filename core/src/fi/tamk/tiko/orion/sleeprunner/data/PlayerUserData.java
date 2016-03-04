@@ -10,15 +10,11 @@ public class PlayerUserData extends UserData {
 
     // linear impulse used for jumping in box2d effects
 
-    private Vector2 jumpingLinearImpulse;
+    private final Vector2 dodgePosition = new Vector2(Constants.PLAYER_DODGE_X, Constants.PLAYER_DODGE_Y);
 
-    // player position while in normal (running) state
-
-    private final Vector2 runningPosition = new Vector2(Constants.PLAYER_X,Constants.PLAYER_Y);
 
     // player position while dodging
-
-    private final Vector2 dodgePosition = new Vector2(Constants.PLAYER_DODGE_X, Constants.PLAYER_DODGE_Y);
+    private Vector2 jumpingLinearImpulse;
 
     /**
      * Constructor for player user data
@@ -57,7 +53,6 @@ public class PlayerUserData extends UserData {
         return Constants.PLAYER_HIT_ANGULAR_IMPULSE;
     }
 
-    public Vector2 getRunningLinearImpulse(){ return Constants.PLAYER_LINEAR_VELOCITY;}
     /**
      *  Angle for player's rectangle when player dodges
      *
@@ -65,13 +60,6 @@ public class PlayerUserData extends UserData {
      */
     public float getDodgeAngle(){
         return (float) (-90f * (Math.PI / 180f));
-    }
-
-    /**
-     * @return running position
-     */
-    public Vector2 getRunningPosition(){
-        return runningPosition;
     }
 
     /**

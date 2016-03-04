@@ -29,12 +29,13 @@ public class Player extends GameObject {
      * @param world     Box2D World
      */
     public Player(World world) {
-        super(world, Constants.PLAYER_X, Constants.PLAYER_Y,
-                Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, Constants.PLAYER_DENSITY,
+        super(world, (Constants.WORLD_TO_SCREEN * 2) / 100f, (Constants.WORLD_TO_SCREEN * 4) / 100f,
+                Constants.WORLD_TO_SCREEN / 100f, Constants.WORLD_TO_SCREEN / 100f,
+                Constants.PLAYER_DENSITY,
                 new Texture(Gdx.files.internal(Constants.PLAYER_RUNNING_IMAGE_PATH)),
                 5, 1, 1 / 60f, BodyDef.BodyType.DynamicBody);
 
-        userData = new PlayerUserData(Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT);
+        userData = new PlayerUserData(width, height);
         body.setUserData(userData);
         body.setFixedRotation(true);
 
@@ -52,7 +53,7 @@ public class Player extends GameObject {
      */
     public void jump(){
         if(!jumping || dodging || hit){
-            body.applyLinearImpulse(getUserData().getJumpingLinearImpulse(),body.getWorldCenter(), true);
+            body.applyLinearImpulse(userData.getJumpingLinearImpulse(), body.getWorldCenter(), true);
             jumping = true;
         }
         runSound.stop();
@@ -66,9 +67,6 @@ public class Player extends GameObject {
         runSound.stop();
         runSound.play(0.3f);
     }
-    public void running(){
-        body.applyLinearImpulse(getUserData().getRunningLinearImpulse(), body.getWorldCenter(), true);
-    }
 
     /**
      * Makes player dodge when called.
@@ -76,7 +74,7 @@ public class Player extends GameObject {
      */
     public void dodge(){
         if (!jumping || hit){
-            body.setTransform(getUserData().getDodgePosition(),getUserData().getDodgeAngle());
+            body.setTransform(userData.getDodgePosition(), getUserData().getDodgeAngle());
             dodging = true;
             runSound.stop();
         }
@@ -90,10 +88,10 @@ public class Player extends GameObject {
         runSound.play(0.3f);
 
         dodging = false;
-        body.setTransform(getUserData().getRunningPosition(), 0f);
+        body.setTransform(x, y, 0f);
 
         if (!hit){
-            body.setTransform(getUserData().getRunningPosition(), 0f);
+            body.setTransform(x, y, 0f);
         }
     }
 
@@ -102,7 +100,7 @@ public class Player extends GameObject {
      * Applies angular impulse to the player's body when called.
      */
     public void hit(){
-        body.applyAngularImpulse(getUserData().getHitAngularImpulse(), true);
+        body.applyAngularImpulse(userData.getHitAngularImpulse(), true);
         hit = true;
         runSound.stop();
     }
@@ -114,7 +112,6 @@ public class Player extends GameObject {
 
     public void act(float delta){
         super.act(delta);
-        running();
     }
 
 

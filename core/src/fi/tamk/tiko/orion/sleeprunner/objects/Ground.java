@@ -33,7 +33,7 @@ public class Ground extends GameObject {
     @Override
     public void act(float delta){
         super.act(delta);
-        body.setLinearVelocity(getUserData().getLinearVelocity());
+        body.setLinearVelocity(userData.getLinearVelocity());
     }
 
     /**
