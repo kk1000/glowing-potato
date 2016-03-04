@@ -1,12 +1,10 @@
 package fi.tamk.tiko.orion.sleeprunner.objects;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.World;
 
+import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.GroundUserData;
-import fi.tamk.tiko.orion.sleeprunner.data.UserData;
 
 /**
  * Ground actor class.
@@ -15,31 +13,34 @@ import fi.tamk.tiko.orion.sleeprunner.data.UserData;
  */
 public class Ground extends GameObject {
 
+    private GroundUserData userData;
 
-    public Texture texture;
-    private String path;
-
-    public Ground(Body body){
-        super(body);
-        path = getUserData().getTexturepath();
-        texture = new Texture(Gdx.files.internal(path));
+    /**
+     * Constructor for game objects which got no animation.
+     *
+     * @param world  Box2D World
+     * @param x      X-position.
+     * @param y      Y-position.
+     * @param width  Width of the body.
+     * @param height Height of the body.
+     */
+    public Ground(World world, float x, float y, float width, float height) {
+        super(world, x, y, width, height, 0f, Constants.TILESET_SPRITES[0][0], BodyDef.BodyType.KinematicBody);
+        userData = new GroundUserData(width, height);
+        body.setUserData(userData);
     }
 
-    @Override
-    public UserData getUserData() {
-        return (GroundUserData) userData;
-    }
-
-    @Override
-
-    public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
-        batch.draw(texture, (screenRectangle.x - (screenRectangle.width * 0.1f)),
-                screenRectangle.y, screenRectangle.width * 1f, screenRectangle.height * 1f);
-    }
     @Override
     public void act(float delta){
         super.act(delta);
         body.setLinearVelocity(getUserData().getLinearVelocity());
+    }
+
+    /**
+     * Getters
+     */
+
+    public GroundUserData getUserData() {
+        return userData;
     }
 }

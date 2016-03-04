@@ -1,12 +1,10 @@
 package fi.tamk.tiko.orion.sleeprunner.objects;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.World;
 
+import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.EnemyUserData;
-import fi.tamk.tiko.orion.sleeprunner.data.UserData;
 
 /**
  * Enemy/obstacle actor class.
@@ -14,45 +12,27 @@ import fi.tamk.tiko.orion.sleeprunner.data.UserData;
  */
 public class Enemy extends GameObject {
 
-    public Texture texture;
-    private String path;
+    private EnemyUserData userData;
 
     /**
      * Constructor for Enemy.
      *
-     * @param body = body of the enemy/obstacle object
+     * @param world          Box2D World
+     * @param x              X-position.
+     * @param y              Y-position.
+     * @param width          Width of the body.
+     * @param height         Height of the body.
      */
-    public Enemy(Body body){
-        super(body);
-        path = getUserData().getTexturepath();
-        texture = new Texture(Gdx.files.internal(path));
-    }
-
-    /**
-     * @return enemy user data
-     */
-    @Override
-    public UserData getUserData() {
-        return (EnemyUserData) userData;
-    }
-
-    /**
-     * Draw method.
-     *
-     * @param batch = sprite batch
-     * @param parentAlpha = global alpha level
-     */
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
-        batch.draw(texture, (screenRectangle.x - (screenRectangle.width * 0.1f)),
-                screenRectangle.y, screenRectangle.width * 1.2f, screenRectangle.height * 1.1f);
+    public Enemy(World world, float x, float y, float width, float height) {
+        super(world, x, y, width, height, 0f, Constants.TILESET_SPRITES[0][1], BodyDef.BodyType.KinematicBody);
+        userData = new EnemyUserData(width, height);
+        body.setUserData(userData);
     }
 
     /**
      * Act method.
      *
-     * @param delta = delta timer (1/60)
+     * @param delta Delta timer (1/60)
      */
     @Override
     public void act(float delta){
@@ -60,5 +40,12 @@ public class Enemy extends GameObject {
         body.setLinearVelocity(getUserData().getLinearVelocity());
     }
 
+    /**
+     * Getters.
+     */
+
+    public EnemyUserData getUserData() {
+        return userData;
+    }
 
 }

@@ -6,7 +6,6 @@ package fi.tamk.tiko.orion.sleeprunner.stages;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
@@ -25,13 +24,11 @@ import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.graphics.Background;
 import fi.tamk.tiko.orion.sleeprunner.graphics.Background2;
-import fi.tamk.tiko.orion.sleeprunner.objects.Enemy;
 import fi.tamk.tiko.orion.sleeprunner.objects.GameObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.Ground;
 import fi.tamk.tiko.orion.sleeprunner.objects.Player;
 import fi.tamk.tiko.orion.sleeprunner.utilities.BodyUtils;
 import fi.tamk.tiko.orion.sleeprunner.utilities.MapGenerator;
-import fi.tamk.tiko.orion.sleeprunner.utilities.WorldUtilities;
 
 
 /**
@@ -105,7 +102,7 @@ public class GameStage extends Stage implements ContactListener {
      * Setups all objects used in game.
      */
     private void setupWorld(){
-        world = WorldUtilities.createWorld();
+        world = new World(Constants.WORLD_GRAVITY, true);
         world.setContactListener(this);
 
         setupBackground();
@@ -124,14 +121,14 @@ public class GameStage extends Stage implements ContactListener {
     }
 
     private void setupPlayer(){
-        player = new Player(WorldUtilities.createPlayer(world));
+        player = new Player(world);
         addActor(player);
     }
 
+    // TODO: Enemy, spikes.
     private void setupEnemy(){
-        Enemy enemy = new Enemy(WorldUtilities.createEnemy(world));
-        addActor(enemy);
-
+        //Enemy enemy = new Enemy(WorldUtilities.createEnemy(world));
+        //addActor(enemy);
     }
 
     private void setupCamera() {
@@ -147,7 +144,7 @@ public class GameStage extends Stage implements ContactListener {
      */
     public void createObjectsToBodies(MapObjects mapObjects) {
         Array<RectangleMapObject> rectangleMapObjects = mapObjects.getByType(RectangleMapObject.class);
-        Gdx.app.log("GameStage", "Creating bodies from " + rectangleMapObjects.size + " rectangle map objects!");
+        Gdx.app.log("GameStage", "Creating bodies from " + rectangleMapObjects.size + " rectangle map object(s)!");
         for (RectangleMapObject rectangleMapObject : rectangleMapObjects) {
             Rectangle pixelRectangle = rectangleMapObject.getRectangle();
             Rectangle meterRectangle = scaleRectangle(pixelRectangle, 1 / 100f);
@@ -156,9 +153,7 @@ public class GameStage extends Stage implements ContactListener {
             float width = meterRectangle.getWidth();
             float height = meterRectangle.getHeight();
             if (rectangleMapObject.getName().equals("ground-object")) {
-                Gdx.app.log("WorldUtilities", "Ground object!");
-                TextureRegion textureRegion = Constants.TILESET_SPRITES[0][0];
-                Ground ground = new Ground(WorldUtilities.createGround(world, centerX, centerY, width, height, textureRegion));
+                Ground ground = new Ground(world, centerX, centerY, width, height);
                 gameObjects.add(ground);
                 addActor(ground);
             }
@@ -178,7 +173,6 @@ public class GameStage extends Stage implements ContactListener {
      */
     @Override
     public boolean touchDown(int x, int y, int pointer, int button){
-
         translateScreenToWorldCoordinates(x,y);
 
         if(rightSideTouched(touchPoint.x,touchPoint.y)){
