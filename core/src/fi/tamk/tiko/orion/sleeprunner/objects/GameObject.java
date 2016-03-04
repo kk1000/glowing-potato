@@ -106,17 +106,6 @@ public abstract class GameObject extends Actor {
     }
 
     /**
-     * Act method, updates body's rectangle if it's not null (outside of screen).
-     * Removes the body if null.
-     *
-     * @param delta Delta timer (1/60)
-     */
-    @Override
-    public void act(float delta) {
-        super.act(delta);
-    }
-
-    /**
      * Creates Box2D body to the world.
      */
     protected void createBody(BodyDef.BodyType bodyType) {
@@ -158,25 +147,21 @@ public abstract class GameObject extends Actor {
     /**
      * Draws game object.
      */
-    public void draw(Batch batch) {
+    public void draw(Batch batch, float parentAlpha) {
+        Gdx.app.log("GameObject", "Drawing!");
         if (hasAnimation) {
             stateTime += Gdx.graphics.getDeltaTime();
             currentFrame = animation.getKeyFrame(stateTime, true);
-            batch.draw(currentFrame.getTexture(),
-                    body.getPosition().x - width / 2,
-                    body.getPosition().y - height / 2,
-                    width / 2,
-                    height / 2,
-                    width,
-                    height,
+            batch.draw(currentFrame,
+                    body.getPosition().x - currentFrame.getRegionWidth() / 2,
+                    body.getPosition().y - currentFrame.getRegionHeight() / 2,
+                    Constants.WORLD_TO_SCREEN / 2,
+                    Constants.WORLD_TO_SCREEN / 2,
+                    currentFrame.getRegionWidth() / 100f,
+                    currentFrame.getRegionWidth() / 100f,
                     1.0f,
                     1.0f,
                     body.getTransform().getRotation() * MathUtils.radiansToDegrees,
-                    0,
-                    0,
-                    currentFrame.getRegionWidth(),
-                    currentFrame.getRegionHeight(),
-                    false,
                     false);
         } else {
             float tileSize = Constants.WORLD_TO_SCREEN / 100f;
@@ -189,7 +174,8 @@ public abstract class GameObject extends Actor {
                     tileSize,
                     1.0f,
                     1.0f,
-                    0);
+                    body.getTransform().getRotation() * MathUtils.radiansToDegrees,
+                    false);
         }
     }
 

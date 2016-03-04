@@ -36,6 +36,7 @@ public class Player extends GameObject {
 
         userData = new PlayerUserData(Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT);
         body.setUserData(userData);
+        body.setFixedRotation(true);
 
         //jump = new Texture(Gdx.files.internal(Constants.PLAYER_JUMPING_IMAGE_PATH));
         //dodge = new Texture(Gdx.files.internal(Constants.PLAYER_DODGING_IMAGE_PATH));
