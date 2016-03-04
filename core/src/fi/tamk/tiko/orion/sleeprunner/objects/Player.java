@@ -53,6 +53,7 @@ public class Player extends GameObject {
         createRunAnimation();
         runSound.stop();
         runSound.play(0.3f);
+
     }
 
 
@@ -172,6 +173,7 @@ public class Player extends GameObject {
             batch.draw(dodge, screenRectangle.x, screenRectangle.y + screenRectangle.height / 4, screenRectangle.width,
                     screenRectangle.height / 2);
         } else if (hit) {
+            Gdx.app.log("PLAYER","Player is hit!");
             // When he's hit we also want to apply rotation if the body has been rotated
             batch.draw(hitTexture, screenRectangle.x, screenRectangle.y, screenRectangle.width * 0.5f,
                     screenRectangle.height * 0.5f, screenRectangle.width, screenRectangle.height, 1f, 1f,
