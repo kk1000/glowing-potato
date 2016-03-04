@@ -3,6 +3,7 @@ package fi.tamk.tiko.orion.sleeprunner.stages;
 /**
  * Stage for the gameplay.
  */
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -19,8 +20,6 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Scaling;
-import com.badlogic.gdx.utils.viewport.ScalingViewport;
 
 import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
@@ -42,24 +41,15 @@ import fi.tamk.tiko.orion.sleeprunner.utilities.WorldUtilities;
 
 public class GameStage extends Stage implements ContactListener {
 
-    private static final float VIEWPORT_WIDTH = Constants.APP_WIDTH;
-    private static final float VIEWPORT_HEIGHT = Constants.APP_HEIGHT;
-
-    private float deathTimer = 2;
-
-    private Array<GameObject> gameObjects = new Array<GameObject>();
+    private final float TIME_STEP = 1 / 300f;
     int[][] chunkGrid = MapGenerator.createIntervalMapChunkGrid();
-
+    private float deathTimer = 2;
+    private Array<GameObject> gameObjects = new Array<GameObject>();
     private boolean isDead = false;
-
     private World world;
     private Player player;
-
-    private float enemyMove =-10;
-
+    private float enemyMove = -10;
     private SleepRunner game;
-
-    private final float TIME_STEP = 1 / 300f;
     private float accumulator = 0f;
 
     private OrthographicCamera camera;
@@ -70,25 +60,35 @@ public class GameStage extends Stage implements ContactListener {
 
     private Vector3 touchPoint;
 
-
-    // groun debug timer
-    private float groundTimer;
-
     /**
      * Constructor for the game stage.
      *
-     * @param g = Game created from the SleepRunner main class
+     * @param g Game created from the SleepRunner main class
      */
     public GameStage(SleepRunner g) {
-
-        super(new ScalingViewport(Scaling.stretch, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, new OrthographicCamera(VIEWPORT_WIDTH,VIEWPORT_HEIGHT)));
-
         game = g;
 
         setupWorld();
         setupTouchControlAreas();
         setupCamera();
         renderer = new Box2DDebugRenderer();
+    }
+
+    /**
+     * Scales given rectangle's size by given amount
+     * and returns it.
+     *
+     * @param rect  The rectangle to scale.
+     * @param scale The scale.
+     * @return Scaled rectangle.
+     */
+    public static Rectangle scaleRectangle(Rectangle rect, float scale) {
+        Rectangle rectangle = new Rectangle();
+        rectangle.x = rect.x * scale;
+        rectangle.y = rect.y * scale;
+        rectangle.width = rect.width * scale;
+        rectangle.height = rect.height * scale;
+        return rectangle;
     }
 
     /**
@@ -105,16 +105,14 @@ public class GameStage extends Stage implements ContactListener {
      * Setups all objects used in game.
      */
     private void setupWorld(){
-
         world = WorldUtilities.createWorld();
         world.setContactListener(this);
 
         setupBackground();
         setupMovingBackground();
-        createObjectsToBodies(gameObjects, world, MapGenerator.generateObjects(chunkGrid, Constants.GROUND_BLOCK, "ground-object"));
+        createObjectsToBodies(MapGenerator.generateObjects(chunkGrid, Constants.GROUND_BLOCK, "ground-object"));
         setupPlayer();
         //setupEnemy();
-
     }
 
     private void setupMovingBackground(){
@@ -124,7 +122,6 @@ public class GameStage extends Stage implements ContactListener {
     private void setupBackground(){
         addActor(new Background());
     }
-
 
     private void setupPlayer(){
         player = new Player(WorldUtilities.createPlayer(world));
@@ -136,8 +133,9 @@ public class GameStage extends Stage implements ContactListener {
         addActor(enemy);
 
     }
+
     private void setupCamera() {
-        camera = new OrthographicCamera(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+        camera = new OrthographicCamera(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
         camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0f);
         camera.update();
     }
@@ -145,10 +143,9 @@ public class GameStage extends Stage implements ContactListener {
     /**
      * Creates MapObjects to Box2D bodies.
      *
-     * @param world      Box2D world.
      * @param mapObjects Created MapObjects in a map chunk.
      */
-    public void createObjectsToBodies(Array<GameObject> gameObjects, World world, MapObjects mapObjects) {
+    public void createObjectsToBodies(MapObjects mapObjects) {
         Array<RectangleMapObject> rectangleMapObjects = mapObjects.getByType(RectangleMapObject.class);
         Gdx.app.log("GameStage", "Creating bodies from " + rectangleMapObjects.size + " rectangle map objects!");
         for (RectangleMapObject rectangleMapObject : rectangleMapObjects) {
@@ -166,25 +163,6 @@ public class GameStage extends Stage implements ContactListener {
                 addActor(ground);
             }
         }
-    }
-
-    /**
-     * Scales given rectangle's size by given amount
-     * and returns it.
-     * <p/>
-     * Is this method done already somewhere or something?
-     *
-     * @param rect  The rectangle to scale.
-     * @param scale The scale.
-     * @return Scaled rectangle.
-     */
-    public static Rectangle scaleRectangle(Rectangle rect, float scale) {
-        Rectangle rectangle = new Rectangle();
-        rectangle.x = rect.x * scale;
-        rectangle.y = rect.y * scale;
-        rectangle.width = rect.width * scale;
-        rectangle.height = rect.height * scale;
-        return rectangle;
     }
 
     /**
@@ -222,7 +200,6 @@ public class GameStage extends Stage implements ContactListener {
      * @return the position of the release
      */
     public boolean touchUp(int screenX, int screenY, int pointer, int button){
-
         if (player.isDodging()){
             player.stopDodge();
         }
@@ -271,7 +248,6 @@ public class GameStage extends Stage implements ContactListener {
     public void act(float delta) {
         super.act(delta);
 
-
         Array<Body> bodies = new Array<Body>(world.getBodyCount());
         world.getBodies(bodies);
 
@@ -279,8 +255,6 @@ public class GameStage extends Stage implements ContactListener {
             update(bodies.get(i));
         }
         enemyMove -= delta*Constants.ENEMY_SPEED;
-
-
 
         Constants.ENEMY_LINEAR_VELOCITY.set(enemyMove, 0);
 
@@ -299,8 +273,6 @@ public class GameStage extends Stage implements ContactListener {
         if(deathTimer <= 0){
             game.setMainMenuScreen();
         }
-
-
     }
 
     /**
@@ -325,14 +297,6 @@ public class GameStage extends Stage implements ContactListener {
             world.destroyBody(body);
             Gdx.app.log("GameStage","Removed body");
         }
-        groundTimer+=Gdx.graphics.getDeltaTime();
-
-        if(groundTimer > 2) {
-            groundTimer = 0;
-            createObjectsToBodies(gameObjects, world, MapGenerator.generateObjects(chunkGrid, Constants.GROUND_BLOCK, "ground-object"));
-        }
-
-
     }
 
     /**
