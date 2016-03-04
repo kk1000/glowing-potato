@@ -150,7 +150,7 @@ public class GameStage extends Stage implements ContactListener {
         Gdx.app.log("GameStage", "Creating bodies from " + rectangleMapObjects.size + " rectangle map objects!");
         for (RectangleMapObject rectangleMapObject : rectangleMapObjects) {
             Rectangle pixelRectangle = rectangleMapObject.getRectangle();
-            Rectangle meterRectangle = scaleRectangle(pixelRectangle, 2 / 100f);
+            Rectangle meterRectangle = scaleRectangle(pixelRectangle, 1 / 100f);
             float centerX = meterRectangle.getWidth() / 2 + meterRectangle.getX();
             float centerY = meterRectangle.getHeight() / 2 + meterRectangle.getY();
             float width = meterRectangle.getWidth();
