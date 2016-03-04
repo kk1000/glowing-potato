@@ -1,9 +1,16 @@
 package fi.tamk.tiko.orion.sleeprunner.data;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
+
 /**
  * User data for ground objects
  */
 public class GroundUserData extends UserData{
+
+    private Vector2 linearVelocity;
+    private String texturePath;
+
 
     /**
      * Constructor for ground user data
@@ -13,7 +20,30 @@ public class GroundUserData extends UserData{
      */
     public GroundUserData(float width, float height) {
         super(width,height);
+        this.texturePath = Constants.GROUND_IMAGE_PATH;
         userDataType = UserDataType.GROUND;
+        linearVelocity = Constants.ENEMY_LINEAR_VELOCITY;
+    }
+
+    /**
+     * Sets linear velocity used in box2d physics
+     */
+    public void setLinearVelocity(Vector2 linearVelocity){
+        this.linearVelocity = linearVelocity;
+    }
+
+    /**
+     * @return linear velocity
+     */
+    public Vector2 getLinearVelocity(){
+        return linearVelocity;
+    }
+
+    /**
+     * @return texture imagepath
+     */
+    public String getTexturepath(){
+        return texturePath;
     }
 
 }

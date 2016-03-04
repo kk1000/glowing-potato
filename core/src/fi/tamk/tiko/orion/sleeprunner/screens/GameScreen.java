@@ -73,9 +73,6 @@ public class GameScreen implements Screen{
         stage.draw();
         stage.act();
 
-
-        Gdx.app.log("TAG", "" + score);
-
         batch.end();
     }
 

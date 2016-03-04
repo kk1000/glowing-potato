@@ -1,5 +1,8 @@
 package fi.tamk.tiko.orion.sleeprunner.data;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -11,7 +14,7 @@ public class Constants {
 
     public static final int APP_WIDTH = 800;
     public static final int APP_HEIGHT = 480;
-    public static final float WORLD_TO_SCREEN = 32;
+    public static final int WORLD_TO_SCREEN = 32;
 
     // ground
 
@@ -23,7 +26,20 @@ public class Constants {
     public static final float GROUND_HEIGHT = 2f;
     public static final float GROUND_DENSITY = 0f;
 
+
+    // Map chunk
+
+    public static final int CHUNK_MAX_TILES_WIDTH = 50;
+    public static final int CHUNK_MAX_TILES_HEIGHT = 15;
+
+    public static final Texture TILESET = new Texture(Gdx.files.internal("tileset_placeholder.png"));
+    public static final TextureRegion[][] TILESET_SPRITES = TextureRegion.split(TILESET, WORLD_TO_SCREEN, WORLD_TO_SCREEN);
+
+    public static final int EMPTY_BLOCK = 0;
+    public static final int GROUND_BLOCK = 1;
+    public static final int MIDPOINT_BLOCK = 2;
     // player
+
 
     public static final float PLAYER_X = 2;
     public static final float PLAYER_Y = GROUND_Y + GROUND_HEIGHT;

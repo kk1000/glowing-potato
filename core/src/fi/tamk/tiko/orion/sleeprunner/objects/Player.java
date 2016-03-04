@@ -187,6 +187,7 @@ public class Player extends GameObject {
             stateTime += Gdx.graphics.getDeltaTime();
             batch.draw(runAnimation.getKeyFrame(stateTime, true), screenRectangle.x, screenRectangle.y,
                     screenRectangle.getWidth(), screenRectangle.getHeight());
+            Gdx.app.log("Player","X-position: "+screenRectangle.x);
         }
     }
 
