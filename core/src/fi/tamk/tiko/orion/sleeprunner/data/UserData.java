@@ -12,11 +12,6 @@ public abstract class UserData {
     protected float width;
     protected float height;
     private Vector2 linearVelocity;
-    private String path;
-
-    public UserData() {
-
-    }
 
     /**
      * Constructor for user data
@@ -37,36 +32,24 @@ public abstract class UserData {
     }
 
     /**
-     * @return height
-     */
-    public float getHeight(){
-        return height;
-    }
-    /**
      * sets width
      */
     public void setWidth(float width){
         this.width = width;
     }
+
+    /**
+     * @return height
+     */
+    public float getHeight() {
+        return height;
+    }
+
     /**
      * sets height
      */
-    public void setHeight (float height){
+    public void setHeight(float height) {
         this.height = height;
-    }
-
-    /**
-     * sets linear velocity used in box2d physics
-     */
-    public void setLinearVelocity(Vector2 linearVelocity){
-        this.linearVelocity = linearVelocity;
-    }
-
-    /**
-     * @return texture imagepath
-     */
-    public String getTexturepath(){
-        return path;
     }
 
     /**
@@ -74,6 +57,13 @@ public abstract class UserData {
      */
     public Vector2 getLinearVelocity(){
         return linearVelocity;
+    }
+
+    /**
+     * sets linear velocity used in box2d physics
+     */
+    public void setLinearVelocity(Vector2 linearVelocity) {
+        this.linearVelocity = linearVelocity;
     }
 
     /**

@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 
@@ -13,7 +12,7 @@ import fi.tamk.tiko.orion.sleeprunner.data.Constants;
  * Game screen's background.
  * Background is split to two textureregions for the endless movement visual effect.
  */
-public class Background extends Actor {
+public class Background {
 
     // textureregion used for whole texture image
     private final TextureRegion textureRegion;
@@ -49,7 +48,6 @@ public class Background extends Actor {
      *
      * @param delta = delta timer (1/60)
      */
-    @Override
     public void act(float delta){
         if(leftBoundsReached(delta)){
             resetBounds();
@@ -64,9 +62,7 @@ public class Background extends Actor {
      * @param batch = spritebatch
      * @param parentAlpha = alpha level (default value)
      */
-    @Override
     public void draw(Batch batch, float parentAlpha){
-        super.draw(batch, parentAlpha);
         batch.draw(textureRegion, textureRegionBounds1.x, textureRegionBounds1.y, Constants.APP_WIDTH, Constants.APP_HEIGHT);
         batch.draw(textureRegion, textureRegionBounds2.x, textureRegionBounds2.y, Constants.APP_WIDTH, Constants.APP_HEIGHT);
     }

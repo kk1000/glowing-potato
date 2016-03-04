@@ -24,7 +24,6 @@ public class RandomUtils {
      * http://stackoverflow.com/a/1973018
      * @param <E>
      */
-
     private static class RandomEnum<E extends Enum> {
 
         private static final Random RND = new Random();

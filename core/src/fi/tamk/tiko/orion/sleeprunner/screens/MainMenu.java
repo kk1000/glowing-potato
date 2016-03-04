@@ -15,28 +15,21 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 
-
 /**
  * Screen for main menu.
  */
-public class MainMenu implements Screen{
-
-    private OrthographicCamera camera;
-    private OrthographicCamera camera2;
-
-    private SleepRunner game;
-
-    private SpriteBatch batch;
-
-    private float height;
-    private float width;
-
-    private Texture logo;
-    private float delta;
-
-    private TextButton gameButton;
+public class MainMenu implements Screen {
 
     public Stage stage;
+    private OrthographicCamera camera;
+    private OrthographicCamera camera2;
+    private SleepRunner game;
+    private SpriteBatch batch;
+    private float height;
+    private float width;
+    private Texture logo;
+    private float delta;
+    private TextButton gameButton;
     private Skin skin;
 
 
@@ -63,15 +56,14 @@ public class MainMenu implements Screen{
         skin = new Skin(Gdx.files.internal(Constants.SKIN_PATH));
         delta = Gdx.graphics.getDeltaTime();
 
-
         logo = new Texture(Gdx.files.internal(Constants.MAINMENU_LOGO_IMAGE_PATH));
 
         gameButton = new TextButton("play",skin);
         gameButton.setBounds(width / 3, height / 8, width / 4, height / 7);
         gameButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
-                Gdx.app.log("TAG", "clicked menu");
-                game.setGameScreen();
+                Gdx.app.log("MainMenu", "clicked menu");
+                game.setScreen(game.getGameScreen());
             }
         });
 
@@ -95,8 +87,6 @@ public class MainMenu implements Screen{
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
-
         batch.begin();
         Gdx.input.setInputProcessor(stage);
         batch.setProjectionMatrix(camera.combined);
@@ -106,7 +96,6 @@ public class MainMenu implements Screen{
         stage.act();
         stage.draw();
         batch.end();
-
     }
 
     /**

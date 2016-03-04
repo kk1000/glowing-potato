@@ -2,11 +2,11 @@ package fi.tamk.tiko.orion.sleeprunner.objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.World;
 
+import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.EnemyUserData;
-import fi.tamk.tiko.orion.sleeprunner.data.UserData;
 
 /**
  * Enemy/obstacle actor class.
@@ -14,51 +14,22 @@ import fi.tamk.tiko.orion.sleeprunner.data.UserData;
  */
 public class Enemy extends GameObject {
 
-    public Texture texture;
-    private String path;
+    private EnemyUserData userData;
 
     /**
-     * Constructor for Enemy.
+     * Constructor for Enemy object.
      *
-     * @param body = body of the enemy/obstacle object
+     * @param world Box2D world.
      */
-    public Enemy(Body body){
-        super(body);
-        path = getUserData().getTexturepath();
-        texture = new Texture(Gdx.files.internal(path));
+    public Enemy(World world, float x, float y, float width, float height) {
+        super(world, x, y, width, height,
+                Constants.ENEMY_DENSITY,
+                new Texture(Gdx.files.internal("")),
+                1,
+                5,
+                1 / 60, BodyDef.BodyType.KinematicBody);
+        userData = new EnemyUserData(Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT);
+        body.setUserData(userData);
     }
-
-    /**
-     * @return enemy user data
-     */
-    @Override
-    public UserData getUserData() {
-        return (EnemyUserData) userData;
-    }
-
-    /**
-     * Draw method.
-     *
-     * @param batch = sprite batch
-     * @param parentAlpha = global alpha level
-     */
-    @Override
-    public void draw(Batch batch, float parentAlpha) {
-        super.draw(batch, parentAlpha);
-        batch.draw(texture, (screenRectangle.x - (screenRectangle.width * 0.1f)),
-                screenRectangle.y, screenRectangle.width * 1.2f, screenRectangle.height * 1.1f);
-    }
-
-    /**
-     * Act method.
-     *
-     * @param delta = delta timer (1/60)
-     */
-    @Override
-    public void act(float delta){
-        super.act(delta);
-        body.setLinearVelocity(getUserData().getLinearVelocity());
-    }
-
 
 }

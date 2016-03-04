@@ -14,7 +14,7 @@ public class BodyUtils {
     /**
      * Checks if the body is the player.
      *
-     * @param body = body used in game.
+     * @param body Body used in game.
      * @return boolean
      */
     public static boolean bodyIsPlayer(Body body){
@@ -27,7 +27,7 @@ public class BodyUtils {
     /**
      * Checks if the body is ground.
      *
-     * @param body = body used in game.
+     * @param body Body used in game.
      * @return boolean
      */
     public static boolean bodyIsGround(Body body){
@@ -42,7 +42,7 @@ public class BodyUtils {
      * Checks if the body is inside the screen.
      * Checks only player and enemy.
      *
-     * @param body = body used in game.
+     * @param body Body used in game.
      * @return boolean
      */
     public static boolean bodyInBounds(Body body){
@@ -63,7 +63,7 @@ public class BodyUtils {
     /**
      * Checks if the body is an enemy or obstacle.
      *
-     * @param body = body used in game.
+     * @param body Body used in game.
      * @return boolean
      */
     public static boolean bodyIsEnemy(Body body){

@@ -1,122 +1,65 @@
 package fi.tamk.tiko.orion.sleeprunner.utilities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
+
+import fi.tamk.tiko.orion.sleeprunner.data.Constants;
+import fi.tamk.tiko.orion.sleeprunner.objects.GameObject;
+import fi.tamk.tiko.orion.sleeprunner.objects.Ground;
+
 /**
  * Contains methods for creating the game world and game objects.
  * (Will this include random map generation?)
  */
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
-
-
-import fi.tamk.tiko.orion.sleeprunner.data.Constants;
-import fi.tamk.tiko.orion.sleeprunner.data.EnemyType;
-import fi.tamk.tiko.orion.sleeprunner.data.EnemyUserData;
-import fi.tamk.tiko.orion.sleeprunner.data.GroundUserData;
-import fi.tamk.tiko.orion.sleeprunner.data.PlayerUserData;
-
-
 public class WorldUtilities {
 
     /**
-     * Creates the world for the game.
-     * @return the new world
+     * Creates MapObjects to Box2D bodies.
+     *
+     * @param world      Box2D world.
+     * @param mapObjects Created MapObjects in a map chunk.
      */
-    public static World createWorld() {
-        return new World(Constants.WORLD_GRAVITY, true);
+    public static void createObjectsToBodies(Array<GameObject> gameObjects, World world, MapObjects mapObjects) {
+        Array<RectangleMapObject> rectangleMapObjects = mapObjects.getByType(RectangleMapObject.class);
+        Gdx.app.log("WorldUtilities", "Creating bodies from " + rectangleMapObjects.size + " rectangle map objects!");
+        for (RectangleMapObject rectangleMapObject : rectangleMapObjects) {
+            Rectangle pixelRectangle = rectangleMapObject.getRectangle();
+            Rectangle meterRectangle = scaleRectangle(pixelRectangle, 1 / 100f);
+            float centerX = meterRectangle.getWidth() / 2 + meterRectangle.getX();
+            float centerY = meterRectangle.getHeight() / 2 + meterRectangle.getY();
+            float width = meterRectangle.getWidth();
+            float height = meterRectangle.getHeight();
+            if (rectangleMapObject.getName().equals("ground-object")) {
+                Gdx.app.log("WorldUtilities", "Ground object!");
+                TextureRegion textureRegion = Constants.TILESET_SPRITES[0][0];
+                Ground ground = new Ground(world, centerX, centerY, width, height, textureRegion);
+                gameObjects.add(ground);
+            }
+        }
     }
 
     /**
-     * Creates ground to the world.
-     * @param world = world used in game.
-     * @return ground body
+     * Scales given rectangle's size by given amount
+     * and returns it.
+     * <p/>
+     * Is this method done already somewhere or something?
+     *
+     * @param rect  The rectangle to scale.
+     * @param scale The scale.
+     * @return Scaled rectangle.
      */
-    public static Body createGround(World world) {
-        BodyDef bodyDef = new BodyDef();
-
-        bodyDef.position.set(new Vector2(Constants.GROUND_X, Constants.GROUND_Y));
-
-        Body body = world.createBody(bodyDef);
-
-        PolygonShape shape = new PolygonShape();
-
-        shape.setAsBox(Constants.GROUND_WIDTH / 2, Constants.GROUND_HEIGHT / 2);
-
-        body.createFixture(shape, Constants.GROUND_DENSITY);
-
-        body.setUserData(new GroundUserData(Constants.GROUND_WIDTH, Constants.GROUND_HEIGHT));
-
-        shape.dispose();
-
-        return body;
-    }
-
-    /**
-     * Creates a player to the world.
-     * @param world = world used in game.
-     * @return players body
-     */
-    public static Body createPlayer(World world) {
-
-        BodyDef bodyDef = new BodyDef();
-
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-
-        bodyDef.position.set(new Vector2(Constants.PLAYER_X, Constants.PLAYER_Y));
-
-        PolygonShape shape = new PolygonShape();
-
-        shape.setAsBox(Constants.PLAYER_WIDTH / 2, Constants.PLAYER_HEIGHT / 2);
-
-        Body body = world.createBody(bodyDef);
-
-        body.createFixture(shape, Constants.PLAYER_DENSITY);
-
-        body.resetMassData();
-
-        body.setGravityScale(Constants.PLAYER_GRAVITY_SCALE);
-
-        body.setUserData(new PlayerUserData(Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT));
-
-        shape.dispose();
-
-        return body;
-    }
-
-    /**
-     * Creates enemy or obstacle to the world.
-     * @param world = world used in game.
-     * @return enemys/obstacles body
-     */
-    public static Body createEnemy(World world){
-
-        EnemyType enemyType = RandomUtils.getRandomEnemyType();
-
-        BodyDef bodyDef = new BodyDef();
-
-        bodyDef.type = BodyDef.BodyType.KinematicBody;
-
-        bodyDef.position.set(new Vector2(enemyType.getX(), enemyType.getY()));
-
-        PolygonShape shape = new PolygonShape();
-
-        shape.setAsBox(enemyType.getWidth() / 2, enemyType.getHeight() / 2);
-
-        Body body = world.createBody(bodyDef);
-
-        body.createFixture(shape, enemyType.getDensity());
-
-        body.resetMassData();
-
-        EnemyUserData userData = new EnemyUserData(enemyType.getWidth(),enemyType.getHeight(),enemyType.getPath());
-
-        body.setUserData(userData);
-
-        shape.dispose();
-
-        return body;
+    public static Rectangle scaleRectangle(Rectangle rect, float scale) {
+        Rectangle rectangle = new Rectangle();
+        rectangle.x = rect.x * scale;
+        rectangle.y = rect.y * scale;
+        rectangle.width = rect.width * scale;
+        rectangle.height = rect.height * scale;
+        return rectangle;
     }
 
 }

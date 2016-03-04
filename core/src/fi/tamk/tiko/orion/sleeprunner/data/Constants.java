@@ -1,5 +1,8 @@
 package fi.tamk.tiko.orion.sleeprunner.data;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -7,13 +10,29 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class Constants {
 
-    // screen
+    // Screen
 
     public static final int APP_WIDTH = 800;
     public static final int APP_HEIGHT = 480;
-    public static final float WORLD_TO_SCREEN = 32;
 
-    // ground
+    public static final float WORLD_WIDTH = 8.0f;
+    public static final float WORLD_HEIGHT = 4.8f;
+
+    public static final int WORLD_TO_SCREEN = 32;
+
+    // Map chunk
+
+    public static final int CHUNK_MAX_TILES_WIDTH = 50;
+    public static final int CHUNK_MAX_TILES_HEIGHT = 15;
+
+    public static final Texture TILESET = new Texture(Gdx.files.internal("tileset_placeholder.png"));
+    public static final TextureRegion[][] TILESET_SPRITES = TextureRegion.split(TILESET, WORLD_TO_SCREEN, WORLD_TO_SCREEN);
+
+    public static final int EMPTY_BLOCK = 0;
+    public static final int GROUND_BLOCK = 1;
+    public static final int MIDPOINT_BLOCK = 2;
+
+    // Ground
 
     public static final Vector2 WORLD_GRAVITY = new Vector2(0, -10);
     public static final float GROUND_X = 0;
@@ -21,59 +40,51 @@ public class Constants {
 
     public static final float GROUND_WIDTH = 50f;
     public static final float GROUND_HEIGHT = 2f;
-    public static final float GROUND_DENSITY = 0f;
 
-    // player
+    // Player
 
     public static final float PLAYER_X = 2;
     public static final float PLAYER_Y = GROUND_Y + GROUND_HEIGHT;
-    public static final float PLAYER_WIDTH = 1f;
-    public static final float PLAYER_HEIGHT = 2f;
-    public static float PLAYER_DENSITY = 0.5f;
+    public static final float PLAYER_WIDTH = WORLD_TO_SCREEN / 100f;
+    public static final float PLAYER_HEIGHT = WORLD_TO_SCREEN / 100f;
     public static final float PLAYER_GRAVITY_SCALE = 3f;
     public static final Vector2 PLAYER_JUMPING_LINEAR_IMPULSE = new Vector2(0,13f);
     public static final float PLAYER_HIT_ANGULAR_IMPULSE = 10f;
-    public static float PLAYER_DODGE_X = 2f;
-    public static float PLAYER_DODGE_Y = 1.5f;
-
-    // enemy and obstacles
-
     public static final float ENEMY_X = 25f;
-    public static final float ENEMY_DENSITY = PLAYER_DENSITY;
     public static final float RUNNING_SHORT_ENEMY_Y = 1.5f;
     public static final float RUNNING_LONG_ENEMY_Y = 2f;
+
+    // Enemy and obstacles
     public static final float FLYING_ENEMY_Y = 3f;
-    public static  Vector2 ENEMY_LINEAR_VELOCITY = new Vector2(-10f, 0);
     public static final float ENEMY_SPEED = 0.8f;
-
-
-    // paths to images
-
     public static final String BACKGROUND_IMAGE_PATH = "background.png";
     public static final String MOVING_BACKGROUND_IMAGE_PATH = "moving_background.png";
     public static final String BACKGROUND_CLOUDS_IMAGE_PATH = "clouds.png";
     public static final String GROUND_IMAGE_PATH = "ground_texture.png";
-
     public static final String PLAYER_RUNNING_IMAGE_PATH = "running.png";
+
+
+    // Paths to images
     public static final String PLAYER_DODGING_IMAGE_PATH = "dodge.png";
     public static final String PLAYER_JUMPING_IMAGE_PATH = "jump.png";
     public static final String PLAYER_HIT_IMAGE_PATH = "hit.png";
-
     public static final String ENEMY_SMALL_IMAGE_PATH = "enemy_small.png";
     public static final String ENEMY_BIG_IMAGE_PATH = "enemy_big.png";
     public static final String ENEMY_LONG_IMAGE_PATH = "enemy_long.png";
     public static final String ENEMY_WIDE_IMAGE_PATH = "enemy_wide.png";
-
     public static final String MAINMENU_LOGO_IMAGE_PATH = "mainmenu.png";
-
-    // paths to skins and ui
-
     public static final String SKIN_PATH = "uiskin.json";
     public static final String GAME_FONT_PATH = "score.txt";
-
-    // paths to sounds
-
     public static final String PLAYER_RUN_SOUND_PATH = "runner_run.mp3";
     public static final String GAME_MUSIC_PATH = "play_music.mp3";
+    public static float PLAYER_DENSITY = 0.5f;
+
+    // Paths to skins and ui
+    public static final float ENEMY_DENSITY = PLAYER_DENSITY;
+    public static float PLAYER_DODGE_X = 2f;
+
+    // Paths to sounds
+    public static float PLAYER_DODGE_Y = 1.5f;
+    public static Vector2 ENEMY_LINEAR_VELOCITY = new Vector2(-10f, 0);
 
 }
