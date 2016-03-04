@@ -184,7 +184,6 @@ public class GameScreen implements Screen, ContactListener {
 
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
-
     }
 
 }
