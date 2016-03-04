@@ -248,9 +248,6 @@ public class GameStage extends Stage implements ContactListener {
         for(int i = 0; i < bodies.size; i++){
             update(bodies.get(i));
         }
-        enemyMove -= delta*Constants.ENEMY_SPEED;
-
-        Constants.ENEMY_LINEAR_VELOCITY.set(enemyMove, 0);
 
         // Fixed timestep
         accumulator += delta;
@@ -307,8 +304,6 @@ public class GameStage extends Stage implements ContactListener {
         if((BodyUtils.bodyIsPlayer(a)&& BodyUtils.bodyIsEnemy(b)) || (BodyUtils.bodyIsPlayer(b) && BodyUtils.bodyIsEnemy(a))){
             player.hit();
             isDead = true;
-            enemyMove = -10;
-            Constants.ENEMY_LINEAR_VELOCITY.set(-enemyMove,0);
         }
 
         else if ((BodyUtils.bodyIsPlayer(a) && BodyUtils.bodyIsGround(b)) || (BodyUtils.bodyIsGround(a)&& BodyUtils.bodyIsPlayer(b))){

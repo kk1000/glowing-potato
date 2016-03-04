@@ -57,6 +57,7 @@ public class PlayerUserData extends UserData {
         return Constants.PLAYER_HIT_ANGULAR_IMPULSE;
     }
 
+    public Vector2 getRunningLinearImpulse(){ return Constants.PLAYER_LINEAR_VELOCITY;}
     /**
      *  Angle for player's rectangle when player dodges
      *

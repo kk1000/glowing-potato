@@ -65,6 +65,9 @@ public class Player extends GameObject {
         runSound.stop();
         runSound.play(0.3f);
     }
+    public void running(){
+        body.applyLinearImpulse(getUserData().getRunningLinearImpulse(), body.getWorldCenter(), true);
+    }
 
     /**
      * Makes player dodge when called.
@@ -86,7 +89,7 @@ public class Player extends GameObject {
         runSound.play(0.3f);
 
         dodging = false;
-        body.setTransform(getUserData().getRunningPosition(),0f);
+        body.setTransform(getUserData().getRunningPosition(), 0f);
 
         if (!hit){
             body.setTransform(getUserData().getRunningPosition(), 0f);
@@ -107,6 +110,12 @@ public class Player extends GameObject {
     /**
      * Getters.
      */
+
+    public void act(float delta){
+        super.act(delta);
+        running();
+    }
+
 
     public PlayerUserData getUserData() {
         return userData;
