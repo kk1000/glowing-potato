@@ -21,12 +21,10 @@ public class GameScreen implements Screen{
     private SpriteBatch batch;
 
     private float score = 0;
-    private BitmapFont scorefont;
+    private BitmapFont scoreFont;
 
+    private OrthographicCamera uiCamera;
     private OrthographicCamera camera;
-
-    private float width;
-    private float height;
 
     private GameStage stage;
     private SleepRunner game;
@@ -39,17 +37,17 @@ public class GameScreen implements Screen{
     public GameScreen(SleepRunner g){
         game = g;
 
-        width = Gdx.graphics.getWidth();
-        height = Gdx.graphics.getHeight();
+        uiCamera = new OrthographicCamera();
+        uiCamera.setToOrtho(false, Constants.APP_WIDTH, Constants.APP_HEIGHT);
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
 
         batch = game.getBatch();
 
-        scorefont = new BitmapFont(Gdx.files.internal(Constants.GAME_FONT_PATH));
+        scoreFont = new BitmapFont(Gdx.files.internal(Constants.GAME_FONT_PATH));
         game = g;
-        stage = new GameStage(game);
+        stage = new GameStage(game, camera);
     }
 
     @Override
@@ -66,14 +64,18 @@ public class GameScreen implements Screen{
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        batch.setProjectionMatrix(camera.combined);
+        batch.setProjectionMatrix(uiCamera.combined);
+
         batch.begin();
         score += delta*10;
-        scorefont.draw(batch, "Score" + ": " + (int)score, width * 0.7f, height * 0.8f);
+
+        scoreFont.draw(batch, "Score:" + (int) score, Constants.WORLD_TO_SCREEN, Constants.APP_HEIGHT);
+
+        batch.setProjectionMatrix(camera.combined);
         stage.draw();
         stage.act();
-
         batch.end();
+
     }
 
     /**

@@ -62,12 +62,13 @@ public class GameStage extends Stage implements ContactListener {
      *
      * @param g Game created from the SleepRunner main class
      */
-    public GameStage(SleepRunner g) {
+    public GameStage(SleepRunner g, OrthographicCamera worldCamera) {
         game = g;
 
         setupWorld();
         setupTouchControlAreas();
-        setupCamera();
+
+        camera = worldCamera;
         renderer = new Box2DDebugRenderer();
     }
 
@@ -129,12 +130,6 @@ public class GameStage extends Stage implements ContactListener {
     private void setupEnemy(){
         //Enemy enemy = new Enemy(WorldUtilities.createEnemy(world));
         //addActor(enemy);
-    }
-
-    private void setupCamera() {
-        camera = new OrthographicCamera(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
-        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0f);
-        camera.update();
     }
 
     /**
