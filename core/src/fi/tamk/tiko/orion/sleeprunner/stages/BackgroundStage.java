@@ -2,12 +2,7 @@ package fi.tamk.tiko.orion.sleeprunner.stages;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Manifold;
-import com.badlogic.gdx.physics.box2d.World;
+
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
@@ -18,8 +13,8 @@ import fi.tamk.tiko.orion.sleeprunner.graphics.Background;
 import fi.tamk.tiko.orion.sleeprunner.graphics.Background2;
 
 /**
- * Superclass of the every other stages.
- * Not designed to construct object from this class.
+ * Class for backgrounds.
+ * Uses its own viewport (non-metric).
  */
 public class BackgroundStage extends Stage {
 
@@ -28,7 +23,7 @@ public class BackgroundStage extends Stage {
 
     /**
      * Constructor.
-     *
+     * Uses background camera from GameScreen.
      */
     public BackgroundStage(SleepRunner g, OrthographicCamera worldCamera, Batch batch) {
         super(new ScalingViewport(Scaling.stretch, Constants.APP_WIDTH, Constants.APP_HEIGHT, worldCamera), batch);
@@ -38,6 +33,9 @@ public class BackgroundStage extends Stage {
         camera = worldCamera;
     }
 
+    /**
+     * Setups all background-layers.
+     */
 
     private void setupBackgrounds(){
 
@@ -71,9 +69,6 @@ public class BackgroundStage extends Stage {
 
     }
 
-    /**
-     * Methods overwritten from the ContactListener interface.
-     */
 
 
 }
