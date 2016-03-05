@@ -27,7 +27,7 @@ public class PlayerObject extends GameObject {
      * @param world     Box2D World
      */
     public PlayerObject(World world) {
-        super(world, (Constants.WORLD_TO_SCREEN * 2) / 100f, (Constants.WORLD_TO_SCREEN * 4) / 100f,
+        super(world, (Constants.WORLD_TO_SCREEN * 2) / 100f, (Constants.WORLD_TO_SCREEN * 1) / 100f,
                 Constants.WORLD_TO_SCREEN / 100f, (Constants.WORLD_TO_SCREEN * 2) / 100f,
                 Constants.PLAYER_DENSITY,
                 new Texture(Gdx.files.internal(Constants.PLAYER_RUNNING_IMAGE_PATH)),
@@ -71,7 +71,7 @@ public class PlayerObject extends GameObject {
      */
     public void dodge(){
         if (!jumping || hit){
-            body.setTransform(Constants.PLAYER_DODGE_X, Constants.PLAYER_DODGE_Y, 90);
+            body.setTransform(x, y, (float)(-90f * (Math.PI / 180f)));
             dodging = true;
             runSound.stop();
         }
