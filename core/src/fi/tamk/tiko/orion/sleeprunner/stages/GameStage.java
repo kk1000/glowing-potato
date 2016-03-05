@@ -29,6 +29,7 @@ import fi.tamk.tiko.orion.sleeprunner.graphics.Background;
 import fi.tamk.tiko.orion.sleeprunner.graphics.Background2;
 import fi.tamk.tiko.orion.sleeprunner.objects.GameObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.GroundObject;
+import fi.tamk.tiko.orion.sleeprunner.objects.MidPointBlockObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.PlayerObject;
 import fi.tamk.tiko.orion.sleeprunner.utilities.BodyUtils;
 import fi.tamk.tiko.orion.sleeprunner.utilities.MapGenerator;
@@ -45,6 +46,7 @@ public class GameStage extends Stage implements ContactListener {
     int[][] chunkGrid = MapGenerator.createIntervalMapChunkGrid();
     private float deathTimer = 2;
     private Array<GameObject> gameObjects = new Array<GameObject>();
+    private Array<GameObject> removalGameObjects = new Array<GameObject>();
     private boolean isDead = false;
     private World world;
     private PlayerObject player;
@@ -155,6 +157,10 @@ public class GameStage extends Stage implements ContactListener {
                 GroundObject ground = new GroundObject(world, centerX, centerY, width, height);
                 gameObjects.add(ground);
                 addActor(ground);
+            } else if (rectangleMapObject.getName().equals("midpointblock-object")) {
+                MidPointBlockObject midPointBlockObject = new MidPointBlockObject(world, centerX, centerY);
+                gameObjects.add(midPointBlockObject);
+                addActor(midPointBlockObject);
             }
         }
     }
@@ -241,14 +247,9 @@ public class GameStage extends Stage implements ContactListener {
     public void act(float delta) {
         super.act(delta);
 
-        Array<Body> bodies = new Array<Body>(world.getBodyCount());
-        world.getBodies(bodies);
+        update();
 
-        for(int i = 0; i < bodies.size; i++){
-            update(bodies.get(i));
-        }
         enemyMove -= delta * Constants.ENEMY_SPEED;
-
         Constants.ENEMY_LINEAR_VELOCITY.set(enemyMove, 0);
 
         // Fixed timestep
@@ -278,18 +279,20 @@ public class GameStage extends Stage implements ContactListener {
     }
 
     /**
-     * Removes enemy/obstacle body from the world if its outside of screen and creates a new one.
-     *
-     * @param body = body of the enemy/obstacle
+     * Removes game objects which are outside the screen.
      */
-    public void update(Body body){
-        if(!BodyUtils.bodyInBounds(body)) {
-          //  if (BodyUtils.bodyIsEnemy(body) &&!player.isHit()){
-           //     setupEnemy();
-         //   }
-            world.destroyBody(body);
-            Gdx.app.log("GameStage","Removed body");
+    public void update() {
+        for (GameObject gameObject : gameObjects) {
+            if (!BodyUtils.gameObjectInBounds(gameObject)) {
+                Gdx.app.log("GameStage", "GameObject \"" + gameObject.getUserData().id + "\" removed.");
+                removalGameObjects.add(gameObject);
+                gameObjects.removeValue(gameObject, true);
+            }
         }
+        for (GameObject gameObject : removalGameObjects) {
+            world.destroyBody(gameObject.getBody());
+        }
+        removalGameObjects.clear();
     }
 
     /**
@@ -302,7 +305,7 @@ public class GameStage extends Stage implements ContactListener {
         Body a = contact.getFixtureA().getBody();
         Body b = contact.getFixtureB().getBody();
 
-        if((BodyUtils.bodyIsPlayer(a)&& BodyUtils.bodyIsEnemy(b)) || (BodyUtils.bodyIsPlayer(b) && BodyUtils.bodyIsEnemy(a))){
+        if ((BodyUtils.bodyIsPlayer(a) && BodyUtils.bodyIsSpikes(b)) || (BodyUtils.bodyIsPlayer(b) && BodyUtils.bodyIsSpikes(a))) {
             player.hit();
             isDead = true;
             enemyMove = -10;

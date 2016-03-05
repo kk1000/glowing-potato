@@ -7,16 +7,16 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class UserData {
 
-    private UserDataType userDataType;
+    public String id; // PLAYER, GROUND, SPIKES, MIDPOINTBLOCK
     private Vector2 linearVelocity;
 
     /**
      * Constructor for user data
      *
-     * @param userDataType User data's type.
+     * @param id User data's identifier.
      */
-    public UserData(UserDataType userDataType) {
-        this.userDataType = userDataType;
+    public UserData(String id) {
+        this.id = id;
     }
 
     /**
@@ -31,20 +31,6 @@ public class UserData {
      */
     public void setLinearVelocity(Vector2 linearVelocity) {
         this.linearVelocity = linearVelocity;
-    }
-
-    /**
-     * @return user datatype
-     */
-    public UserDataType getUserDataType() {
-        return userDataType;
-    }
-
-    /**
-     * UserData tags/ids.
-     */
-    public enum UserDataType {
-        GROUND_DATA, PLAYER_DATA, ENEMY_DATA
     }
 
 }

@@ -120,7 +120,8 @@ public abstract class GameObject extends Actor {
 
         Body body = this.world.createBody(bodyDef);
 
-        if (bodyType == BodyDef.BodyType.DynamicBody) {
+        // Body's creation differs by game objects.
+        if (userData.id.equals("PLAYER")) {
             // Dynamic body has more specific details.
             FixtureDef fixtureDef = new FixtureDef();
             fixtureDef.restitution = 0.005f;
@@ -128,11 +129,16 @@ public abstract class GameObject extends Actor {
             fixtureDef.density = this.density;
             fixtureDef.shape = shape;
             body.createFixture(fixtureDef);
-        } else {
+        } else if (userData.id.equals("GROUND")) {
             body.createFixture(shape, this.density);
-            body.resetMassData();
+        } else if (userData.id.equals("MIDPOINTBLOCK")) {
+            // MidPointBlockObject is a sensor.
+            FixtureDef fixtureDef = new FixtureDef();
+            fixtureDef.isSensor = true;
+            body.createFixture(fixtureDef);
         }
 
+        body.resetMassData();
         body.setUserData(userData);
 
         shape.dispose();
@@ -193,6 +199,14 @@ public abstract class GameObject extends Actor {
     /**
      * Getters.
      */
+
+    public UserData getUserData() {
+        return userData;
+    }
+
+    public float getWidth() {
+        return width;
+    }
 
     public Body getBody() {
         return body;

@@ -4,6 +4,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
+import fi.tamk.tiko.orion.sleeprunner.data.UserData;
 
 /**
  * GroundObject actor class.
@@ -11,8 +12,6 @@ import fi.tamk.tiko.orion.sleeprunner.data.Constants;
  * Extended from GameObject.
  */
 public class GroundObject extends GameObject {
-
-    private GroundUserData userData;
 
     /**
      * Constructor for game objects which got no animation.
@@ -24,9 +23,7 @@ public class GroundObject extends GameObject {
      * @param height Height of the body.
      */
     public GroundObject(World world, float x, float y, float width, float height) {
-        super(world, x, y, width, height, 0f, Constants.TILESET_SPRITES[0][0], BodyDef.BodyType.KinematicBody);
-        userData = new GroundUserData(width, height);
-        body.setUserData(userData);
+        super(world, x, y, width, height, 0f, Constants.TILESET_SPRITES[0][0], BodyDef.BodyType.KinematicBody, new UserData("GROUND"));
     }
 
     @Override
@@ -35,11 +32,4 @@ public class GroundObject extends GameObject {
         body.setLinearVelocity(userData.getLinearVelocity());
     }
 
-    /**
-     * Getters
-     */
-
-    public GroundUserData getUserData() {
-        return userData;
-    }
 }

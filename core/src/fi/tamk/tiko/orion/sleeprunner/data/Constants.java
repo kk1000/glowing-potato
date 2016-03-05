@@ -68,12 +68,10 @@ public class Constants {
     public static final String GAME_MUSIC_PATH = "play_music.mp3";
     public static float PLAYER_DENSITY = 0.5f;
 
-    // paths to skins and ui
     public static final float ENEMY_DENSITY = PLAYER_DENSITY;
     public static float PLAYER_DODGE_X = 2f;
-
-    // paths to sounds
     public static float PLAYER_DODGE_Y = 1.5f;
+
     public static Vector2 ENEMY_LINEAR_VELOCITY = new Vector2(-0.05f, 0);
 
 }

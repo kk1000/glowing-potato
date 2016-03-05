@@ -7,14 +7,13 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
+import fi.tamk.tiko.orion.sleeprunner.data.UserData;
 
 /**
  * PlayerObject actor class.
  * Extended from GameObject.
  */
 public class PlayerObject extends GameObject {
-
-    private PlayerUserData userData;
 
     private boolean jumping;
     private boolean dodging;
@@ -32,10 +31,9 @@ public class PlayerObject extends GameObject {
                 Constants.WORLD_TO_SCREEN / 100f, (Constants.WORLD_TO_SCREEN * 2) / 100f,
                 Constants.PLAYER_DENSITY,
                 new Texture(Gdx.files.internal(Constants.PLAYER_RUNNING_IMAGE_PATH)),
-                2, 1, 1 / 60f, BodyDef.BodyType.DynamicBody);
+                2, 1, 1 / 60f, BodyDef.BodyType.DynamicBody,
+                new UserData("PLAYER"));
 
-        userData = new PlayerUserData(width, height);
-        body.setUserData(userData);
         body.setFixedRotation(true);
 
         //jump = new Texture(Gdx.files.internal(Constants.PLAYER_JUMPING_IMAGE_PATH));
@@ -52,7 +50,7 @@ public class PlayerObject extends GameObject {
      */
     public void jump(){
         if(!jumping || dodging || hit){
-            body.applyLinearImpulse(userData.getJumpingLinearImpulse(), body.getWorldCenter(), true);
+            body.applyLinearImpulse(Constants.PLAYER_JUMPING_LINEAR_IMPULSE, body.getWorldCenter(), true);
             jumping = true;
         }
         runSound.stop();
@@ -73,7 +71,7 @@ public class PlayerObject extends GameObject {
      */
     public void dodge(){
         if (!jumping || hit){
-            body.setTransform(userData.getDodgePosition(), getUserData().getDodgeAngle());
+            body.setTransform(Constants.PLAYER_DODGE_X, Constants.PLAYER_DODGE_Y, 90);
             dodging = true;
             runSound.stop();
         }
@@ -99,29 +97,22 @@ public class PlayerObject extends GameObject {
      * Applies angular impulse to the player's body when called.
      */
     public void hit(){
-        body.applyAngularImpulse(userData.getHitAngularImpulse(), true);
+        body.applyAngularImpulse(Constants.PLAYER_HIT_ANGULAR_IMPULSE, true);
         hit = true;
         runSound.stop();
     }
 
+    public void act(float delta) {
+        super.act(delta);
+    }
 
     /**
      * Getters.
      */
 
-    public void act(float delta){
-        super.act(delta);
-    }
-
-
-    public PlayerUserData getUserData() {
-        return userData;
-    }
-
     public boolean isDodging() {
         return dodging;
     }
-
     public boolean isHit() {
         return hit;
     }

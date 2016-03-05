@@ -4,14 +4,13 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
+import fi.tamk.tiko.orion.sleeprunner.data.UserData;
 
 /**
  * SpikesObject/obstacle actor class.
  * Extended from GameObject.
  */
 public class SpikesObject extends GameObject {
-
-    private EnemyUserData userData;
 
     /**
      * Constructor for SpikesObject.
@@ -23,9 +22,7 @@ public class SpikesObject extends GameObject {
      * @param height         Height of the body.
      */
     public SpikesObject(World world, float x, float y, float width, float height) {
-        super(world, x, y, width, height, 0f, Constants.TILESET_SPRITES[0][1], BodyDef.BodyType.KinematicBody);
-        userData = new EnemyUserData(width, height);
-        body.setUserData(userData);
+        super(world, x, y, width, height, 0f, Constants.TILESET_SPRITES[0][1], BodyDef.BodyType.KinematicBody, new UserData("SPIKES"));
     }
 
     /**
@@ -36,15 +33,7 @@ public class SpikesObject extends GameObject {
     @Override
     public void act(float delta){
         super.act(delta);
-        body.setLinearVelocity(userData.getLinearVelocity());
-    }
-
-    /**
-     * Getters.
-     */
-
-    public EnemyUserData getUserData() {
-        return userData;
+        body.setLinearVelocity(Constants.ENEMY_LINEAR_VELOCITY);
     }
 
 }
