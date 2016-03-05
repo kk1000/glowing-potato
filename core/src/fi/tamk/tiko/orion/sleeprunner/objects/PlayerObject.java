@@ -10,10 +10,10 @@ import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.PlayerUserData;
 
 /**
- * Player actor class.
+ * PlayerObject actor class.
  * Extended from GameObject.
  */
-public class Player extends GameObject {
+public class PlayerObject extends GameObject {
 
     private PlayerUserData userData;
 
@@ -28,7 +28,7 @@ public class Player extends GameObject {
      *
      * @param world     Box2D World
      */
-    public Player(World world) {
+    public PlayerObject(World world) {
         super(world, (Constants.WORLD_TO_SCREEN * 2) / 100f, (Constants.WORLD_TO_SCREEN * 4) / 100f,
                 Constants.WORLD_TO_SCREEN / 100f, (Constants.WORLD_TO_SCREEN * 2) / 100f,
                 Constants.PLAYER_DENSITY,
@@ -70,7 +70,7 @@ public class Player extends GameObject {
 
     /**
      * Makes player dodge when called.
-     * Player can't dodge while jumping.
+     * PlayerObject can't dodge while jumping.
      */
     public void dodge(){
         if (!jumping || hit){

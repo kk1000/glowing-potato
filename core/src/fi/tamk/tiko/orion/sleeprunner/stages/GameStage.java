@@ -28,8 +28,8 @@ import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.graphics.Background;
 import fi.tamk.tiko.orion.sleeprunner.graphics.Background2;
 import fi.tamk.tiko.orion.sleeprunner.objects.GameObject;
-import fi.tamk.tiko.orion.sleeprunner.objects.Ground;
-import fi.tamk.tiko.orion.sleeprunner.objects.Player;
+import fi.tamk.tiko.orion.sleeprunner.objects.GroundObject;
+import fi.tamk.tiko.orion.sleeprunner.objects.PlayerObject;
 import fi.tamk.tiko.orion.sleeprunner.utilities.BodyUtils;
 import fi.tamk.tiko.orion.sleeprunner.utilities.MapGenerator;
 
@@ -47,7 +47,7 @@ public class GameStage extends Stage implements ContactListener {
     private Array<GameObject> gameObjects = new Array<GameObject>();
     private boolean isDead = false;
     private World world;
-    private Player player;
+    private PlayerObject player;
     private float enemyMove = -10;
     private SleepRunner game;
     private float accumulator = 0f;
@@ -126,13 +126,13 @@ public class GameStage extends Stage implements ContactListener {
     }
 
     private void setupPlayer(){
-        player = new Player(world);
+        player = new PlayerObject(world);
         addActor(player);
     }
 
-    // TODO: Enemy, spikes.
+    // TODO: SpikesObject, spikes.
     private void setupEnemy(){
-        //Enemy enemy = new Enemy(WorldUtilities.createEnemy(world));
+        //SpikesObject enemy = new SpikesObject(WorldUtilities.createEnemy(world));
         //addActor(enemy);
     }
 
@@ -152,7 +152,7 @@ public class GameStage extends Stage implements ContactListener {
             float width = meterRectangle.getWidth();
             float height = meterRectangle.getHeight();
             if (rectangleMapObject.getName().equals("ground-object")) {
-                Ground ground = new Ground(world, centerX, centerY, width, height);
+                GroundObject ground = new GroundObject(world, centerX, centerY, width, height);
                 gameObjects.add(ground);
                 addActor(ground);
             }

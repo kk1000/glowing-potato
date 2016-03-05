@@ -7,15 +7,15 @@ import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.EnemyUserData;
 
 /**
- * Enemy/obstacle actor class.
+ * SpikesObject/obstacle actor class.
  * Extended from GameObject.
  */
-public class Enemy extends GameObject {
+public class SpikesObject extends GameObject {
 
     private EnemyUserData userData;
 
     /**
-     * Constructor for Enemy.
+     * Constructor for SpikesObject.
      *
      * @param world          Box2D World
      * @param x              X-position.
@@ -23,7 +23,7 @@ public class Enemy extends GameObject {
      * @param width          Width of the body.
      * @param height         Height of the body.
      */
-    public Enemy(World world, float x, float y, float width, float height) {
+    public SpikesObject(World world, float x, float y, float width, float height) {
         super(world, x, y, width, height, 0f, Constants.TILESET_SPRITES[0][1], BodyDef.BodyType.KinematicBody);
         userData = new EnemyUserData(width, height);
         body.setUserData(userData);

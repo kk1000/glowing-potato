@@ -7,11 +7,11 @@ import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.GroundUserData;
 
 /**
- * Ground actor class.
- * Ground texture is split to two textureregions for the endless movement visual effect.
+ * GroundObject actor class.
+ * GroundObject texture is split to two textureregions for the endless movement visual effect.
  * Extended from GameObject.
  */
-public class Ground extends GameObject {
+public class GroundObject extends GameObject {
 
     private GroundUserData userData;
 
@@ -24,7 +24,7 @@ public class Ground extends GameObject {
      * @param width  Width of the body.
      * @param height Height of the body.
      */
-    public Ground(World world, float x, float y, float width, float height) {
+    public GroundObject(World world, float x, float y, float width, float height) {
         super(world, x, y, width, height, 0f, Constants.TILESET_SPRITES[0][0], BodyDef.BodyType.KinematicBody);
         userData = new GroundUserData(width, height);
         body.setUserData(userData);
