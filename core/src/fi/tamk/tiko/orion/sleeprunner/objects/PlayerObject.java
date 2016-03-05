@@ -31,7 +31,7 @@ public class PlayerObject extends GameObject {
                 Constants.WORLD_TO_SCREEN / 100f, (Constants.WORLD_TO_SCREEN * 2) / 100f,
                 Constants.PLAYER_DENSITY,
                 new Texture(Gdx.files.internal(Constants.PLAYER_RUNNING_IMAGE_PATH)),
-                2, 1, 1 / 60f, BodyDef.BodyType.DynamicBody,
+                4, 1, 1 / 10f, BodyDef.BodyType.DynamicBody,
                 new UserData("PLAYER"));
 
         body.setFixedRotation(true);

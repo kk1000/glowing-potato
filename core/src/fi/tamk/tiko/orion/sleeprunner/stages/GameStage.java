@@ -206,8 +206,7 @@ public class GameStage extends Stage implements ContactListener {
             }
         }
 
-        enemyMove -= delta * Constants.ENEMY_SPEED;
-        Constants.ENEMY_LINEAR_VELOCITY.set(enemyMove, 0);
+        Constants.ENEMY_LINEAR_VELOCITY.set(Constants.ENEMY_SPEED, 0);
 
         // Fixed timestep
         accumulator += delta;
