@@ -74,6 +74,6 @@ public class Constants {
 
     // paths to sounds
     public static float PLAYER_DODGE_Y = 1.5f;
-    public static Vector2 ENEMY_LINEAR_VELOCITY = new Vector2(0, 0);
+    public static Vector2 ENEMY_LINEAR_VELOCITY = new Vector2(-1.0f, 0);
 
 }

@@ -19,8 +19,6 @@ import com.badlogic.gdx.utils.viewport.ScalingViewport;
 
 import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
-import fi.tamk.tiko.orion.sleeprunner.graphics.Background;
-import fi.tamk.tiko.orion.sleeprunner.graphics.Background2;
 import fi.tamk.tiko.orion.sleeprunner.objects.PlayerObject;
 import fi.tamk.tiko.orion.sleeprunner.utilities.BodyUtils;
 import fi.tamk.tiko.orion.sleeprunner.utilities.MapChunk;
@@ -50,6 +48,7 @@ public class GameStage extends Stage implements ContactListener {
 
     private Array<MapChunk> mapChunks = new Array<MapChunk>();
     private Array<MapChunk> removalMapChunks = new Array<MapChunk>();
+    private Array<MapChunk> addionMapChunks = new Array<MapChunk>();
 
     /**
      * Constructor for the game stage.
@@ -84,7 +83,7 @@ public class GameStage extends Stage implements ContactListener {
         world = new World(Constants.WORLD_GRAVITY, true);
         world.setContactListener(this);
 
-        // Setup couple chunk grids.
+        // Setup couple map chunks.
         mapChunks.add(new MapChunk(this, world, true));
         mapChunks.add(new MapChunk(this, world, false));
 
@@ -187,14 +186,10 @@ public class GameStage extends Stage implements ContactListener {
     public void act(float delta) {
         super.act(delta);
 
-
         for (MapChunk mapChunk : mapChunks) {
-            if (mapChunk.update()) {
-                Gdx.app.log("GameStage", "Making new MapChunk.");
-                mapChunks.add(new MapChunk(this, world, false));
-            }
+            mapChunk.update();
             if (mapChunk.isEmpty()) {
-                mapChunks.removeValue(mapChunk, true);
+                removalMapChunks.add(mapChunk);
             }
         }
 
@@ -211,6 +206,43 @@ public class GameStage extends Stage implements ContactListener {
         }
         if(deathTimer <= 0){
             game.setMainMenuScreen();
+        }
+
+        cleanMapChunks();
+        removeMapChunks();
+        createMapChunks();
+
+    }
+
+    /**
+     * Creates map chunks which are set to queue.
+     */
+    public void createMapChunks() {
+        for (MapChunk mapChunk : addionMapChunks) {
+            mapChunks.add(mapChunk);
+        }
+        addionMapChunks.clear();
+    }
+
+    /**
+     * Removes map chunks which are off the screen.
+     */
+    public void removeMapChunks() {
+        for (MapChunk mapChunk : removalMapChunks) {
+            mapChunk.cleanGameObjects();
+            mapChunks.removeValue(mapChunk, true);
+            // Create also new one for every deleted map chunk.
+            addionMapChunks.add(new MapChunk(this, world, false));
+        }
+        removalMapChunks.clear();
+    }
+
+    /**
+     * Removes map chunk's unnecessary game objects.
+     */
+    public void cleanMapChunks() {
+        for (MapChunk mapChunk : mapChunks) {
+            mapChunk.cleanGameObjects();
         }
     }
 

@@ -93,25 +93,13 @@ public class MapChunk {
 
     /**
      * Removes game objects which are outside the screen.
-     *
-     * @return boolean If new map chunk should be created.
      */
-    public boolean update() {
-        boolean newMapChunk = false;
+    public void update() {
         for (GameObject gameObject : gameObjects) {
             if (!BodyUtils.gameObjectInBounds(gameObject)) {
-                if (gameObject.getUserData().id.equals("MIDPOINTBLOCK")) {
-                    newMapChunk = true;
-                }
                 removalGameObjects.add(gameObject);
-                gameObjects.removeValue(gameObject, true);
             }
         }
-        for (GameObject gameObject : removalGameObjects) {
-            world.destroyBody(gameObject.getBody());
-        }
-        removalGameObjects.clear();
-        return newMapChunk;
     }
 
     /**
@@ -124,12 +112,12 @@ public class MapChunk {
     }
 
     /**
-     * Removes every game object from the map chunk.
+     * Removes game objects which are on removalGameObjects array.
      */
-    public void clearGameObjects() {
-        removalGameObjects = gameObjects;
+    public void cleanGameObjects() {
         for (GameObject gameObject : removalGameObjects) {
             world.destroyBody(gameObject.getBody());
+            gameObjects.removeValue(gameObject, true);
         }
         removalGameObjects.clear();
     }
