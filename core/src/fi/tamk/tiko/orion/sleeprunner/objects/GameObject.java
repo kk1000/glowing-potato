@@ -136,6 +136,7 @@ public abstract class GameObject extends Actor {
             // MidPointBlockObject is a sensor.
             FixtureDef fixtureDef = new FixtureDef();
             fixtureDef.isSensor = true;
+            fixtureDef.shape = shape;
             body.createFixture(fixtureDef);
         }
 

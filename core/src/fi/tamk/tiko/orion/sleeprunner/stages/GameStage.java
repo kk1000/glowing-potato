@@ -1,14 +1,8 @@
 package fi.tamk.tiko.orion.sleeprunner.stages;
 
-/**
- * Stage for the gameplay.
- */
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -27,26 +21,18 @@ import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.graphics.Background;
 import fi.tamk.tiko.orion.sleeprunner.graphics.Background2;
-import fi.tamk.tiko.orion.sleeprunner.objects.GameObject;
-import fi.tamk.tiko.orion.sleeprunner.objects.GroundObject;
-import fi.tamk.tiko.orion.sleeprunner.objects.MidPointBlockObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.PlayerObject;
 import fi.tamk.tiko.orion.sleeprunner.utilities.BodyUtils;
-import fi.tamk.tiko.orion.sleeprunner.utilities.MapGenerator;
-
+import fi.tamk.tiko.orion.sleeprunner.utilities.MapChunk;
 
 /**
  * The stage of the game.
  * Extended from Stage and implements ContactListener.
  */
-
 public class GameStage extends Stage implements ContactListener {
 
     private final float TIME_STEP = 1 / 300f;
-    int[][] chunkGrid = MapGenerator.createIntervalMapChunkGrid();
     private float deathTimer = 2;
-    private Array<GameObject> gameObjects = new Array<GameObject>();
-    private Array<GameObject> removalGameObjects = new Array<GameObject>();
     private boolean isDead = false;
     private World world;
     private PlayerObject player;
@@ -62,6 +48,9 @@ public class GameStage extends Stage implements ContactListener {
 
     private Vector3 touchPoint;
 
+    private Array<MapChunk> mapChunks = new Array<MapChunk>();
+    private Array<MapChunk> removalMapChunks = new Array<MapChunk>();
+
     /**
      * Constructor for the game stage.
      *
@@ -76,23 +65,6 @@ public class GameStage extends Stage implements ContactListener {
 
         camera = worldCamera;
         renderer = new Box2DDebugRenderer();
-    }
-
-    /**
-     * Scales given rectangle's size by given amount
-     * and returns it.
-     *
-     * @param rect  The rectangle to scale.
-     * @param scale The scale.
-     * @return Scaled rectangle.
-     */
-    public static Rectangle scaleRectangle(Rectangle rect, float scale) {
-        Rectangle rectangle = new Rectangle();
-        rectangle.x = rect.x * scale;
-        rectangle.y = rect.y * scale;
-        rectangle.width = rect.width * scale;
-        rectangle.height = rect.height * scale;
-        return rectangle;
     }
 
     /**
@@ -114,7 +86,11 @@ public class GameStage extends Stage implements ContactListener {
 
         //setupBackground();
         //setupMovingBackground();
-        createObjectsToBodies(MapGenerator.generateObjects(chunkGrid, Constants.GROUND_BLOCK, "ground-object"));
+
+        // Setup couple chunk grids.
+        mapChunks.add(new MapChunk(this, world, true));
+        mapChunks.add(new MapChunk(this, world, false));
+
         setupPlayer();
         //setupEnemy();
     }
@@ -139,33 +115,6 @@ public class GameStage extends Stage implements ContactListener {
     }
 
     /**
-     * Creates MapObjects to Box2D bodies.
-     *
-     * @param mapObjects Created MapObjects in a map chunk.
-     */
-    public void createObjectsToBodies(MapObjects mapObjects) {
-        Array<RectangleMapObject> rectangleMapObjects = mapObjects.getByType(RectangleMapObject.class);
-        Gdx.app.log("GameStage", "Creating bodies from " + rectangleMapObjects.size + " rectangle map object(s)!");
-        for (RectangleMapObject rectangleMapObject : rectangleMapObjects) {
-            Rectangle pixelRectangle = rectangleMapObject.getRectangle();
-            Rectangle meterRectangle = scaleRectangle(pixelRectangle, 1 / 100f);
-            float centerX = meterRectangle.getWidth() / 2 + meterRectangle.getX();
-            float centerY = meterRectangle.getHeight() / 2 + meterRectangle.getY();
-            float width = meterRectangle.getWidth();
-            float height = meterRectangle.getHeight();
-            if (rectangleMapObject.getName().equals("ground-object")) {
-                GroundObject ground = new GroundObject(world, centerX, centerY, width, height);
-                gameObjects.add(ground);
-                addActor(ground);
-            } else if (rectangleMapObject.getName().equals("midpointblock-object")) {
-                MidPointBlockObject midPointBlockObject = new MidPointBlockObject(world, centerX, centerY);
-                gameObjects.add(midPointBlockObject);
-                addActor(midPointBlockObject);
-            }
-        }
-    }
-
-    /**
      * Method for touch down event.
      * Translates touched coordinates to the world.
      * Jumps if right side of screen is touched, dodges if left side of screen is touched.
@@ -186,7 +135,7 @@ public class GameStage extends Stage implements ContactListener {
         else  if(leftSideTouched(touchPoint.x,touchPoint.y)){
             player.dodge();
         }
-        return super.touchDown(x,y,pointer,button);
+        return super.touchDown(x, y, pointer, button);
     }
 
     /**
@@ -247,7 +196,15 @@ public class GameStage extends Stage implements ContactListener {
     public void act(float delta) {
         super.act(delta);
 
-        update();
+        for (MapChunk mapChunk : mapChunks) {
+            if (mapChunk.update()) {
+                Gdx.app.log("GameStage", "Making new MapChunk.");
+                mapChunks.add(new MapChunk(this, world, false));
+            }
+            if (mapChunk.isEmpty()) {
+                mapChunks.removeValue(mapChunk, true);
+            }
+        }
 
         enemyMove -= delta * Constants.ENEMY_SPEED;
         Constants.ENEMY_LINEAR_VELOCITY.set(enemyMove, 0);
@@ -275,23 +232,6 @@ public class GameStage extends Stage implements ContactListener {
     public void draw() {
         super.draw();
         renderer.render(world, camera.combined);
-    }
-
-    /**
-     * Removes game objects which are outside the screen.
-     */
-    public void update() {
-        for (GameObject gameObject : gameObjects) {
-            if (!BodyUtils.gameObjectInBounds(gameObject)) {
-                Gdx.app.log("GameStage", "GameObject \"" + gameObject.getUserData().id + "\" removed.");
-                removalGameObjects.add(gameObject);
-                gameObjects.removeValue(gameObject, true);
-            }
-        }
-        for (GameObject gameObject : removalGameObjects) {
-            world.destroyBody(gameObject.getBody());
-        }
-        removalGameObjects.clear();
     }
 
     /**

@@ -36,10 +36,10 @@ public class MapGenerator {
      *
      * @return
      */
-    private static int[][] createMapChunkGrid( ) {
+    public static int[][] createMapChunkGrid() {
         int[][] grid = new int[ Constants.CHUNK_MAX_TILES_HEIGHT ][ Constants.CHUNK_MAX_TILES_WIDTH ];
         generateGrounds( grid );
-        grid[ Constants.CHUNK_MAX_TILES_HEIGHT / 2 ][ Constants.CHUNK_MAX_TILES_WIDTH / 2 ] = Constants.MIDPOINT_BLOCK;
+        grid[Constants.CHUNK_MAX_TILES_HEIGHT - 1][Constants.CHUNK_MAX_TILES_WIDTH / 2] = Constants.MIDPOINT_BLOCK;
         return grid;
     }
 
@@ -53,7 +53,7 @@ public class MapGenerator {
         for ( int i = 0; i < Constants.CHUNK_MAX_TILES_WIDTH; i++ ) {
             grid[ 0 ][ i ] = Constants.GROUND_BLOCK;
         }
-        grid[ Constants.CHUNK_MAX_TILES_HEIGHT / 2 ][ Constants.CHUNK_MAX_TILES_WIDTH / 2 ] = Constants.MIDPOINT_BLOCK;
+        grid[Constants.CHUNK_MAX_TILES_HEIGHT - 1][Constants.CHUNK_MAX_TILES_WIDTH / 2] = Constants.MIDPOINT_BLOCK;
         return grid;
     }
 

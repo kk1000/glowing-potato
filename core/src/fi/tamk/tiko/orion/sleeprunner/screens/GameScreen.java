@@ -58,10 +58,11 @@ public class GameScreen implements Screen{
     /**
      * Render method.
      *
-     * @param delta = delta timer (1/60)
+     * @param delta Delta timer (1/60)
      */
     @Override
     public void render(float delta) {
+        Gdx.gl.glClearColor(0.1f, 0.1f, 0.5f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.setProjectionMatrix(camera.combined);
@@ -74,7 +75,6 @@ public class GameScreen implements Screen{
         score += delta * 10;
         scoreFont.draw(batch, "Score:" + (int) score, Constants.WORLD_TO_SCREEN, Constants.APP_HEIGHT - 10);
         batch.end();
-
     }
 
     /**
