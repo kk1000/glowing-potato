@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
+import fi.tamk.tiko.orion.sleeprunner.data.UserData;
 import fi.tamk.tiko.orion.sleeprunner.utilities.Tools;
 
 /**
@@ -30,6 +31,7 @@ public abstract class GameObject extends Actor {
     protected float width;
     protected float height;
 
+    protected UserData userData;
     protected TextureRegion textureRegion;
     protected Body body;
     protected float textureWidth;
@@ -55,8 +57,9 @@ public abstract class GameObject extends Actor {
      * @param density       Body's density.
      * @param textureRegion The texture.
      * @param bodyType      Box2D body's type.
+     * @param userData  Box2D body's userdata.
      */
-    public GameObject(World world, float x, float y, float width, float height, float density, TextureRegion textureRegion, BodyDef.BodyType bodyType) {
+    public GameObject(World world, float x, float y, float width, float height, float density, TextureRegion textureRegion, BodyDef.BodyType bodyType, UserData userData) {
         this.world = world;
         this.x = x;
         this.y = y;
@@ -66,6 +69,7 @@ public abstract class GameObject extends Actor {
         this.textureHeight = this.textureRegion.getRegionHeight() / 100f;
         this.width = width;
         this.height = height;
+        this.userData = userData;
         createBody(bodyType);
     }
 
@@ -83,8 +87,9 @@ public abstract class GameObject extends Actor {
      * @param frameRows Amount of frames in a row.
      * @param fps       Animation's speed (frame per second)
      * @param bodyType  Box2D body's type.
+     * @param userData  Box2D body's userdata.
      */
-    public GameObject(World world, float x, float y, float width, float height, float density, Texture texture, int frameCols, int frameRows, float fps, BodyDef.BodyType bodyType) {
+    public GameObject(World world, float x, float y, float width, float height, float density, Texture texture, int frameCols, int frameRows, float fps, BodyDef.BodyType bodyType, UserData userData) {
         this.world = world;
         this.x = x;
         this.y = y;
@@ -128,7 +133,7 @@ public abstract class GameObject extends Actor {
             body.resetMassData();
         }
 
-        // Remember to set body's userdata!
+        body.setUserData(userData);
 
         shape.dispose();
         this.body = body;

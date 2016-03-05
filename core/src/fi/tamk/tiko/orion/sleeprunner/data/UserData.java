@@ -3,61 +3,20 @@ package fi.tamk.tiko.orion.sleeprunner.data;
 import com.badlogic.gdx.math.Vector2;
 
 /**
- * Super class for defining user data.
- * Not designed to construct object from this class.
+ * Box2D Body's specific details.
  */
-public abstract class UserData {
+public class UserData {
 
-    protected UserDataType userDataType;
-    protected float width;
-    protected float height;
+    private UserDataType userDataType;
     private Vector2 linearVelocity;
-    private String path;
 
     /**
      * Constructor for user data
      *
-     * @param width   Width used in rectangle
-     * @param height  Height used in rectangle
+     * @param userDataType User data's type.
      */
-    public UserData(float width, float height){
-        this.width = width;
-        this.height = height;
-    }
-
-    /**
-     * @return width
-     */
-    public float getWidth(){
-        return width;
-    }
-
-    /**
-     * sets width
-     */
-    public void setWidth(float width) {
-        this.width = width;
-    }
-
-    /**
-     * @return height
-     */
-    public float getHeight() {
-        return height;
-    }
-
-    /**
-     * sets height
-     */
-    public void setHeight (float height){
-        this.height = height;
-    }
-
-    /**
-     * @return texture imagepath
-     */
-    public String getTexturepath() {
-        return path;
+    public UserData(UserDataType userDataType) {
+        this.userDataType = userDataType;
     }
 
     /**
@@ -68,7 +27,7 @@ public abstract class UserData {
     }
 
     /**
-     * sets linear velocity used in box2d physics
+     * Sets linear velocity used in Box2D physics
      */
     public void setLinearVelocity(Vector2 linearVelocity) {
         this.linearVelocity = linearVelocity;
@@ -79,6 +38,13 @@ public abstract class UserData {
      */
     public UserDataType getUserDataType() {
         return userDataType;
+    }
+
+    /**
+     * UserData tags/ids.
+     */
+    public enum UserDataType {
+        GROUND_DATA, PLAYER_DATA, ENEMY_DATA
     }
 
 }
