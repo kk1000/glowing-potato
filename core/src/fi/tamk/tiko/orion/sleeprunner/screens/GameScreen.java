@@ -107,7 +107,7 @@ public class GameScreen implements Screen{
 
         backgroundStage.getViewport().update(width, height, false);
         gameStage.getViewport().update(width, height, true);
-
+        
     }
 
     @Override

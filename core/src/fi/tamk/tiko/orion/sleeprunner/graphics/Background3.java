@@ -13,7 +13,7 @@ import fi.tamk.tiko.orion.sleeprunner.data.Constants;
  * Game screen's second background.
  * Background is split to two textureregions for the endless movement visual effect.
  */
-public class Background2 extends Actor {
+public class Background3 extends Actor {
 
     // textureregion used for whole texture image
     private final TextureRegion textureRegion;
@@ -22,14 +22,14 @@ public class Background2 extends Actor {
     // second half of the background
     private Rectangle textureRegionBounds2;
     // background's movement speed
-    private int speed = 80;
+    private int speed = 90;
 
     /**
      * Constructor for background.
      * Texture for textureregion, rectangles for the split regions.
      */
-    public Background2(){
-        textureRegion = new TextureRegion(new Texture(Gdx.files.internal(Constants.MOVING_BACKGROUND_IMAGE_PATH)));
+    public Background3(){
+        textureRegion = new TextureRegion(new Texture(Gdx.files.internal(Constants.BACKGROUND_CLOUDS_IMAGE_PATH)));
         textureRegionBounds1 = new Rectangle(0 - Constants.APP_WIDTH / 2, 0, Constants.APP_WIDTH, Constants.APP_HEIGHT);
         textureRegionBounds2 = new Rectangle(Constants.APP_WIDTH / 2, 0, Constants.APP_WIDTH, Constants.APP_HEIGHT);
     }
