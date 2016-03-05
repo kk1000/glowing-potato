@@ -84,9 +84,6 @@ public class GameStage extends Stage implements ContactListener {
         world = new World(Constants.WORLD_GRAVITY, true);
         world.setContactListener(this);
 
-        //setupBackground();
-        //setupMovingBackground();
-
         // Setup couple chunk grids.
         mapChunks.add(new MapChunk(this, world, true));
         mapChunks.add(new MapChunk(this, world, false));
@@ -95,13 +92,7 @@ public class GameStage extends Stage implements ContactListener {
         //setupEnemy();
     }
 
-    private void setupMovingBackground(){
-        addActor(new Background2());
-    }
 
-    private void setupBackground(){
-        addActor(new Background());
-    }
 
     private void setupPlayer(){
         player = new PlayerObject(world);
@@ -196,6 +187,7 @@ public class GameStage extends Stage implements ContactListener {
     public void act(float delta) {
         super.act(delta);
 
+
         for (MapChunk mapChunk : mapChunks) {
             if (mapChunk.update()) {
                 Gdx.app.log("GameStage", "Making new MapChunk.");
@@ -205,8 +197,6 @@ public class GameStage extends Stage implements ContactListener {
                 mapChunks.removeValue(mapChunk, true);
             }
         }
-
-        Constants.ENEMY_LINEAR_VELOCITY.set(Constants.ENEMY_SPEED, 0);
 
         // Fixed timestep
         accumulator += delta;

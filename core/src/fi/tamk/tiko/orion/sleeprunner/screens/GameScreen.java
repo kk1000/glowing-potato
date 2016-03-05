@@ -2,6 +2,7 @@ package fi.tamk.tiko.orion.sleeprunner.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
+import fi.tamk.tiko.orion.sleeprunner.stages.BackgroundStage;
 import fi.tamk.tiko.orion.sleeprunner.stages.GameStage;
 
 /**
@@ -25,8 +27,10 @@ public class GameScreen implements Screen{
 
     private OrthographicCamera uiCamera;
     private OrthographicCamera camera;
+    private OrthographicCamera backgroundCamera;
 
-    private GameStage stage;
+    private GameStage gameStage;
+    private BackgroundStage backgroundStage;
     private SleepRunner game;
 
     /**
@@ -36,6 +40,9 @@ public class GameScreen implements Screen{
      */
     public GameScreen(SleepRunner g){
         game = g;
+
+        backgroundCamera = new OrthographicCamera();
+        backgroundCamera.setToOrtho(false, Constants.APP_WIDTH, Constants.APP_HEIGHT);
 
         uiCamera = new OrthographicCamera();
         uiCamera.setToOrtho(false, Constants.APP_WIDTH, Constants.APP_HEIGHT);
@@ -47,7 +54,8 @@ public class GameScreen implements Screen{
 
         scoreFont = new BitmapFont(Gdx.files.internal(Constants.GAME_FONT_PATH));
         game = g;
-        stage = new GameStage(game, camera, batch);
+        gameStage = new GameStage(game, camera, batch);
+        backgroundStage = new BackgroundStage(game, backgroundCamera, batch);
     }
 
     @Override
@@ -65,9 +73,19 @@ public class GameScreen implements Screen{
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.5f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        batch.setProjectionMatrix(camera.combined);
-        stage.draw();
-        stage.act();
+        // Backgrounds
+
+        backgroundStage.getViewport().apply();
+        backgroundStage.act();
+        backgroundStage.draw();
+
+
+        // The game itself
+
+        gameStage.getViewport().apply();
+        gameStage.act();
+        gameStage.draw();
+
 
         // UI.
         batch.setProjectionMatrix(uiCamera.combined);
@@ -77,6 +95,7 @@ public class GameScreen implements Screen{
         batch.end();
     }
 
+
     /**
      * Method for resizing.
      *
@@ -85,6 +104,9 @@ public class GameScreen implements Screen{
      */
     @Override
     public void resize(int width, int height) {
+
+        backgroundStage.getViewport().update(width, height, false);
+        gameStage.getViewport().update(width, height, true);
 
     }
 

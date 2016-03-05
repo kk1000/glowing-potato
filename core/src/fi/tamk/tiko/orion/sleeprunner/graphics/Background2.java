@@ -29,7 +29,7 @@ public class Background2 extends Actor {
      * Texture for textureregion, rectangles for the split regions.
      */
     public Background2(){
-        textureRegion = new TextureRegion(new Texture(Gdx.files.internal(Constants.BACKGROUND_CLOUDS_IMAGE_PATH)));
+        textureRegion = new TextureRegion(new Texture(Gdx.files.internal(Constants.MOVING_BACKGROUND_IMAGE_PATH)));
         textureRegionBounds1 = new Rectangle(0 - Constants.APP_WIDTH / 2, 0, Constants.APP_WIDTH, Constants.APP_HEIGHT);
         textureRegionBounds2 = new Rectangle(Constants.APP_WIDTH / 2, 0, Constants.APP_WIDTH, Constants.APP_HEIGHT);
     }
