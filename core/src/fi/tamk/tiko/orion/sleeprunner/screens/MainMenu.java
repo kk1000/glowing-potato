@@ -21,22 +21,16 @@ import fi.tamk.tiko.orion.sleeprunner.data.Constants;
  */
 public class MainMenu implements Screen{
 
+    public Stage stage;
     private OrthographicCamera camera;
     private OrthographicCamera camera2;
-
     private SleepRunner game;
-
     private SpriteBatch batch;
-
     private float height;
     private float width;
-
     private Texture logo;
     private float delta;
-
     private TextButton gameButton;
-
-    public Stage stage;
     private Skin skin;
 
 
@@ -48,7 +42,6 @@ public class MainMenu implements Screen{
     public MainMenu (SleepRunner g){
         width = Gdx.graphics.getWidth();
         height = Gdx.graphics.getHeight();
-
 
         game = g;
 
@@ -63,14 +56,13 @@ public class MainMenu implements Screen{
         skin = new Skin(Gdx.files.internal(Constants.SKIN_PATH));
         delta = Gdx.graphics.getDeltaTime();
 
-
         logo = new Texture(Gdx.files.internal(Constants.MAINMENU_LOGO_IMAGE_PATH));
 
-        gameButton = new TextButton("play",skin);
+        gameButton = new TextButton("PLAY", skin);
         gameButton.setBounds(width / 3, height / 8, width / 4, height / 7);
         gameButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
-                Gdx.app.log("TAG", "clicked menu");
+                Gdx.app.log("TAG", "Clicked menu");
                 game.setGameScreen();
             }
         });
