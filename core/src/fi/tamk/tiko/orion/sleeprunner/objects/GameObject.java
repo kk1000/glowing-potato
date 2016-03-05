@@ -102,6 +102,7 @@ public abstract class GameObject extends Actor {
         this.textureHeight = this.texture.getHeight() / 100f;
         this.width = width;
         this.height = height;
+        this.userData = userData;
         hasAnimation = true;
         createAnimation();
         createBody(bodyType);

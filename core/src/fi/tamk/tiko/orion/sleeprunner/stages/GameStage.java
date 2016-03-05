@@ -260,7 +260,6 @@ public class GameStage extends Stage implements ContactListener {
             accumulator -= TIME_STEP;
         }
 
-
         if(isDead){
             deathTimer -= delta;
         }
