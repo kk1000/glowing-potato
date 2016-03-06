@@ -16,14 +16,15 @@ public class GroundObject extends GameObject {
     /**
      * Constructor for game objects which got no animation.
      *
-     * @param world  Box2D World
-     * @param x      X-position.
-     * @param y      Y-position.
-     * @param width  Width of the body.
-     * @param height Height of the body.
+     * @param world        Box2D World
+     * @param x            X-position.
+     * @param y            Y-position.
+     * @param width        Width of the body.
+     * @param height       Height of the body.
+     * @param mapChunkGrid Map chunks grid.
      */
-    public GroundObject(World world, float x, float y, float width, float height) {
-        super(world, x, y, width, height, 0f, Constants.TILESET_SPRITES[0][0], BodyDef.BodyType.KinematicBody, new UserData("GROUND"));
+    public GroundObject(World world, float x, float y, float width, float height, int[][] mapChunkGrid) {
+        super(world, x, y, width, height, 0f, Constants.TILESET_SPRITES[0][0], BodyDef.BodyType.KinematicBody, new UserData("GROUND"), mapChunkGrid);
     }
 
     @Override

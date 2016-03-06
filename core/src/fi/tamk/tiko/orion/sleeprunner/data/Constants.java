@@ -27,7 +27,7 @@ public class Constants {
     public static final int CHUNK_MAX_TILES_WIDTH = 50;
     public static final int CHUNK_MAX_TILES_HEIGHT = 15;
 
-    public static final Texture TILESET = new Texture(Gdx.files.internal("tileset_placeholder.png"));
+    public static final Texture TILESET = new Texture(Gdx.files.internal("tileset.png"));
     public static final TextureRegion[][] TILESET_SPRITES = TextureRegion.split(TILESET, WORLD_TO_SCREEN, WORLD_TO_SCREEN);
 
     public static final int EMPTY_BLOCK = 0;
@@ -36,7 +36,7 @@ public class Constants {
     // PlayerObject
 
     public static final float PLAYER_GRAVITY_SCALE = 3f;
-    public static final Vector2 PLAYER_JUMPING_LINEAR_IMPULSE = new Vector2(0, 0.30f);
+    public static final Vector2 PLAYER_JUMPING_LINEAR_IMPULSE = new Vector2(0, 0.50f);
     public static final float PLAYER_HIT_ANGULAR_IMPULSE = 10f;
     public static final float ENEMY_X = 25f;
     public static final float RUNNING_SHORT_ENEMY_Y = 1.5f;

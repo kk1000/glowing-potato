@@ -1,5 +1,7 @@
 package fi.tamk.tiko.orion.sleeprunner.utilities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.MathUtils;
@@ -32,6 +34,40 @@ public class MapGenerator {
     }
 
     /**
+     * Calculates right tile to the ground.
+     *
+     * @param grid Map chunk grid.
+     * @param x    Ground tile's X-position.
+     * @param y    Ground tile's Y-position.
+     * @return Right tile.
+     */
+    public static TextureRegion calculateGroundTile(int[][] grid, int x, int y) {
+        TextureRegion middleTexture = Constants.TILESET_SPRITES[0][7];
+        TextureRegion rightTexture = Constants.TILESET_SPRITES[0][8];
+        TextureRegion leftTexture = Constants.TILESET_SPRITES[0][6];
+        int ground = Constants.GROUND_BLOCK;
+        int empty = Constants.EMPTY_BLOCK;
+        TextureRegion calculated;
+        if (isSymbolAtPosition(grid, empty, x + 1, y)) {
+            // Right edge.
+            calculated = rightTexture;
+        } else if (isSymbolAtPosition(grid, empty, x - 1, y)) {
+            // Left edge.
+            calculated = leftTexture;
+        } else if (isSymbolAtPosition(grid, ground, x + 1, y) && isSymbolAtPosition(grid, ground, x - 1, y)) {
+            // Middle.
+            calculated = middleTexture;
+        } else if (isSymbolAtPosition(grid, empty, x + 1, y) && isSymbolAtPosition(grid, empty, x - 1, y)) {
+            // Alone.
+            calculated = middleTexture;
+        } else {
+            // Wut?
+            calculated = leftTexture;
+        }
+        return calculated;
+    }
+
+    /**
      * Creates semi random map chunk.
      *
      * @return
@@ -39,6 +75,7 @@ public class MapGenerator {
     public static int[][] createMapChunkGrid() {
         int[][] grid = new int[ Constants.CHUNK_MAX_TILES_HEIGHT ][ Constants.CHUNK_MAX_TILES_WIDTH ];
         generateGrounds( grid );
+        Gdx.app.log("MapGenerator", "New grid's first is " + grid[0][0]);
         return grid;
     }
 
@@ -52,6 +89,7 @@ public class MapGenerator {
         for ( int i = 0; i < Constants.CHUNK_MAX_TILES_WIDTH; i++ ) {
             grid[ 0 ][ i ] = Constants.GROUND_BLOCK;
         }
+        grid[0][Constants.CHUNK_MAX_TILES_WIDTH - 1] = Constants.EMPTY_BLOCK;
         return grid;
     }
 
@@ -68,8 +106,9 @@ public class MapGenerator {
                 // Let's try to make jump gap between grounds.
                 if (isSymbolAtPosition( grid, Constants.EMPTY_BLOCK, i - 1, 0) &&
                         isSymbolAtPosition( grid, Constants.EMPTY_BLOCK, i - 2, 0) &&
-                        isSymbolAtPosition( grid, Constants.EMPTY_BLOCK, i - 3, 0)) {
-                    // Three empty blocks is maximum, ignore the empty space.
+                        isSymbolAtPosition(grid, Constants.EMPTY_BLOCK, i - 3, 0) &&
+                        isSymbolAtPosition(grid, Constants.EMPTY_BLOCK, i - 4, 0)) {
+                    // Four empty blocks is maximum, ignore the empty space.
                     grid[0][i] = Constants.GROUND_BLOCK;
                 } else {
                     // There is still space for gap.

@@ -20,9 +20,10 @@ public class SpikesObject extends GameObject {
      * @param y              Y-position.
      * @param width          Width of the body.
      * @param height         Height of the body.
+     * @param mapChunkGrid   Map chunk grid.
      */
-    public SpikesObject(World world, float x, float y, float width, float height) {
-        super(world, x, y, width, height, 0f, Constants.TILESET_SPRITES[0][1], BodyDef.BodyType.KinematicBody, new UserData("SPIKES"));
+    public SpikesObject(World world, float x, float y, float width, float height, int[][] mapChunkGrid) {
+        super(world, x, y, width, height, 0f, Constants.TILESET_SPRITES[0][1], BodyDef.BodyType.KinematicBody, new UserData("SPIKES"), mapChunkGrid);
     }
 
     @Override

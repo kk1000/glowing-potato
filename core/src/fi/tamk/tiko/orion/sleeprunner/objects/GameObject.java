@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.UserData;
+import fi.tamk.tiko.orion.sleeprunner.utilities.MapGenerator;
 
 /**
  * Superclass of every game object.
@@ -22,7 +23,9 @@ import fi.tamk.tiko.orion.sleeprunner.data.UserData;
  */
 public abstract class GameObject {
 
+    protected int[][] mapChunkGrid;
     protected World world;
+
     protected float x;
     protected float y;
     protected float density;
@@ -53,9 +56,10 @@ public abstract class GameObject {
      * @param density       Body's density.
      * @param textureRegion The texture.
      * @param bodyType      Box2D body's type.
-     * @param userData  Box2D body's userdata.
+     * @param userData      Box2D body's userdata.
+     * @param mapChunkGrid  Map chunk's grid. Used to calculate right tile to body.
      */
-    public GameObject(World world, float x, float y, float width, float height, float density, TextureRegion textureRegion, BodyDef.BodyType bodyType, UserData userData) {
+    public GameObject(World world, float x, float y, float width, float height, float density, TextureRegion textureRegion, BodyDef.BodyType bodyType, UserData userData, int[][] mapChunkGrid) {
         this.world = world;
         this.x = x;
         this.y = y;
@@ -66,6 +70,7 @@ public abstract class GameObject {
         this.width = width;
         this.height = height;
         this.userData = userData;
+        this.mapChunkGrid = mapChunkGrid;
         createBody(bodyType);
     }
 
@@ -93,6 +98,7 @@ public abstract class GameObject {
         this.width = width;
         this.height = height;
         this.userData = userData;
+        this.mapChunkGrid = mapChunkGrid;
         hasAnimation = true;
 
         // IMPORTANT!
@@ -158,9 +164,11 @@ public abstract class GameObject {
         } else {
             float tileSize = Constants.WORLD_TO_SCREEN / 100f;
             for (int i = 0; i < width * 100f; i += 32) {
+                // If we're drawing ground...
+                TextureRegion tile = MapGenerator.calculateGroundTile(mapChunkGrid, i / 32, 0);
                 float x = (body.getPosition().x - tileSize / 2) - (width / 2 - tileSize / 2) + i / 100f;
                 float y = body.getPosition().y - tileSize / 2;
-                batch.draw(textureRegion,
+                batch.draw(tile,
                         x,
                         y,
                         Constants.WORLD_TO_SCREEN / 2,

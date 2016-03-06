@@ -76,7 +76,7 @@ public class MapChunk {
             float width = meterRectangle.getWidth();
             float height = meterRectangle.getHeight();
             if (rectangleMapObject.getName().equals("ground-object")) {
-                GroundObject ground = new GroundObject(world, centerX, centerY, width, height);
+                GroundObject ground = new GroundObject(world, centerX, centerY, width, height, grid);
                 gameObjects.add(ground);
             }
         }
