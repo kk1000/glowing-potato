@@ -3,11 +3,13 @@ package fi.tamk.tiko.orion.sleeprunner.objects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.UserData;
+import fi.tamk.tiko.orion.sleeprunner.utilities.Tools;
 
 /**
  * PlayerObject actor class.
@@ -15,8 +17,13 @@ import fi.tamk.tiko.orion.sleeprunner.data.UserData;
  */
 public class PlayerObject extends GameObject {
 
+    private Animation dodgeAnimation;
+    private Animation jumpAnimation;
+    private Animation runAnimation;
+
     private boolean jumping;
     private boolean dodging;
+    private boolean dead;
     private boolean hit;
 
     private Sound runSound;
@@ -31,14 +38,19 @@ public class PlayerObject extends GameObject {
                 Constants.WORLD_TO_SCREEN / 100f, (Constants.WORLD_TO_SCREEN * 2) / 100f,
                 Constants.PLAYER_DENSITY,
                 new Texture(Gdx.files.internal(Constants.PLAYER_RUNNING_IMAGE_PATH)),
-                4, 1, 1 / 10f, BodyDef.BodyType.DynamicBody,
+                BodyDef.BodyType.DynamicBody,
                 new UserData("PLAYER"));
 
         body.setFixedRotation(true);
 
-        //jump = new Texture(Gdx.files.internal(Constants.PLAYER_JUMPING_IMAGE_PATH));
-        //dodge = new Texture(Gdx.files.internal(Constants.PLAYER_DODGING_IMAGE_PATH));
-        //hitTexture = new TextureRegion(new Texture(Gdx.files.internal(Constants.PLAYER_HIT_IMAGE_PATH)));
+        // Create animations.
+        dodgeAnimation = Tools.createAnimation(texture, 6, 3, 1, 4, 1 / 30);
+        jumpAnimation = Tools.createAnimation(texture, 6, 3, 13, 6, 1 / 30);
+        runAnimation = Tools.createAnimation(texture, 6, 3, 7, 4, 1 / 30);
+
+        currentAnimation = runAnimation;
+        currentFrame = currentAnimation.getKeyFrame(stateTime, true);
+
         runSound = Gdx.audio.newSound(Gdx.files.internal(Constants.PLAYER_RUN_SOUND_PATH));
         runSound.stop();
         runSound.play(0.3f);
@@ -51,6 +63,8 @@ public class PlayerObject extends GameObject {
     public void jump(){
         if(!jumping || dodging || hit){
             body.applyLinearImpulse(Constants.PLAYER_JUMPING_LINEAR_IMPULSE, body.getWorldCenter(), true);
+            currentAnimation = jumpAnimation;
+            currentFrame = currentAnimation.getKeyFrame(stateTime, true);
             jumping = true;
         }
         runSound.stop();
@@ -63,6 +77,8 @@ public class PlayerObject extends GameObject {
         jumping = false;
         runSound.stop();
         runSound.play(0.3f);
+        currentAnimation = runAnimation;
+        currentFrame = currentAnimation.getKeyFrame(stateTime, true);
     }
 
     /**
@@ -72,6 +88,8 @@ public class PlayerObject extends GameObject {
     public void dodge(){
         if (!jumping || hit){
             body.setTransform(x, y, (float)(-90f * (Math.PI / 180f)));
+            currentAnimation = dodgeAnimation;
+            currentFrame = currentAnimation.getKeyFrame(stateTime, true);
             dodging = true;
             runSound.stop();
         }
@@ -98,12 +116,18 @@ public class PlayerObject extends GameObject {
      */
     public void hit(){
         body.applyAngularImpulse(Constants.PLAYER_HIT_ANGULAR_IMPULSE, true);
+        currentAnimation = jumpAnimation;
+        currentFrame = currentAnimation.getKeyFrame(stateTime, true);
         hit = true;
+        dead = true;
         runSound.stop();
     }
 
-    public void act(float delta) {
-        super.act(delta);
+    @Override
+    public void update(float delta) {
+        if (body.getPosition().y < 0 || body.getPosition().x < 0) {
+            dead = true;
+        }
     }
 
     /**
@@ -112,6 +136,10 @@ public class PlayerObject extends GameObject {
 
     public boolean isDodging() {
         return dodging;
+    }
+
+    public boolean isDead() {
+        return dead;
     }
     public boolean isHit() {
         return hit;

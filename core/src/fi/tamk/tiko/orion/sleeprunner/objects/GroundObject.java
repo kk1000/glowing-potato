@@ -27,8 +27,7 @@ public class GroundObject extends GameObject {
     }
 
     @Override
-    public void act(float delta){
-        super.act(delta);
+    public void update(float delta) {
         body.setLinearVelocity(Constants.ENEMY_LINEAR_VELOCITY);
     }
 

@@ -1,23 +1,22 @@
 package fi.tamk.tiko.orion.sleeprunner.utilities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.objects.GameObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.GroundObject;
-import fi.tamk.tiko.orion.sleeprunner.objects.MidPointBlockObject;
 
 /**
  * Contains one map chunks game objects and information.
  */
 public class MapChunk {
 
-    private Stage stage;
     private World world;
 
     private int[][] grid;
@@ -27,27 +26,24 @@ public class MapChunk {
     private Array<GameObject> gameObjects = new Array<GameObject>();
     private Array<GameObject> removalGameObjects = new Array<GameObject>();
 
-    private float offset = 0;
+    private float mapChunksWidth = Constants.CHUNK_MAX_TILES_WIDTH * Constants.WORLD_TO_SCREEN / 100f;
+    private int offset;
 
     /**
      * Constructor for MapChunk.
      *
-     * @param stage   Stage where game objects will be put.
      * @param world   The Box2D game world.
-     * @param landing Is the map chunk landing or not.
+     * @param offset  Map chunk's position in the mapChunks array.
      */
-    public MapChunk(Stage stage, World world, boolean landing) {
-        this.stage = stage;
+    public MapChunk(World world, int offset) {
         this.world = world;
-        if (landing) {
+        this.offset = offset;
+        if (offset == 0) {
             grid = MapGenerator.createIntervalMapChunkGrid();
         } else {
             grid = MapGenerator.createMapChunkGrid();
-            offset = (Constants.CHUNK_MAX_TILES_WIDTH * Constants.WORLD_TO_SCREEN) / 100f;
         }
         mapObjects = MapGenerator.generateObjects(grid, Constants.GROUND_BLOCK, "ground-object");
-        mapObjects.add(MapGenerator.generateObjects(grid, Constants.MIDPOINT_BLOCK, "midpointblock-object").get(0));
-        createGameObjects();
     }
 
     /**
@@ -70,36 +66,48 @@ public class MapChunk {
     /**
      * Creates map chunks game objects from the map objects.
      */
-    private void createGameObjects() {
+    public void createGameObjects() {
         Array<RectangleMapObject> rectangleMapObjects = mapObjects.getByType(RectangleMapObject.class);
         for (RectangleMapObject rectangleMapObject : rectangleMapObjects) {
             Rectangle pixelRectangle = rectangleMapObject.getRectangle();
             Rectangle meterRectangle = scaleRectangle(pixelRectangle, 1 / 100f);
-            float centerX = meterRectangle.getWidth() / 2 + meterRectangle.getX() + offset;
+            float centerX = meterRectangle.getWidth() / 2 + meterRectangle.getX() + (offset * mapChunksWidth);
             float centerY = meterRectangle.getHeight() / 2 + meterRectangle.getY();
             float width = meterRectangle.getWidth();
             float height = meterRectangle.getHeight();
             if (rectangleMapObject.getName().equals("ground-object")) {
                 GroundObject ground = new GroundObject(world, centerX, centerY, width, height);
                 gameObjects.add(ground);
-                stage.addActor(ground);
-            } else if (rectangleMapObject.getName().equals("midpointblock-object")) {
-                MidPointBlockObject midPointBlockObject = new MidPointBlockObject(world, centerX, centerY);
-                gameObjects.add(midPointBlockObject);
-                stage.addActor(midPointBlockObject);
             }
         }
     }
 
     /**
      * Removes game objects which are outside the screen.
+     *
+     * @param batch Spritebatch.
      */
-    public void update() {
+    public void update(SpriteBatch batch) {
+        removeRemovalGameObjects();
         for (GameObject gameObject : gameObjects) {
+            gameObject.update(Gdx.graphics.getDeltaTime());
+            gameObject.draw(batch);
             if (!BodyUtils.gameObjectInBounds(gameObject)) {
+                gameObject.getUserData().flaggedForRemove = true;
                 removalGameObjects.add(gameObject);
             }
         }
+    }
+
+    /**
+     * Removes game objects which are set to removalGameObjects array.
+     */
+    public void removeRemovalGameObjects() {
+        for (GameObject gameObject : removalGameObjects) {
+            gameObject.dispose();
+            gameObjects.removeValue(gameObject, true);
+        }
+        removalGameObjects.clear();
     }
 
     /**
@@ -110,16 +118,4 @@ public class MapChunk {
     public boolean isEmpty() {
         return gameObjects.size == 0;
     }
-
-    /**
-     * Removes game objects which are on removalGameObjects array.
-     */
-    public void cleanGameObjects() {
-        for (GameObject gameObject : removalGameObjects) {
-            world.destroyBody(gameObject.getBody());
-            gameObjects.removeValue(gameObject, true);
-        }
-        removalGameObjects.clear();
-    }
-
 }

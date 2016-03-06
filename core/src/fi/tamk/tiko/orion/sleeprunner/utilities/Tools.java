@@ -1,6 +1,8 @@
 package fi.tamk.tiko.orion.sleeprunner.utilities;
 
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
@@ -10,23 +12,29 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class Tools {
 
     /**
-     * Transforms 2D TextureRegion array to 1D.
+     * Creates animation from the given sheet (texture).
      *
-     * @param tr 2D TextureRegion array
-     * @param cols col number
-     * @param rows row number
-     * @return Transformed 1D array
+     * @param texture   Animation sheet Texture.
+     * @param frameCols Amount of frame columns in the sheet.
+     * @param frameRows Amount of frame rows in the sheet.
+     * @param start     Which frame the animation should start.
+     * @param end       Which frame the animation should end.
+     * @param fps       Frames per second, how fast animation runs.
+     * @return Animation.
      */
-    public static TextureRegion[] toTextureArray( TextureRegion [][]tr, int cols, int rows ) {
-        TextureRegion[] frames = new TextureRegion[cols * rows];
+    public static Animation createAnimation(Texture texture, int frameCols, int frameRows, int start, int end, float fps) {
+        TextureRegion[][] temporary = TextureRegion.split(texture, texture.getWidth() / frameCols, texture.getHeight() / frameRows);
+        TextureRegion[] frames = new TextureRegion[end];
         int index = 0;
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                frames[index++] = tr[i][j];
+        for (int i = 0; i < frameRows; i++) {
+            for (int j = 0; j < frameCols; j++) {
+                if (index >= (start - 1) && index <= (end - 1)) {
+                    frames[index++] = temporary[i][j];
+                }
             }
         }
-
-        return frames;
+        Gdx.app.log("Tools", "Created animation with " + frames.length + " frames.");
+        return new Animation(fps, frames);
     }
 
     /**

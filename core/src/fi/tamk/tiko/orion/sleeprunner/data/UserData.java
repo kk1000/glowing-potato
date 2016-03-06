@@ -5,6 +5,8 @@ package fi.tamk.tiko.orion.sleeprunner.data;
  */
 public class UserData {
 
+    public boolean flaggedForRemove = false;
+
     public String id; // PLAYER, GROUND, SPIKES, MIDPOINTBLOCK
 
     /**

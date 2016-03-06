@@ -37,7 +37,7 @@ public class Constants {
     // PlayerObject
 
     public static final float PLAYER_GRAVITY_SCALE = 3f;
-    public static final Vector2 PLAYER_JUMPING_LINEAR_IMPULSE = new Vector2(0, 0.41f);
+    public static final Vector2 PLAYER_JUMPING_LINEAR_IMPULSE = new Vector2(0, 0.30f);
     public static final float PLAYER_HIT_ANGULAR_IMPULSE = 10f;
     public static final float ENEMY_X = 25f;
     public static final float RUNNING_SHORT_ENEMY_Y = 1.5f;

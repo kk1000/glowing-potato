@@ -25,14 +25,8 @@ public class SpikesObject extends GameObject {
         super(world, x, y, width, height, 0f, Constants.TILESET_SPRITES[0][1], BodyDef.BodyType.KinematicBody, new UserData("SPIKES"));
     }
 
-    /**
-     * Act method.
-     *
-     * @param delta Delta timer (1/60)
-     */
     @Override
-    public void act(float delta){
-        super.act(delta);
+    public void update(float delta) {
         body.setLinearVelocity(Constants.ENEMY_LINEAR_VELOCITY);
     }
 

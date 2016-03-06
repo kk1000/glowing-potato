@@ -12,17 +12,15 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.UserData;
-import fi.tamk.tiko.orion.sleeprunner.utilities.Tools;
 
 /**
  * Superclass of every game object.
  * Not designed to construct object from this class.
  */
-public abstract class GameObject extends Actor {
+public abstract class GameObject {
 
     protected World world;
     protected float x;
@@ -31,20 +29,18 @@ public abstract class GameObject extends Actor {
     protected float width;
     protected float height;
 
+    protected Texture texture;
+
     protected UserData userData;
     protected TextureRegion textureRegion;
     protected Body body;
     protected float textureWidth;
     protected float textureHeight;
 
-    protected boolean hasAnimation = false; // Default false.
-    protected Texture texture;
+    protected boolean hasAnimation = false;
+    protected Animation currentAnimation; // THIS NEEDS TO MANUALLY SET ATM.
     protected TextureRegion currentFrame;
-    protected Animation animation;
-    protected int frameCols;
-    protected int frameRows;
     protected float stateTime;
-    protected float fps;
 
     /**
      * Constructor for game objects which got no animation.
@@ -76,35 +72,34 @@ public abstract class GameObject extends Actor {
     /**
      * Constructor for animated game objects.
      *
-     * @param world     Box2D World
-     * @param x         X-position.
-     * @param y         Y-position.
-     * @param width     Width of the body.
-     * @param height    Height of the body.
-     * @param density   Body's density.
-     * @param texture   The texture.
-     * @param frameCols Amount of frames in a column.
-     * @param frameRows Amount of frames in a row.
-     * @param fps       Animation's speed (frame per second)
-     * @param bodyType  Box2D body's type.
-     * @param userData  Box2D body's userdata.
+     * @param world             Box2D World
+     * @param x                 X-position.
+     * @param y                 Y-position.
+     * @param width             Width of the body.
+     * @param height            Height of the body.
+     * @param density           Body's density.
+     * @param texture           The texture.
+     * @param bodyType          Box2D body's type.
+     * @param userData          Box2D body's userdata.
      */
-    public GameObject(World world, float x, float y, float width, float height, float density, Texture texture, int frameCols, int frameRows, float fps, BodyDef.BodyType bodyType, UserData userData) {
+    public GameObject(World world, float x, float y, float width, float height, float density, Texture texture, BodyDef.BodyType bodyType, UserData userData) {
         this.world = world;
         this.x = x;
         this.y = y;
         this.density = density;
         this.texture = texture;
-        this.frameCols = frameCols;
-        this.frameRows = frameRows;
-        this.fps = fps;
         this.textureWidth = this.texture.getWidth() / 100f;
         this.textureHeight = this.texture.getHeight() / 100f;
         this.width = width;
         this.height = height;
         this.userData = userData;
         hasAnimation = true;
-        createAnimation();
+
+        // IMPORTANT!
+        // Remember to set animations and current frame!
+        // There should be AnimatedGameObject (TODO)
+        // to properly handle animated game objects and their animations.
+
         createBody(bodyType);
     }
 
@@ -125,7 +120,7 @@ public abstract class GameObject extends Actor {
         if (userData.id.equals("PLAYER")) {
             // Dynamic body has more specific details.
             FixtureDef fixtureDef = new FixtureDef();
-            fixtureDef.restitution = 0.005f;
+            fixtureDef.restitution = 0.0f;
             fixtureDef.friction = 0.0f;
             fixtureDef.density = this.density;
             fixtureDef.shape = shape;
@@ -148,37 +143,26 @@ public abstract class GameObject extends Actor {
     }
 
     /**
-     * Creates the animation from the texture.
-     * Uses toTextureArray-method from Tools.
-     */
-    public void createAnimation() {
-        int tileWidth = texture.getWidth() / this.frameCols;
-        int tileHeight = texture.getHeight() / this.frameRows;
-
-        TextureRegion[][] temp = TextureRegion.split(texture, tileWidth, tileHeight);
-        TextureRegion[] frames = Tools.toTextureArray(temp, this.frameCols, this.frameRows);
-
-        animation = new Animation(this.fps, frames);
-        currentFrame = animation.getKeyFrame(stateTime, true);
-    }
-
-    /**
      * Draws game object.
+     *
+     * @param batch Spritebatch.
      */
-    public void draw(Batch batch, float parentAlpha) {
+    public void draw(Batch batch) {
         if (hasAnimation) {
             stateTime += Gdx.graphics.getDeltaTime();
-            currentFrame = animation.getKeyFrame(stateTime, true);
-            batch.draw(currentFrame,
-                    body.getPosition().x - currentFrame.getRegionWidth() / 100f / 2,
-                    body.getPosition().y - currentFrame.getRegionHeight() / 100f / 2,
-                    Constants.WORLD_TO_SCREEN / 2,
-                    Constants.WORLD_TO_SCREEN / 2,
-                    currentFrame.getRegionWidth() / 100f,
-                    currentFrame.getRegionHeight() / 100f,
-                    1.0f,
-                    1.0f,
-                    body.getTransform().getRotation() * MathUtils.radiansToDegrees);
+            currentFrame = currentAnimation.getKeyFrame(stateTime, true);
+            if (currentFrame != null) {
+                batch.draw(currentFrame,
+                        body.getPosition().x - currentFrame.getRegionWidth() / 100f / 2,
+                        body.getPosition().y - currentFrame.getRegionHeight() / 100f / 2,
+                        Constants.WORLD_TO_SCREEN / 2,
+                        Constants.WORLD_TO_SCREEN / 2,
+                        currentFrame.getRegionWidth() / 100f,
+                        currentFrame.getRegionHeight() / 100f,
+                        1.0f,
+                        1.0f,
+                        body.getTransform().getRotation() * MathUtils.radiansToDegrees);
+            }
         } else {
             float tileSize = Constants.WORLD_TO_SCREEN / 100f;
             for (int i = 0; i < width * 100f; i += 32) {
@@ -196,6 +180,32 @@ public abstract class GameObject extends Actor {
                         0);
             }
         }
+    }
+
+    /**
+     * Called in every frame, every game object needs to own one.
+     *
+     * @param delta Delta time.
+     */
+    public abstract void update(float delta);
+
+    /**
+     * Destroys game object.
+     */
+    public void dispose() {
+        userData = null;
+        body.setUserData(null);
+        world.destroyBody(body);
+        Gdx.app.log("GameObject", "Deleted body, there are total of " + world.getBodyCount());
+    }
+
+    /**
+     * Setters.
+     */
+
+    // This is moved in the future.
+    public void setAnimation(Animation animation) {
+        this.currentAnimation = animation;
     }
 
     /**
