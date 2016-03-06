@@ -18,18 +18,20 @@ public class Tools {
      * @param frameCols Amount of frame columns in the sheet.
      * @param frameRows Amount of frame rows in the sheet.
      * @param start     Which frame the animation should start.
-     * @param end       Which frame the animation should end.
+     * @param length    How many frames there should be.
      * @param fps       Frames per second, how fast animation runs.
      * @return Animation.
      */
-    public static Animation createAnimation(Texture texture, int frameCols, int frameRows, int start, int end, float fps) {
+    public static Animation createAnimation(Texture texture, int frameCols, int frameRows, int start, int length, float fps) {
         TextureRegion[][] temporary = TextureRegion.split(texture, texture.getWidth() / frameCols, texture.getHeight() / frameRows);
-        TextureRegion[] frames = new TextureRegion[end];
+        TextureRegion[] frames = new TextureRegion[length];
         int index = 0;
+        int count = 0;
         for (int i = 0; i < frameRows; i++) {
             for (int j = 0; j < frameCols; j++) {
-                if (index >= (start - 1) && index <= (end - 1)) {
+                if (index >= (start - 1) && count <= (length - 1)) {
                     frames[index++] = temporary[i][j];
+                    count++;
                 }
             }
         }

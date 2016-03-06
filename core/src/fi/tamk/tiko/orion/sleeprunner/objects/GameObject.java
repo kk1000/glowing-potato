@@ -127,12 +127,6 @@ public abstract class GameObject {
             body.createFixture(fixtureDef);
         } else if (userData.id.equals("GROUND")) {
             body.createFixture(shape, this.density);
-        } else if (userData.id.equals("MIDPOINTBLOCK")) {
-            // MidPointBlockObject is a sensor.
-            FixtureDef fixtureDef = new FixtureDef();
-            fixtureDef.isSensor = true;
-            fixtureDef.shape = shape;
-            body.createFixture(fixtureDef);
         }
 
         body.resetMassData();
@@ -151,18 +145,16 @@ public abstract class GameObject {
         if (hasAnimation) {
             stateTime += Gdx.graphics.getDeltaTime();
             currentFrame = currentAnimation.getKeyFrame(stateTime, true);
-            if (currentFrame != null) {
-                batch.draw(currentFrame,
-                        body.getPosition().x - currentFrame.getRegionWidth() / 100f / 2,
-                        body.getPosition().y - currentFrame.getRegionHeight() / 100f / 2,
-                        Constants.WORLD_TO_SCREEN / 2,
-                        Constants.WORLD_TO_SCREEN / 2,
-                        currentFrame.getRegionWidth() / 100f,
-                        currentFrame.getRegionHeight() / 100f,
-                        1.0f,
-                        1.0f,
-                        body.getTransform().getRotation() * MathUtils.radiansToDegrees);
-            }
+            batch.draw(currentFrame,
+                    body.getPosition().x - currentFrame.getRegionWidth() / 100f / 2,
+                    body.getPosition().y - currentFrame.getRegionHeight() / 100f / 2,
+                    Constants.WORLD_TO_SCREEN / 2,
+                    Constants.WORLD_TO_SCREEN / 2,
+                    currentFrame.getRegionWidth() / 100f,
+                    currentFrame.getRegionHeight() / 100f,
+                    1.0f,
+                    1.0f,
+                    body.getTransform().getRotation() * MathUtils.radiansToDegrees);
         } else {
             float tileSize = Constants.WORLD_TO_SCREEN / 100f;
             for (int i = 0; i < width * 100f; i += 32) {

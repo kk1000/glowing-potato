@@ -17,8 +17,6 @@ import fi.tamk.tiko.orion.sleeprunner.utilities.Tools;
  */
 public class PlayerObject extends GameObject {
 
-    private Animation dodgeAnimation;
-    private Animation jumpAnimation;
     private Animation runAnimation;
 
     private boolean jumping;
@@ -35,7 +33,7 @@ public class PlayerObject extends GameObject {
      * @param world     Box2D World
      */
     public PlayerObject(World world) {
-        super(world, (Constants.WORLD_TO_SCREEN * 2) / 100f, Constants.WORLD_TO_SCREEN / 100f,
+        super(world, (Constants.WORLD_TO_SCREEN * 2) / 100f, (Constants.WORLD_TO_SCREEN * 2) / 100f,
                 Constants.WORLD_TO_SCREEN / 100f, (Constants.WORLD_TO_SCREEN * 2) / 100f,
                 Constants.PLAYER_DENSITY,
                 new Texture(Gdx.files.internal(Constants.PLAYER_RUNNING_IMAGE_PATH)),
@@ -44,10 +42,7 @@ public class PlayerObject extends GameObject {
 
         body.setFixedRotation(true);
 
-        // Create animations.
-        dodgeAnimation = Tools.createAnimation(texture, 6, 3, 1, 4, 1 / 30);
-        jumpAnimation = Tools.createAnimation(texture, 6, 3, 13, 6, 1 / 30);
-        runAnimation = Tools.createAnimation(texture, 6, 3, 7, 4, 1 / 30);
+        runAnimation = Tools.createAnimation(texture, 6, 3, 1, 4, 1 / 10f);
 
         currentAnimation = runAnimation;
 
@@ -119,14 +114,6 @@ public class PlayerObject extends GameObject {
 
     @Override
     public void update(float delta) {
-        // Change animations depending on the player state.
-        if (isDodging()) {
-            currentAnimation = dodgeAnimation;
-        } else if (isDead() || isHit() || jumping) {
-            currentAnimation = jumpAnimation;
-        } else {
-            currentAnimation = runAnimation;
-        }
         if (dodging) {
             dodgeTimer += Gdx.graphics.getDeltaTime();
             if (dodgeTimer > 1) {
