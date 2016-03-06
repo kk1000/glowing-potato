@@ -12,10 +12,10 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.UserData;
-import fi.tamk.tiko.orion.sleeprunner.utilities.MapGenerator;
 
 /**
  * Superclass of every game object.
@@ -45,6 +45,8 @@ public abstract class GameObject {
     protected TextureRegion currentFrame;
     protected float stateTime;
 
+    protected Array<TextureRegion> textureRegions = new Array<TextureRegion>();
+
     /**
      * Constructor for game objects which got no animation.
      *
@@ -72,6 +74,7 @@ public abstract class GameObject {
         this.userData = userData;
         this.mapChunkGrid = mapChunkGrid;
         createBody(bodyType);
+        createTiles();
     }
 
     /**
@@ -143,6 +146,32 @@ public abstract class GameObject {
     }
 
     /**
+     * Creates game object's tiles (textures).
+     */
+    public void createTiles() {
+        TextureRegion middleTexture = Constants.TILESET_SPRITES[0][7];
+        TextureRegion rightTexture = Constants.TILESET_SPRITES[0][8];
+        TextureRegion leftTexture = Constants.TILESET_SPRITES[0][6];
+        int pixelWidth = (int) (width * 100f);
+        for (int i = 0; i < pixelWidth; i += 32) {
+            if (i == 0 && pixelWidth == 32) {
+                // Body is just one tile length.
+                textureRegions.add(middleTexture);
+            } else if (i == 0 && pixelWidth > 32) {
+                // Body's first tile and it's larger than one tile length.
+                textureRegions.add(leftTexture);
+            } else if (i == pixelWidth - 32) {
+                // Body's last tile.
+                textureRegions.add(rightTexture);
+            } else {
+                // Body's middle tile.
+                textureRegions.add(middleTexture);
+            }
+        }
+        Gdx.app.log("GameObject", "Created " + textureRegions.size + " textures/tiles for the game object");
+    }
+
+    /**
      * Draws game object.
      *
      * @param batch Spritebatch.
@@ -163,14 +192,11 @@ public abstract class GameObject {
                     body.getTransform().getRotation() * MathUtils.radiansToDegrees);
         } else {
             float tileSize = Constants.WORLD_TO_SCREEN / 100f;
-            for (int i = 0; i < width * 100f; i += 32) {
-                // If we're drawing ground...
-                TextureRegion tile = MapGenerator.calculateGroundTile(mapChunkGrid, i / 32, 0);
-                float x = (body.getPosition().x - tileSize / 2) - (width / 2 - tileSize / 2) + i / 100f;
-                float y = body.getPosition().y - tileSize / 2;
-                batch.draw(tile,
-                        x,
-                        y,
+            for (int i = 0; i < textureRegions.size; i++) {
+                TextureRegion textureRegion = textureRegions.get(i);
+                batch.draw(textureRegion,
+                        (body.getPosition().x - tileSize / 2) - (width / 2 - tileSize / 2) + i * tileSize,
+                        body.getPosition().y - tileSize / 2,
                         Constants.WORLD_TO_SCREEN / 2,
                         Constants.WORLD_TO_SCREEN / 2,
                         tileSize,
