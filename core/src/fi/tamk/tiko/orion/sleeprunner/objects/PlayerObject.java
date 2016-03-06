@@ -42,7 +42,7 @@ public class PlayerObject extends GameObject {
 
         body.setFixedRotation(true);
 
-        runAnimation = Tools.createAnimation(texture, 6, 3, 1, 4, 1 / 10f);
+        runAnimation = Tools.createAnimation(texture, 4, 2, 1, 6, 1 / 10f);
 
         currentAnimation = runAnimation;
 
