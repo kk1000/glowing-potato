@@ -1,5 +1,6 @@
 package fi.tamk.tiko.orion.sleeprunner.screens;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
@@ -7,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -16,12 +18,13 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 
 import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
-import fi.tamk.tiko.orion.sleeprunner.graphics.GameScreenBackground;
 import fi.tamk.tiko.orion.sleeprunner.objects.PlayerObject;
+import fi.tamk.tiko.orion.sleeprunner.stages.BackgroundStage;
 import fi.tamk.tiko.orion.sleeprunner.utilities.BodyUtils;
 import fi.tamk.tiko.orion.sleeprunner.utilities.MapChunk;
 
@@ -36,7 +39,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
     private SleepRunner game;
 
-    private GameScreenBackground gameScreenBackground;
 
     private Box2DDebugRenderer debugRenderer;
 
@@ -44,10 +46,14 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     private OrthographicCamera gameCamera;
     private OrthographicCamera uiCamera;
 
+    private BackgroundStage backgroundStage;
+
     private Rectangle screenRightSide;
     private Rectangle screenLeftSide;
 
     private Vector3 touchPoint;
+
+    private GestureDetector gd;
 
     private Array<MapChunk> mapChunks = new Array<MapChunk>();
     private Array<MapChunk> removalMapChunks = new Array<MapChunk>();
@@ -71,10 +77,15 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     public GameScreen(SleepRunner sleepRunner) {
         game = sleepRunner;
 
+        gd = new GestureDetector(new GestureListener());
+
+        batch = game.getBatch();
+
         debugRenderer = new Box2DDebugRenderer();
 
         backgroundCamera = new OrthographicCamera();
         backgroundCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        backgroundStage = new BackgroundStage(game,backgroundCamera,batch);
 
         gameCamera = new OrthographicCamera();
         gameCamera.setToOrtho(false, Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
@@ -82,9 +93,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         uiCamera = new OrthographicCamera();
         uiCamera.setToOrtho(false, Constants.APP_WIDTH, Constants.APP_HEIGHT);
 
-        batch = game.getBatch();
 
-        gameScreenBackground = new GameScreenBackground();
 
         scoreFont = new BitmapFont(Gdx.files.internal(Constants.GAME_FONT_PATH));
 
@@ -100,7 +109,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         // TODO: Fix this?
         screenRightSide = new Rectangle(Constants.APP_WIDTH / 2f, 0f, Constants.APP_WIDTH / 2f, Constants.APP_HEIGHT);
         screenLeftSide = new Rectangle(0, 0, Constants.APP_WIDTH / 2, Constants.APP_HEIGHT);
-        Gdx.input.setInputProcessor(this);
+        Gdx.input.setInputProcessor(gd);
     }
 
     /**
@@ -130,9 +139,9 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         translateScreenToWorldCoordinates(x, y);
 
         if (rightSideTouched(touchPoint.x, touchPoint.y)) {
-            player.jump();
+
         } else if (leftSideTouched(touchPoint.x, touchPoint.y)) {
-            player.dodge();
+
         }
         return super.touchDown(x, y, pointer, button);
     }
@@ -190,12 +199,16 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.5f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        batch.begin();
 
         // Draw background.
         batch.setProjectionMatrix(backgroundCamera.combined);
-        gameScreenBackground.move(delta);
-        gameScreenBackground.draw(batch);
+        backgroundStage.act(delta);
+        backgroundStage.draw();
+
+
+        batch.begin();
+
+
 
         // Draw game objects.
         batch.setProjectionMatrix(gameCamera.combined);
@@ -287,7 +300,20 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         }
     }
 
-    @Override
+    private class GestureListener extends GestureDetector.GestureAdapter {
+
+        @Override
+        public boolean fling(float velocityX, float velocityY, int button) {
+            if (velocityY < -1) {
+                    player.dodge();
+
+                }
+            if (velocityY > 1){
+                    player.jump();
+            }
+            return true;
+            }
+    }
     public void resize(int width, int height) {
 
     }
