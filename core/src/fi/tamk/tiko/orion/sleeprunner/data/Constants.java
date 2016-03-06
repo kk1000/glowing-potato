@@ -32,7 +32,6 @@ public class Constants {
 
     public static final int EMPTY_BLOCK = 0;
     public static final int GROUND_BLOCK = 1;
-    public static final int MIDPOINT_BLOCK = 2;
 
     // PlayerObject
 

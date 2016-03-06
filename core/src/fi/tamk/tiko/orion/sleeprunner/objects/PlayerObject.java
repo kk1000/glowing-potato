@@ -27,6 +27,7 @@ public class PlayerObject extends GameObject {
     private boolean hit;
 
     private Sound runSound;
+    private float dodgeTimer;
 
     /**
      * Constructor for player object.
@@ -34,7 +35,7 @@ public class PlayerObject extends GameObject {
      * @param world     Box2D World
      */
     public PlayerObject(World world) {
-        super(world, (Constants.WORLD_TO_SCREEN * 2) / 100f, (Constants.WORLD_TO_SCREEN * 1) / 100f,
+        super(world, (Constants.WORLD_TO_SCREEN * 2) / 100f, Constants.WORLD_TO_SCREEN / 100f,
                 Constants.WORLD_TO_SCREEN / 100f, (Constants.WORLD_TO_SCREEN * 2) / 100f,
                 Constants.PLAYER_DENSITY,
                 new Texture(Gdx.files.internal(Constants.PLAYER_RUNNING_IMAGE_PATH)),
@@ -49,7 +50,6 @@ public class PlayerObject extends GameObject {
         runAnimation = Tools.createAnimation(texture, 6, 3, 7, 4, 1 / 30);
 
         currentAnimation = runAnimation;
-        currentFrame = currentAnimation.getKeyFrame(stateTime, true);
 
         runSound = Gdx.audio.newSound(Gdx.files.internal(Constants.PLAYER_RUN_SOUND_PATH));
         runSound.stop();
@@ -63,8 +63,6 @@ public class PlayerObject extends GameObject {
     public void jump(){
         if(!jumping || dodging || hit){
             body.applyLinearImpulse(Constants.PLAYER_JUMPING_LINEAR_IMPULSE, body.getWorldCenter(), true);
-            currentAnimation = jumpAnimation;
-            currentFrame = currentAnimation.getKeyFrame(stateTime, true);
             jumping = true;
         }
         runSound.stop();
@@ -77,8 +75,6 @@ public class PlayerObject extends GameObject {
         jumping = false;
         runSound.stop();
         runSound.play(0.3f);
-        currentAnimation = runAnimation;
-        currentFrame = currentAnimation.getKeyFrame(stateTime, true);
     }
 
     /**
@@ -88,8 +84,6 @@ public class PlayerObject extends GameObject {
     public void dodge(){
         if (!jumping || hit){
             body.setTransform(x, y, (float)(-90f * (Math.PI / 180f)));
-            currentAnimation = dodgeAnimation;
-            currentFrame = currentAnimation.getKeyFrame(stateTime, true);
             dodging = true;
             runSound.stop();
         }
@@ -116,8 +110,6 @@ public class PlayerObject extends GameObject {
      */
     public void hit(){
         body.applyAngularImpulse(Constants.PLAYER_HIT_ANGULAR_IMPULSE, true);
-        currentAnimation = jumpAnimation;
-        currentFrame = currentAnimation.getKeyFrame(stateTime, true);
         hit = true;
         dead = true;
         runSound.stop();
@@ -125,6 +117,21 @@ public class PlayerObject extends GameObject {
 
     @Override
     public void update(float delta) {
+        // Change animations depending on the player state.
+        if (isDodging()) {
+            currentAnimation = dodgeAnimation;
+        } else if (isDead() || isHit() || jumping) {
+            currentAnimation = jumpAnimation;
+        } else {
+            currentAnimation = runAnimation;
+        }
+        if (dodging) {
+            dodgeTimer += Gdx.graphics.getDeltaTime();
+            if (dodgeTimer > 1) {
+                stopDodge();
+                dodgeTimer = 0;
+            }
+        }
         if (body.getPosition().y < 0 || body.getPosition().x < 0) {
             dead = true;
         }

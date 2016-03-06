@@ -93,7 +93,6 @@ public class MapChunk {
             gameObject.update(Gdx.graphics.getDeltaTime());
             gameObject.draw(batch);
             if (!BodyUtils.gameObjectInBounds(gameObject)) {
-                gameObject.getUserData().flaggedForRemove = true;
                 removalGameObjects.add(gameObject);
             }
         }
