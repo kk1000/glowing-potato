@@ -62,11 +62,13 @@ public class PlayerObject extends GameObject {
      */
     public void jump(){
         if(!jumping || dodging || hit){
+            stopDodge();
             body.applyLinearImpulse(Constants.PLAYER_JUMPING_LINEAR_IMPULSE, body.getWorldCenter(), true);
             jumping = true;
         }
         runSound.stop();
     }
+
 
     /**
      * Changes player jumping-state to false when player hits ground.
@@ -150,6 +152,9 @@ public class PlayerObject extends GameObject {
     }
     public boolean isHit() {
         return hit;
+    }
+    public boolean isJumping(){
+        return jumping;
     }
 
 }

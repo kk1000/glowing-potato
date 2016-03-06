@@ -306,7 +306,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         public boolean fling(float velocityX, float velocityY, int button) {
             if (velocityY < -1) {
                     player.dodge();
-
                 }
             if (velocityY > 1){
                     player.jump();

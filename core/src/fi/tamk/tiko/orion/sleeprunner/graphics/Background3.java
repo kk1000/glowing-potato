@@ -22,14 +22,14 @@ public class Background3 extends Actor {
     // second half of the background
     private Rectangle textureRegionBounds2;
     // background's movement speed
-    private int speed = 100;
+    private int speed = 110;
 
     /**
      * Constructor for background.
      * Texture for textureregion, rectangles for the split regions.
      */
     public Background3(){
-        textureRegion = new TextureRegion(new Texture(Gdx.files.internal(Constants.MOVING_BACKGROUND_IMAGE_PATH)));
+        textureRegion = new TextureRegion(new Texture(Gdx.files.internal(Constants.BACKGROUND_CLOUDS_IMAGE_PATH)));
         textureRegionBounds1 = new Rectangle(0 - Constants.APP_WIDTH / 2, 0, Constants.APP_WIDTH, Constants.APP_HEIGHT);
         textureRegionBounds2 = new Rectangle(Constants.APP_WIDTH / 2, 0, Constants.APP_WIDTH, Constants.APP_HEIGHT);
     }
