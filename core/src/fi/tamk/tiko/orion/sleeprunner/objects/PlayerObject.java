@@ -33,8 +33,8 @@ public class PlayerObject extends GameObject {
      * @param world     Box2D World
      */
     public PlayerObject(World world) {
-        super(world, Constants.WORLD_TO_SCREEN*2 / 100f, Constants.WORLD_TO_SCREEN / 100f,
-                Constants.WORLD_TO_SCREEN*0.85f / 100f, Constants.WORLD_TO_SCREEN / 100f,
+        super(world, Constants.WORLD_TO_SCREEN * 2 / 100f, Constants.WORLD_TO_SCREEN * 2 / 100f,
+                Constants.WORLD_TO_SCREEN * 0.85f / 100f, Constants.WORLD_TO_SCREEN * 2 / 100f,
                 Constants.PLAYER_DENSITY,
                 new Texture(Gdx.files.internal(Constants.PLAYER_RUNNING_IMAGE_PATH)),
                 BodyDef.BodyType.DynamicBody,
@@ -42,7 +42,7 @@ public class PlayerObject extends GameObject {
 
         body.setFixedRotation(true);
 
-        runAnimation = Tools.createAnimation(texture, 6, 1, 1, 6, 1 / 10f);
+        runAnimation = Tools.createAnimation(texture, 6, 1, 1, 6, 1 / 8f);
 
         currentAnimation = runAnimation;
 

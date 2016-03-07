@@ -2,19 +2,19 @@ package fi.tamk.tiko.orion.sleeprunner.data;
 
 /**
  * Enums for enemies and obstacles
- */
+ *
 public enum EnemyType {
 
 
     /**
      * Width and height are defined here, rest are from Constants-class.
-     */
-    RUNNING_SMALL(1f,1f, Constants.ENEMY_X, Constants.RUNNING_SHORT_ENEMY_Y, Constants.ENEMY_DENSITY, Constants.ENEMY_SMALL_IMAGE_PATH),
-    RUNNING_WIDE(2f,1f, Constants.ENEMY_X, Constants.RUNNING_SHORT_ENEMY_Y, Constants.ENEMY_DENSITY,Constants.ENEMY_WIDE_IMAGE_PATH),
-    RUNNING_LONG(1f,2f,Constants.ENEMY_X, Constants.RUNNING_LONG_ENEMY_Y, Constants.ENEMY_DENSITY,Constants.ENEMY_LONG_IMAGE_PATH),
-    RUNNING_BIG(2f,2f, Constants.ENEMY_X, Constants.RUNNING_LONG_ENEMY_Y, Constants.ENEMY_DENSITY, Constants.ENEMY_BIG_IMAGE_PATH),
-    FLYING_SMALL(1f,1f,Constants.ENEMY_X, Constants.FLYING_ENEMY_Y, Constants.ENEMY_DENSITY, Constants.ENEMY_SMALL_IMAGE_PATH),
-    FLYING_WIDE(2f,1f,Constants.ENEMY_X, Constants.FLYING_ENEMY_Y, Constants.ENEMY_DENSITY, Constants.ENEMY_WIDE_IMAGE_PATH);
+ *
+ //RUNNING_SMALL(1f,1f, Constants.ENEMY_X, Constants.RUNNING_SHORT_ENEMY_Y, Constants.ENEMY_DENSITY, Constants.ENEMY_SMALL_IMAGE_PATH),
+ //RUNNING_WIDE(2f,1f, Constants.ENEMY_X, Constants.RUNNING_SHORT_ENEMY_Y, Constants.ENEMY_DENSITY,Constants.ENEMY_WIDE_IMAGE_PATH),
+ //RUNNING_LONG(1f,2f,Constants.ENEMY_X, Constants.RUNNING_LONG_ENEMY_Y, Constants.ENEMY_DENSITY,Constants.ENEMY_LONG_IMAGE_PATH),
+ //RUNNING_BIG(2f,2f, Constants.ENEMY_X, Constants.RUNNING_LONG_ENEMY_Y, Constants.ENEMY_DENSITY, Constants.ENEMY_BIG_IMAGE_PATH),
+ //FLYING_SMALL(1f,1f,Constants.ENEMY_X, Constants.FLYING_ENEMY_Y, Constants.ENEMY_DENSITY, Constants.ENEMY_SMALL_IMAGE_PATH),
+ //FLYING_WIDE(2f,1f,Constants.ENEMY_X, Constants.FLYING_ENEMY_Y, Constants.ENEMY_DENSITY, Constants.ENEMY_WIDE_IMAGE_PATH);
 
     private float width;
     private float height;
@@ -32,7 +32,7 @@ public enum EnemyType {
      * @param y       Y-position
      * @param density Density
      * @param path    Path to image.
-     */
+ *
     EnemyType(float width, float height, float x, float y, float density, String path){
         this.width = width;
         this.height = height;
@@ -42,44 +42,29 @@ public enum EnemyType {
         this.path = path;
     }
 
-    /**
-     * @return width
-     */
     public float getWidth(){
         return width;
     }
 
-    /**
-     * @return height
-     */
     public float getHeight(){
         return height;
     }
 
-    /**
-     * @return x
-     */
+
     public float getX(){
         return x;
     }
 
-    /**
-     * @return y
-     */
-    public float getY(){
+
+public float getY(){
         return y;
     }
-
-    /**
-     * @return density
-     */
 
     public float getDensity(){
         return density;
     }
 
-    /**
-     * @return texture imagepath
-     */
-    public String getPath() { return path; }
+
+public String getPath() { return path; }
 }
+ */
