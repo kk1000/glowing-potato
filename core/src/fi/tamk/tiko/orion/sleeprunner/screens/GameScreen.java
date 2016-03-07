@@ -291,6 +291,8 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         }
     }
 
+
+
     public void resize(int width, int height) {
 
     }
@@ -351,7 +353,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
                 player.dodge();
             }
             if (velocityY > 1) {
-                player.jump();
+                player.jump(velocityY);
             }
             return true;
         }
