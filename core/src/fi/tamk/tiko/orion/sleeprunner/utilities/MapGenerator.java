@@ -53,7 +53,9 @@ public class MapGenerator {
         for ( int i = 0; i < Constants.CHUNK_MAX_TILES_WIDTH; i++ ) {
             grid[ 0 ][ i ] = Constants.GROUND_BLOCK;
         }
+        // Two empty spaces to the end of interval chunk.
         grid[0][Constants.CHUNK_MAX_TILES_WIDTH - 1] = Constants.EMPTY_BLOCK;
+        grid[0][Constants.CHUNK_MAX_TILES_WIDTH - 2] = Constants.EMPTY_BLOCK;
         return grid;
     }
 
@@ -69,20 +71,24 @@ public class MapGenerator {
         for ( int i = 0; i < Constants.CHUNK_MAX_TILES_WIDTH; i++ ) {
             int random = MathUtils.random(0, 4); // Probability to get empty block.
             if (random == 0) {
-                // Try to make jump gap between grounds.
+                // Try to make jump gap between grounds. Three empty blocks is maximum.
                 if (isSymbolAtPosition(grid, ground, i - 1, 0) &&
                         isSymbolAtPosition(grid, empty, i - 2, 0) &&
                         isSymbolAtPosition(grid, empty, i - 3, 0) &&
                         isSymbolAtPosition(grid, empty, i - 4, 0)) {
-                    // Four empty blocks is maximum, ignore the empty space.
                     grid[0][i] = ground;
                 } else {
                     // There is still space for gap.
                     grid[0][i] = empty;
                 }
             } else {
-                // Add ground to this position.
-                grid[0][i] = ground;
+                // There is MINIMUM of two empty spaces in a row.
+                if (isSymbolAtPosition(grid, empty, i - 1, 0) && isSymbolAtPosition(grid, ground, i - 2, 0)) {
+                    grid[0][i] = empty;
+                } else {
+                    // Add ground to this position.
+                    grid[0][i] = ground;
+                }
             }
         }
         return generateObjects(grid, ground, "ground-rectangle");
