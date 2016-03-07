@@ -55,9 +55,11 @@ public class PlayerObject extends GameObject {
      * Applies linear impulse to player when it is on ground.
      * Changes jumping state to true.
      */
-    public void jump(){
+    public void jump(float velY){
         if(!jumping || dodging || hit){
             stopDodge();
+            velY *= 0.0001f;
+            Constants.PLAYER_JUMPING_LINEAR_IMPULSE.set(0, 0.1f + velY > 0.25f ? 0.25f : 0.1f + velY);
             body.applyLinearImpulse(Constants.PLAYER_JUMPING_LINEAR_IMPULSE, body.getWorldCenter(), true);
             jumping = true;
         }
