@@ -1,6 +1,5 @@
 package fi.tamk.tiko.orion.sleeprunner.screens;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
@@ -18,7 +17,6 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 
 import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
@@ -123,10 +121,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         mapChunks.add(new MapChunk(world, mapChunks.size));
         mapChunks.add(new MapChunk(world, mapChunks.size));
 
-        for (MapChunk mapChunk : mapChunks) {
-            mapChunk.createGameObjects();
-        }
-
         player = new PlayerObject(world);
         // TODO: SpikesObject, spikes.
         //setupEnemy();
@@ -208,8 +202,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
         batch.begin();
 
-
-
         // Draw game objects.
         batch.setProjectionMatrix(gameCamera.combined);
         updateMapChunks();
@@ -264,7 +256,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
         // Add map chunks.
         for (MapChunk mapChunk : additionMapChunks) {
-            mapChunk.createGameObjects();
             mapChunks.add(mapChunk);
         }
         additionMapChunks.clear();
@@ -300,19 +291,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         }
     }
 
-    private class GestureListener extends GestureDetector.GestureAdapter {
-
-        @Override
-        public boolean fling(float velocityX, float velocityY, int button) {
-            if (velocityY < -1) {
-                    player.dodge();
-                }
-            if (velocityY > 1){
-                    player.jump();
-            }
-            return true;
-            }
-    }
     public void resize(int width, int height) {
 
     }
@@ -363,6 +341,20 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     @Override
     public void postSolve(Contact contact, ContactImpulse impulse) {
 
+    }
+
+    private class GestureListener extends GestureDetector.GestureAdapter {
+
+        @Override
+        public boolean fling(float velocityX, float velocityY, int button) {
+            if (velocityY < -1) {
+                player.dodge();
+            }
+            if (velocityY > 1) {
+                player.jump();
+            }
+            return true;
+        }
     }
 
 }
