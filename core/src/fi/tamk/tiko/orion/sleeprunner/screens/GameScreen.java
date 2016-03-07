@@ -1,6 +1,8 @@
 package fi.tamk.tiko.orion.sleeprunner.screens;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -111,6 +113,17 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     }
 
     /**
+     * Listener for desktop debugging.
+     */
+    private void desktopListener() {
+        if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+            player.jump(2100);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN))
+            player.dodge();
+    }
+
+    /**
      * Setups all objects used in game.
      */
     private void setupWorld() {
@@ -216,6 +229,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
         debugRenderer.render(world, gameCamera.combined);
 
+        desktopListener();
         doPhysicsStep(delta);
     }
 
