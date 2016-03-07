@@ -23,7 +23,6 @@ import fi.tamk.tiko.orion.sleeprunner.data.UserData;
  */
 public abstract class GameObject {
 
-    protected int[][] mapChunkGrid;
     protected World world;
 
     protected float x;
@@ -59,9 +58,8 @@ public abstract class GameObject {
      * @param textureRegion The texture.
      * @param bodyType      Box2D body's type.
      * @param userData      Box2D body's userdata.
-     * @param mapChunkGrid  Map chunk's grid. Used to calculate right tile to body.
      */
-    public GameObject(World world, float x, float y, float width, float height, float density, TextureRegion textureRegion, BodyDef.BodyType bodyType, UserData userData, int[][] mapChunkGrid) {
+    public GameObject(World world, float x, float y, float width, float height, float density, TextureRegion textureRegion, BodyDef.BodyType bodyType, UserData userData) {
         this.world = world;
         this.x = x;
         this.y = y;
@@ -72,7 +70,6 @@ public abstract class GameObject {
         this.width = width;
         this.height = height;
         this.userData = userData;
-        this.mapChunkGrid = mapChunkGrid;
         createBody(bodyType);
         createTiles();
     }
@@ -101,7 +98,6 @@ public abstract class GameObject {
         this.width = width;
         this.height = height;
         this.userData = userData;
-        this.mapChunkGrid = mapChunkGrid;
         hasAnimation = true;
 
         // IMPORTANT!
@@ -149,26 +145,31 @@ public abstract class GameObject {
      * Creates game object's tiles (textures).
      */
     public void createTiles() {
-        TextureRegion middleTexture = Constants.TILESET_SPRITES[0][7];
-        TextureRegion rightTexture = Constants.TILESET_SPRITES[0][8];
-        TextureRegion leftTexture = Constants.TILESET_SPRITES[0][6];
+        TextureRegion[] gameObjectsTextureRegions;
+        if (userData.id.equals("GROUND")) {
+            gameObjectsTextureRegions = new TextureRegion[]{GroundObject.LEFT_TEXTURE, GroundObject.MIDDLE_TEXTURE, GroundObject.RIGHT_TEXTURE};
+        } else if (userData.id.equals("SPIKES")) {
+            gameObjectsTextureRegions = new TextureRegion[]{SpikesObject.LEFT_TEXTURE, SpikesObject.MIDDLE_TEXTURE, SpikesObject.RIGHT_TEXTURE};
+        } else {
+            // Fallback.
+            gameObjectsTextureRegions = new TextureRegion[]{textureRegion, textureRegion, textureRegion};
+        }
         int pixelWidth = (int) (width * 100f);
         for (int i = 0; i < pixelWidth; i += 32) {
             if (i == 0 && pixelWidth == 32) {
                 // Body is just one tile length.
-                textureRegions.add(middleTexture);
+                textureRegions.add(gameObjectsTextureRegions[1]);
             } else if (i == 0 && pixelWidth > 32) {
                 // Body's first tile and it's larger than one tile length.
-                textureRegions.add(leftTexture);
+                textureRegions.add(gameObjectsTextureRegions[0]);
             } else if (i == pixelWidth - 32) {
                 // Body's last tile.
-                textureRegions.add(rightTexture);
+                textureRegions.add(gameObjectsTextureRegions[2]);
             } else {
                 // Body's middle tile.
-                textureRegions.add(middleTexture);
+                textureRegions.add(gameObjectsTextureRegions[1]);
             }
         }
-        Gdx.app.log("GameObject", "Created " + textureRegions.size + " textures/tiles for the game object");
     }
 
     /**

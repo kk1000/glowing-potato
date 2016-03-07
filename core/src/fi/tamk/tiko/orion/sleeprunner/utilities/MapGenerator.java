@@ -1,7 +1,5 @@
 package fi.tamk.tiko.orion.sleeprunner.utilities;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.MathUtils;
@@ -34,48 +32,14 @@ public class MapGenerator {
     }
 
     /**
-     * Calculates right tile to the ground.
-     *
-     * @param grid Map chunk grid.
-     * @param x    Ground tile's X-position.
-     * @param y    Ground tile's Y-position.
-     * @return Right tile.
-     */
-    public static TextureRegion calculateGroundTile(int[][] grid, int x, int y) {
-        TextureRegion middleTexture = Constants.TILESET_SPRITES[0][7];
-        TextureRegion rightTexture = Constants.TILESET_SPRITES[0][8];
-        TextureRegion leftTexture = Constants.TILESET_SPRITES[0][6];
-        int ground = Constants.GROUND_BLOCK;
-        int empty = Constants.EMPTY_BLOCK;
-        TextureRegion calculated;
-        if (isSymbolAtPosition(grid, empty, x + 1, y)) {
-            // Right edge.
-            calculated = rightTexture;
-        } else if (isSymbolAtPosition(grid, empty, x - 1, y)) {
-            // Left edge.
-            calculated = leftTexture;
-        } else if (isSymbolAtPosition(grid, ground, x + 1, y) && isSymbolAtPosition(grid, ground, x - 1, y)) {
-            // Middle.
-            calculated = middleTexture;
-        } else if (isSymbolAtPosition(grid, empty, x + 1, y) && isSymbolAtPosition(grid, empty, x - 1, y)) {
-            // Alone.
-            calculated = middleTexture;
-        } else {
-            // Wut?
-            calculated = leftTexture;
-        }
-        return calculated;
-    }
-
-    /**
      * Creates semi random map chunk.
      *
      * @return
      */
     public static int[][] createMapChunkGrid() {
         int[][] grid = new int[ Constants.CHUNK_MAX_TILES_HEIGHT ][ Constants.CHUNK_MAX_TILES_WIDTH ];
-        generateGrounds( grid );
-        Gdx.app.log("MapGenerator", "New grid's first is " + grid[0][0]);
+        generateGrounds(grid);
+        generateSpikes(grid);
         return grid;
     }
 
@@ -97,29 +61,61 @@ public class MapGenerator {
      * Generates semi random ground
      * for the map chunk.
      *
-     * @param grid Mapchunk grid.
+     * @param grid Map chunk grid.
      */
     public static MapObjects generateGrounds( int[][] grid ) {
+        int ground = Constants.GROUND_BLOCK;
+        int empty = Constants.EMPTY_BLOCK;
         for ( int i = 0; i < Constants.CHUNK_MAX_TILES_WIDTH; i++ ) {
-            int random = MathUtils.random(0, 4);
+            int random = MathUtils.random(0, 4); // Probability to get empty block.
             if (random == 0) {
-                // Let's try to make jump gap between grounds.
-                if (isSymbolAtPosition( grid, Constants.EMPTY_BLOCK, i - 1, 0) &&
-                        isSymbolAtPosition( grid, Constants.EMPTY_BLOCK, i - 2, 0) &&
-                        isSymbolAtPosition(grid, Constants.EMPTY_BLOCK, i - 3, 0) &&
-                        isSymbolAtPosition(grid, Constants.EMPTY_BLOCK, i - 4, 0)) {
+                // Try to make jump gap between grounds.
+                if (isSymbolAtPosition(grid, ground, i - 1, 0) &&
+                        isSymbolAtPosition(grid, empty, i - 2, 0) &&
+                        isSymbolAtPosition(grid, empty, i - 3, 0) &&
+                        isSymbolAtPosition(grid, empty, i - 4, 0)) {
                     // Four empty blocks is maximum, ignore the empty space.
-                    grid[0][i] = Constants.GROUND_BLOCK;
+                    grid[0][i] = ground;
                 } else {
                     // There is still space for gap.
-                    grid[0][i] = Constants.EMPTY_BLOCK;
+                    grid[0][i] = empty;
                 }
             } else {
                 // Add ground to this position.
-                grid[0][i] = Constants.GROUND_BLOCK;
+                grid[0][i] = ground;
             }
         }
-        return generateObjects( grid, Constants.GROUND_BLOCK, "ground-rectangle" );
+        return generateObjects(grid, ground, "ground-rectangle");
+    }
+
+    /**
+     * Generates semi random spikes.
+     *
+     * @param grid Map chunk grid.
+     */
+    public static MapObjects generateSpikes(int[][] grid) {
+        int spikes = Constants.SPIKES_BLOCK;
+        int ground = Constants.GROUND_BLOCK;
+        int empty = Constants.EMPTY_BLOCK;
+        for (int i = 0; i < Constants.CHUNK_MAX_TILES_WIDTH; i++) {
+            int random = MathUtils.random(0, 4); // Probability to get spikes. (Keep in mind the ground generation)
+            if (random == 0) {
+                // Try to make spikes. They can only go where is ground beneath.
+                if (isSymbolAtPosition(grid, ground, i, 0)) {
+                    // Max spikes amount in a row is four.
+                    if (isSymbolAtPosition(grid, spikes, i - 1, 1) &&
+                            isSymbolAtPosition(grid, spikes, i - 2, 1) &&
+                            isSymbolAtPosition(grid, spikes, i - 3, 1) &&
+                            isSymbolAtPosition(grid, spikes, i - 4, 1)) {
+                        grid[1][i] = empty;
+                    } else {
+                        // There is space for more spikes
+                        grid[1][i] = spikes;
+                    }
+                }
+            }
+        }
+        return generateObjects(grid, spikes, "spikes-rectangle");
     }
 
     /**

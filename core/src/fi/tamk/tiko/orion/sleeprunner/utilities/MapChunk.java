@@ -2,6 +2,7 @@ package fi.tamk.tiko.orion.sleeprunner.utilities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.Rectangle;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.utils.Array;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.objects.GameObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.GroundObject;
+import fi.tamk.tiko.orion.sleeprunner.objects.SpikesObject;
 
 /**
  * Contains one map chunks game objects and information.
@@ -21,7 +23,7 @@ public class MapChunk {
 
     private int[][] grid;
 
-    private MapObjects mapObjects;
+    private MapObjects mapObjects = new MapObjects();
 
     private Array<GameObject> gameObjects = new Array<GameObject>();
     private Array<GameObject> removalGameObjects = new Array<GameObject>();
@@ -43,7 +45,18 @@ public class MapChunk {
         } else {
             grid = MapGenerator.createMapChunkGrid();
         }
-        mapObjects = MapGenerator.generateObjects(grid, Constants.GROUND_BLOCK, "ground-object");
+        MapObjects groundMapObjects = MapGenerator.generateObjects(grid, Constants.GROUND_BLOCK, "ground-object");
+        MapObjects spikesMapObjects = MapGenerator.generateObjects(grid, Constants.SPIKES_BLOCK, "spikes-object");
+        // Add ground map objects to mapObjects list.
+        for (MapObject mapObject : groundMapObjects) {
+            mapObjects.add(mapObject);
+        }
+        // Add spikes map objects to mapObjects list.
+        for (MapObject mapObject : spikesMapObjects) {
+            mapObjects.add(mapObject);
+        }
+        // Create game objects (ground, spikes) from map objects.
+        createGameObjects();
     }
 
     /**
@@ -76,8 +89,11 @@ public class MapChunk {
             float width = meterRectangle.getWidth();
             float height = meterRectangle.getHeight();
             if (rectangleMapObject.getName().equals("ground-object")) {
-                GroundObject ground = new GroundObject(world, centerX, centerY, width, height, grid);
+                GroundObject ground = new GroundObject(world, centerX, centerY, width, height);
                 gameObjects.add(ground);
+            } else if (rectangleMapObject.getName().equals("spikes-object")) {
+                SpikesObject spikes = new SpikesObject(world, centerX, centerY, width, height);
+                gameObjects.add(spikes);
             }
         }
     }
