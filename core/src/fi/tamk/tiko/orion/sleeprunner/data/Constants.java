@@ -31,6 +31,10 @@ public class Constants {
     public static final int CHUNK_MAX_TILES_WIDTH = 50;
     public static final int CHUNK_MAX_TILES_HEIGHT = 15;
 
+    public static final int MAX_SPIKES_AMOUNT = 3;
+    public static final int MAX_EMPTY_AMOUNT = 3;
+    public static final int MIN_EMPTY_AMOUNT = 2;
+
     public static final Texture TILESET = new Texture(Gdx.files.internal("graphics/tileset.png"));
     public static final TextureRegion[][] TILESET_SPRITES = TextureRegion.split(TILESET, WORLD_TO_SCREEN, WORLD_TO_SCREEN);
 
@@ -52,6 +56,7 @@ public class Constants {
     public static final float RUNNING_SHORT_ENEMY_Y = 1.5f;
     public static final float RUNNING_LONG_ENEMY_Y = 2f;
     public static final float ENEMY_X = 25f;
+
     /**
      * UI
      */

@@ -1,6 +1,5 @@
 package fi.tamk.tiko.orion.sleeprunner.screens;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -93,8 +92,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         uiCamera = new OrthographicCamera();
         uiCamera.setToOrtho(false, Constants.APP_WIDTH, Constants.APP_HEIGHT);
 
-
-
         scoreFont = new BitmapFont(Gdx.files.internal(Constants.GAME_FONT_PATH));
 
         setupWorld();
@@ -131,15 +128,13 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         world.setContactListener(this);
 
         // Setup couple map chunks.
-        mapChunks.add(new MapChunk(world, mapChunks.size));
-        mapChunks.add(new MapChunk(world, mapChunks.size));
+        for (int i = 0; i < 5; i++) {
+            mapChunks.add(new MapChunk(world, mapChunks.size));
+        }
+        Gdx.app.log("GameScreen", "Generated " + mapChunks.size + " map chunks.");
 
         player = new PlayerObject(world);
-        // TODO: SpikesObject, spikes.
-        //setupEnemy();
     }
-
-    // TODO: Player jumps and dodges from flings.
 
     @Override
     public boolean touchDown(int x, int y, int pointer, int button) {
@@ -206,12 +201,10 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.5f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
         // Draw background.
         batch.setProjectionMatrix(backgroundCamera.combined);
         backgroundStage.act(delta);
         backgroundStage.draw();
-
 
         batch.begin();
 
