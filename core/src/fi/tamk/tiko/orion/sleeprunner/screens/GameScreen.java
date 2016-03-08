@@ -114,7 +114,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      */
     private void desktopListener() {
         if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
-            player.jump(2100);
+            player.jump(5000);
         }
         if(Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN))
             player.dodge();
