@@ -93,7 +93,7 @@ public class MapGenerator {
         int ground = Constants.GROUND_BLOCK;
         int empty = Constants.EMPTY_BLOCK;
         for ( int i = 0; i < Constants.CHUNK_MAX_TILES_WIDTH; i++ ) {
-            int random = MathUtils.random(0, 6); // Probability to get empty block.
+            int random = MathUtils.random(0, 5); // Probability to get empty block.
             if (random == 0) {
                 // Try to make empty block.
                 grid[1][i] = empty;
