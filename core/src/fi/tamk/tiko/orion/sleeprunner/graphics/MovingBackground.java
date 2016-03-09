@@ -23,6 +23,7 @@ public abstract class MovingBackground extends Actor {
     Texture texture;
     int srcX;
     float speed;
+    float updateTimer;
 
     public MovingBackground(String s, float speed){
         this.speed = speed;
@@ -31,12 +32,16 @@ public abstract class MovingBackground extends Actor {
     }
 
     public void draw(Batch batch, float parentAlpha) {
-        batch.draw(texture, 0, 0, srcX, 0, Constants.APP_WIDTH, Constants.APP_HEIGHT);
+            batch.draw(texture, 0, 0, srcX, 0, Constants.APP_WIDTH, Constants.APP_HEIGHT);
     }
 
     public void act(float delta){
         super.act(delta);
-        srcX+=speed;
+        if(updateTimer > speed/60) {
+            srcX +=1;
+            updateTimer  = 0;
+        }
+        updateTimer+=Gdx.graphics.getDeltaTime();
     }
 
 }

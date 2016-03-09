@@ -15,7 +15,7 @@ public class BackgroundTopLayer extends MovingBackground {
      * Constructor for background top layer.
      */
     public BackgroundTopLayer(){
-        super(Constants.BACKGROUND_CLOUDS_IMAGE_PATH,3);
+        super(Constants.BACKGROUND_CLOUDS_IMAGE_PATH,0.5f);
     }
 
 

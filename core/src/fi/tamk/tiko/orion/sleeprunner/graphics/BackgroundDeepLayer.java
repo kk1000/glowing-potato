@@ -15,7 +15,7 @@ public class BackgroundDeepLayer extends MovingBackground {
     /**
      * Constructor for deep background.
      */
-    
+
     public BackgroundDeepLayer(){
         super(Constants.BACKGROUND_IMAGE_PATH, 2);
     }

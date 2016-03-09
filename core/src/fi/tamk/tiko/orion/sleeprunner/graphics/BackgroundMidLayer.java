@@ -14,7 +14,7 @@ public class BackgroundMidLayer extends MovingBackground {
      * Constructor for mid background.
      */
     public BackgroundMidLayer(){
-        super(Constants.MOVING_BACKGROUND_IMAGE_PATH, 2);
+        super(Constants.MOVING_BACKGROUND_IMAGE_PATH, 1);
     }
 
 }
