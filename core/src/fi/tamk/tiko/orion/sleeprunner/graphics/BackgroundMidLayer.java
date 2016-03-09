@@ -1,8 +1,5 @@
 package fi.tamk.tiko.orion.sleeprunner.graphics;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 
 /**

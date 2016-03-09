@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.utils.Array;
 
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 
@@ -16,14 +15,10 @@ import fi.tamk.tiko.orion.sleeprunner.data.Constants;
  */
 public abstract class MovingBackground extends Actor {
 
-    /**
-     * Constructor for deep background.
-     */
-
-    Texture texture;
-    int srcX;
-    float speed;
-    float updateTimer;
+    private Texture texture;
+    private int srcX;
+    private float speed;
+    private float updateTimer;
 
     public MovingBackground(String s, float speed){
         this.speed = speed;

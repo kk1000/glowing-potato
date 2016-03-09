@@ -1,10 +1,5 @@
 package fi.tamk.tiko.orion.sleeprunner.graphics;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 
 /**
@@ -12,12 +7,9 @@ import fi.tamk.tiko.orion.sleeprunner.data.Constants;
  */
 public class BackgroundDeepLayer extends MovingBackground {
 
-    /**
-     * Constructor for deep background.
-     */
 
     public BackgroundDeepLayer(){
         super(Constants.BACKGROUND_IMAGE_PATH, 2);
     }
 
-    }
+}
