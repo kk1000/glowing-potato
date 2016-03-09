@@ -15,7 +15,7 @@ public class BackgroundTopLayer extends MovingBackground {
      * Constructor for background top layer.
      */
     public BackgroundTopLayer(){
-        super(new Texture(Gdx.files.internal(Constants.BACKGROUND_CLOUDS_IMAGE_PATH)), 110, 2);
+        super(Constants.BACKGROUND_CLOUDS_IMAGE_PATH,3);
     }
 
 
