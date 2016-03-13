@@ -243,9 +243,13 @@ public abstract class GameObject {
         return userData;
     }
 
+    public float getHeight( ) { return height; }
     public float getWidth() {
         return width;
     }
+
+    public float getX( ) { return x; }
+    public float getY( ) { return y; }
 
     public Body getBody() {
         return body;

@@ -16,9 +16,9 @@ import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 public abstract class MovingBackground extends Actor {
 
     private Texture texture;
-    private int srcX;
-    private float speed;
     private float updateTimer;
+    private float speed;
+    private int srcX;
 
     public MovingBackground(String s, float speed){
         this.speed = speed;
@@ -26,17 +26,19 @@ public abstract class MovingBackground extends Actor {
         texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
     }
 
+    @Override
     public void draw(Batch batch, float parentAlpha) {
-            batch.draw(texture, 0, 0, srcX, 0, Constants.APP_WIDTH, Constants.APP_HEIGHT);
+        batch.draw(texture, 0, 0, srcX, 0, Constants.APP_WIDTH, Constants.APP_HEIGHT);
     }
 
+    @Override
     public void act(float delta){
         super.act(delta);
         if(updateTimer > speed/60) {
-            srcX +=1;
-            updateTimer  = 0;
+            srcX += 1;
+            updateTimer = 0;
         }
-        updateTimer+=Gdx.graphics.getDeltaTime();
+        updateTimer += Gdx.graphics.getDeltaTime();
     }
 
 }
