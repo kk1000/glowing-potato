@@ -5,7 +5,6 @@ package fi.tamk.tiko.orion.sleeprunner.data;
  *
 public enum EnemyType {
 
-
     /**
      * Width and height are defined here, rest are from Constants-class.
  *
