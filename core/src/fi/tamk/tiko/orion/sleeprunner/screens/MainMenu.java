@@ -2,6 +2,7 @@ package fi.tamk.tiko.orion.sleeprunner.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
+import fi.tamk.tiko.orion.sleeprunner.data.Preference;
 
 
 /**
@@ -31,7 +33,9 @@ public class MainMenu implements Screen{
     private Texture logo;
     private float delta;
     private TextButton gameButton;
+    private TextButton muteButton;
     private Skin skin;
+    private Preference prefs;
 
 
     /**
@@ -44,6 +48,8 @@ public class MainMenu implements Screen{
         height = Gdx.graphics.getHeight();
 
         game = g;
+
+        prefs = new Preference();
 
         batch = game.getBatch();
 
@@ -67,6 +73,20 @@ public class MainMenu implements Screen{
             }
         });
 
+        muteButton = new TextButton("Sounds", skin);
+        muteButton.setBounds(width * 0.8f, height * 0.8f, width / 9, height / 8);
+        muteButton.addListener(new ClickListener() {
+            public void clicked(InputEvent e, float x, float y) {
+                    prefs.setMuted();
+                        if(prefs.getMuted()){
+                            muteButton.setColor(Color.RED);
+                        } else{
+                            muteButton.setColor(Color.WHITE);
+                        }
+            }
+        });
+
+        stage.addActor(muteButton);
         stage.addActor(gameButton);
     }
 
@@ -90,6 +110,7 @@ public class MainMenu implements Screen{
 
 
         batch.begin();
+        game.getMusic().setVolume(prefs.getMusicVolume());
         Gdx.input.setInputProcessor(stage);
         batch.setProjectionMatrix(camera.combined);
         batch.draw(logo, 0, 0, logo.getWidth(), logo.getHeight());

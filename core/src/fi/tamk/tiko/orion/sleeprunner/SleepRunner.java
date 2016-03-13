@@ -1,5 +1,6 @@
 package fi.tamk.tiko.orion.sleeprunner;
 
+import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
@@ -31,29 +32,35 @@ public class SleepRunner extends Game {
 
 	@Override
 	public void create() {
+
 		music = Gdx.audio.newMusic(Gdx.files.internal(Constants.GAME_MUSIC_PATH));
 
 		batch = new SpriteBatch();
 
-		//music.play();
+		music.play();
 		music.setVolume(0.1f);
+		setMainMenuScreen();
 
-		mainMenuScreen = new MainMenu(this);
-		setScreen(mainMenuScreen);
+
 	}
 
 	public SpriteBatch getBatch() {
 		return batch;
 	}
 
+	public void setGameScreen(){
+		setScreen (new GameScreen(this));
+
+	}
+	public void setMainMenuScreen(){
+		setScreen (new MainMenu(this));
+
+	}
+
 	public MainMenu getMainMenu() {
 		return mainMenuScreen;
 	}
-
 	public GameScreen getGameScreen() {
-		if (gameScreen == null) {
-			gameScreen = new GameScreen(this);
-		}
 		return gameScreen;
 	}
 

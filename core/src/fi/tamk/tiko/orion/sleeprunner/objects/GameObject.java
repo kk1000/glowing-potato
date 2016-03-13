@@ -14,7 +14,9 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
+import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
+import fi.tamk.tiko.orion.sleeprunner.data.Preference;
 import fi.tamk.tiko.orion.sleeprunner.data.UserData;
 
 /**
@@ -31,6 +33,8 @@ public abstract class GameObject {
     protected float width;
     protected float height;
 
+    protected SleepRunner sleepRunner;
+
     protected Texture texture;
 
     protected UserData userData;
@@ -45,6 +49,8 @@ public abstract class GameObject {
     protected float stateTime;
 
     protected Array<TextureRegion> textureRegions = new Array<TextureRegion>();
+
+    protected Preference prefs;
 
     /**
      * Constructor for game objects which got no animation.
@@ -72,6 +78,8 @@ public abstract class GameObject {
         this.userData = userData;
         createBody(bodyType);
         createTiles();
+
+        prefs = new Preference();
     }
 
     /**
@@ -106,6 +114,9 @@ public abstract class GameObject {
         // to properly handle animated game objects and their animations.
 
         createBody(bodyType);
+
+
+        prefs = new Preference();
     }
 
     /**
