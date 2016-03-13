@@ -41,7 +41,9 @@ public class SleepRunner extends Game {
 	public void create() {
 
 		preferences = Gdx.app.getPreferences("SleepRunnerPreferences");
-		Tools.createPreferences(preferences);
+		if(!preferences.contains("isMuted")) {
+			Tools.createPreferences(preferences);
+		}
 
 		music = Gdx.audio.newMusic(Gdx.files.internal(Constants.GAME_MUSIC_PATH));
 

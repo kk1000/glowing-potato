@@ -54,11 +54,14 @@ public class Tools {
 
     /**
      * Creates preferences-file when launching first time.
+     *
+     * TODO: Overrides earlier preference-file at the moment
      */
     public static void createPreferences(Preferences prefs){
-        prefs.putBoolean("isMuted",false);
-        prefs.putFloat("soundVolume",1f);
-        prefs.putFloat("musicVolume",1f);
-        prefs.flush();
+            Gdx.app.log("Tools","Created preference-file!");
+            prefs.putBoolean("isMuted", false);
+            prefs.putFloat("soundVolume", 1f);
+            prefs.putFloat("musicVolume", 1f);
+            prefs.flush();
+        }
     }
-}
