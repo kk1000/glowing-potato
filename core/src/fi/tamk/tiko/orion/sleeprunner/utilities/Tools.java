@@ -2,6 +2,7 @@ package fi.tamk.tiko.orion.sleeprunner.utilities;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -49,5 +50,15 @@ public class Tools {
         for(TextureRegion r : regions) {
             r.flip(true, false);
         }
+    }
+
+    /**
+     * Creates preferences-file when launching first time.
+     */
+    public static void createPreferences(Preferences prefs){
+        prefs.putBoolean("isMuted",false);
+        prefs.putFloat("soundVolume",1f);
+        prefs.putFloat("musicVolume",1f);
+        prefs.flush();
     }
 }

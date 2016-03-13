@@ -79,7 +79,7 @@ public class Constants {
     public static final String MAINMENU_LOGO_IMAGE_PATH = "graphics/mainmenu.png";
 
     /**
-     * Sound paths
+     * SoundEffects paths
      */
 
     public static final String PLAYER_RUN_SOUND_PATH = "sounds/sfx/steps.mp3";

@@ -48,7 +48,7 @@ public class PlayerObject extends GameObject {
 
         runSound = Gdx.audio.newSound(Gdx.files.internal(Constants.PLAYER_RUN_SOUND_PATH));
         runSound.stop();
-        runSound.play(0.3f);
+        runSound.play(prefs.getSoundVolume());
     }
 
     /**
@@ -73,7 +73,7 @@ public class PlayerObject extends GameObject {
     public void landed(){
         jumping = false;
         runSound.stop();
-        runSound.play(0.3f);
+        runSound.play(prefs.getSoundVolume());
     }
 
     /**
@@ -93,7 +93,7 @@ public class PlayerObject extends GameObject {
      */
     public void stopDodge(){
         runSound.stop();
-        runSound.play(0.3f);
+        runSound.play(prefs.getSoundVolume());
 
         dodging = false;
         body.setTransform(x, y, 0f);
@@ -116,6 +116,8 @@ public class PlayerObject extends GameObject {
 
     @Override
     public void update(float delta) {
+
+        runSound.setVolume(1,prefs.getSoundVolume());
         if (dodging) {
             dodgeTimer += Gdx.graphics.getDeltaTime();
             if (dodgeTimer > 1) {

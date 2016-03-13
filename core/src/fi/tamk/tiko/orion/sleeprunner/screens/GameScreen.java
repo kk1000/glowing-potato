@@ -94,6 +94,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
         scoreFont = new BitmapFont(Gdx.files.internal(Constants.GAME_FONT_PATH));
 
+
         setupWorld();
         setupTouchControlAreas();
     }
