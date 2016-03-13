@@ -60,8 +60,8 @@ public class Tools {
     public static void createPreferences(Preferences prefs){
             Gdx.app.log("Tools","Created preference-file!");
             prefs.putBoolean("isMuted", false);
-            prefs.putFloat("soundVolume", 1f);
-            prefs.putFloat("musicVolume", 1f);
+            prefs.putFloat("soundVolume", 0.5f);
+            prefs.putFloat("musicVolume", 0.5f);
             prefs.flush();
         }
     }
