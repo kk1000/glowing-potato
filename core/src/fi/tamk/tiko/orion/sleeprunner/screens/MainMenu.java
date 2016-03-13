@@ -95,11 +95,6 @@ public class MainMenu implements Screen{
 
     }
 
-    /**
-     * Render method.
-     *
-     * @param delta = delta timer (1/60)
-     */
     @Override
     public void render(float delta) {
         batch.setProjectionMatrix(camera.combined);

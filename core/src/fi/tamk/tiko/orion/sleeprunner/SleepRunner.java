@@ -64,5 +64,7 @@ public class SleepRunner extends Game {
 		return gameScreen;
 	}
 
+	public Music getMusic( ) { return music; }
+
 
 }
