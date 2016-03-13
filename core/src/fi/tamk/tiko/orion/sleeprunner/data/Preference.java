@@ -39,8 +39,8 @@ public class Preference {
             prefs.putFloat("soundVolume", 0);
         } else {
             prefs.putBoolean("isMuted", false);
-            prefs.putFloat("musicVolume", 1);
-            prefs.putFloat("soundVolume", 1);
+            prefs.putFloat("musicVolume", 0.5f);
+            prefs.putFloat("soundVolume", 0.5f);
         }
         prefs.flush();
     }
