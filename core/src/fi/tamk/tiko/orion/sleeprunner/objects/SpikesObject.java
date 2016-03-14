@@ -16,9 +16,9 @@ public class SpikesObject extends GameObject {
      * Tiles (texture regions) for spike's different parts.
      */
 
-    public static final TextureRegion MIDDLE_TEXTURE = Constants.TILESET_SPRITES[0][4];
-    public static final TextureRegion RIGHT_TEXTURE = Constants.TILESET_SPRITES[0][5];
-    public static final TextureRegion LEFT_TEXTURE = Constants.TILESET_SPRITES[0][3];
+    public static final TextureRegion MIDDLE_TEXTURE = Constants.TILESET_SPRITES[0][1];
+    public static final TextureRegion RIGHT_TEXTURE = Constants.TILESET_SPRITES[0][2];
+    public static final TextureRegion LEFT_TEXTURE = Constants.TILESET_SPRITES[0][0];
 
     /**
      * Constructor for SpikesObject.
