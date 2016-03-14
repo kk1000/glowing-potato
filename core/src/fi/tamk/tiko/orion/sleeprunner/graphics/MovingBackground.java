@@ -10,10 +10,10 @@ import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 // TODO: Horizontal background movement.
 
 /**
- * Every moving backgrounds are extended from this class.
+ * Class for backgrounds.
  * Backgrounds are moving in the Scene2D stages as actors.
  */
-public abstract class MovingBackground extends Actor {
+public class MovingBackground extends Actor {
 
     private Texture texture;
     private float updateTimer;

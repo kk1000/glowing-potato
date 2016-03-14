@@ -9,9 +9,7 @@ import com.badlogic.gdx.utils.viewport.ScalingViewport;
 
 import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
-import fi.tamk.tiko.orion.sleeprunner.graphics.BackgroundDeepLayer;
-import fi.tamk.tiko.orion.sleeprunner.graphics.BackgroundMidLayer;
-import fi.tamk.tiko.orion.sleeprunner.graphics.BackgroundTopLayer;
+import fi.tamk.tiko.orion.sleeprunner.graphics.MovingBackground;
 
 /**
  * Class for backgrounds.
@@ -39,9 +37,12 @@ public class BackgroundStage extends Stage {
      */
     private void setupBackgrounds(){
 
-        addActor(new BackgroundDeepLayer());
-        addActor(new BackgroundMidLayer());
-        addActor(new BackgroundTopLayer());
+        // deep layer
+        addActor(new MovingBackground(Constants.BACKGROUND_IMAGE_PATH, 2));
+        // mid layer
+        addActor(new MovingBackground(Constants.MOVING_BACKGROUND_IMAGE_PATH, 1));
+        // top layer
+        addActor(new MovingBackground(Constants.BACKGROUND_CLOUDS_IMAGE_PATH,0.5f));
 
     }
 
