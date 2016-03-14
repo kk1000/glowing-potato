@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Array;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.objects.GameObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.GroundObject;
+import fi.tamk.tiko.orion.sleeprunner.objects.ShieldPowerUpObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.SpikesObject;
 
 /**
@@ -80,6 +81,23 @@ public class MapGenerator {
     }
 
     /**
+     * Tries to add power up block to the position.
+     *
+     * @param grid The 2D integer map grid.
+     * @param x    Current x position. (grid index)
+     */
+    private static void generatePowerUpBlock( int[][] grid, int x ) {
+        int random = MathUtils.random( 0, 10 ); // Probability to get any power up.
+        if ( random == 0 ) {
+            // Random power ups y position.
+            int y = MathUtils.random( 4, 6 );
+            if ( isSymbolAtPosition( grid, Constants.EMPTY_BLOCK, x, y ) ) {
+                grid[ y ][ x ] = Constants.POWERUP_SHIELD_BLOCK;
+            }
+        }
+    }
+
+    /**
      * Tries to generate spikes to the position.
      *
      * @param grid  The 2D integer map grid.
@@ -111,6 +129,7 @@ public class MapGenerator {
         for ( int i = 0; i < Constants.CHUNK_MAX_TILES_WIDTH; i++ ) {
             generateGroundBlock( grid, i );
             generateSpikeBlock( grid, i );
+            generatePowerUpBlock( grid, i );
         }
         return grid;
     }
@@ -194,6 +213,8 @@ public class MapGenerator {
             gameObject = new GroundObject( world, centerX, centerY, meterWidth, meterHeight );
         } else if ( symbol == Constants.SPIKES_BLOCK ) {
             gameObject = new SpikesObject( world, centerX, centerY, meterWidth, meterHeight );
+        } else if ( symbol == Constants.POWERUP_SHIELD_BLOCK ) {
+            gameObject = new ShieldPowerUpObject( world, centerX, centerY, meterWidth, meterHeight );
         }
         return gameObject;
     }

@@ -42,6 +42,7 @@ public class Constants {
     public static final int EMPTY_BLOCK = 0;
     public static final int GROUND_BLOCK = 1;
     public static final int SPIKES_BLOCK = 2;
+    public static final int POWERUP_SHIELD_BLOCK = 3;
 
     public static final int MAX_EMPTY_AMOUNT = 4;
     public static final int MIN_EMPTY_AMOUNT = 2;
