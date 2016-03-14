@@ -42,7 +42,7 @@ public class PlayerObject extends GameObject {
 
         body.setFixedRotation(true);
 
-        runAnimation = Tools.createAnimation(texture, 6, 1, 1, 6, 1 / 8f);
+        runAnimation = Tools.createAnimation(texture, 6, 1, 1, 6, 1/10f);
 
         currentAnimation = runAnimation;
 
@@ -61,6 +61,7 @@ public class PlayerObject extends GameObject {
             velY *= 0.0001f;
             Constants.PLAYER_JUMPING_LINEAR_IMPULSE.set(0, 0.1f + velY > 0.40f ? 0.40f : 0.1f + velY);
             body.applyLinearImpulse(Constants.PLAYER_JUMPING_LINEAR_IMPULSE, body.getWorldCenter(), true);
+            runAnimation.setFrameDuration( 1/3f );
             jumping = true;
         }
         runSound.stop();
@@ -72,6 +73,7 @@ public class PlayerObject extends GameObject {
      */
     public void landed(){
         jumping = false;
+        runAnimation.setFrameDuration( 1/10f );
         runSound.stop();
         runSound.play(prefs.getSoundVolume());
     }

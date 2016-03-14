@@ -54,9 +54,10 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
     private GestureDetector gd;
 
-    private Array<MapChunk> mapChunks = new Array<MapChunk>();
     private Array<MapChunk> removalMapChunks = new Array<MapChunk>();
     private Array<MapChunk> additionMapChunks = new Array<MapChunk>();
+    private Array<MapChunk> mapChunks = new Array<MapChunk>();
+    private int currentMapChunk = 0;
     private PlayerObject player;
     private World world;
 
@@ -129,10 +130,11 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         world.setContactListener(this);
 
         // Setup couple map chunks.
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 2; i++) {
             mapChunks.add(new MapChunk(world, mapChunks.size));
         }
         Gdx.app.log("GameScreen", "Generated " + mapChunks.size + " map chunks.");
+        currentMapChunk++;
 
         player = new PlayerObject(world);
     }
@@ -271,6 +273,8 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         // Remove map chunks.
         for (MapChunk mapChunk : removalMapChunks) {
             mapChunks.removeValue(mapChunk, true);
+            currentMapChunk++;
+            Gdx.app.log( "GameScreen", "Current map chunk: " + currentMapChunk );
             additionMapChunks.add(new MapChunk(world, mapChunks.size));
         }
         removalMapChunks.clear();

@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.Array;
 import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.Preference;
+import fi.tamk.tiko.orion.sleeprunner.data.Tile;
 import fi.tamk.tiko.orion.sleeprunner.data.UserData;
 
 /**
@@ -48,6 +49,7 @@ public abstract class GameObject {
     protected TextureRegion currentFrame;
     protected float stateTime;
 
+    protected Array<Tile> tiles = new Array<Tile>();
     protected Array<TextureRegion> textureRegions = new Array<TextureRegion>();
 
     protected Preference prefs;
@@ -165,20 +167,34 @@ public abstract class GameObject {
             // Fallback.
             gameObjectsTextureRegions = new TextureRegion[]{textureRegion, textureRegion, textureRegion};
         }
+        int pixelHeight = (int) (height * 100f);
         int pixelWidth = (int) (width * 100f);
-        for (int i = 0; i < pixelWidth; i += 32) {
-            if (i == 0 && pixelWidth == 32) {
-                // Body is just one tile length.
-                textureRegions.add(gameObjectsTextureRegions[1]);
-            } else if (i == 0 && pixelWidth > 32) {
-                // Body's first tile and it's larger than one tile length.
-                textureRegions.add(gameObjectsTextureRegions[0]);
-            } else if (i == pixelWidth - 32) {
-                // Body's last tile.
-                textureRegions.add(gameObjectsTextureRegions[2]);
-            } else {
-                // Body's middle tile.
-                textureRegions.add(gameObjectsTextureRegions[1]);
+        float tileSize = Constants.WORLD_TO_SCREEN / 100f;
+        float x;
+        float y;
+        for (int i = 0; i < pixelHeight; i += 32) {
+            for ( int j = 0; j < pixelWidth; j += 32 ) {
+                TextureRegion textureRegion;
+                if ( i <= pixelHeight ) {
+                    if (j == 0 && pixelWidth == 32) {
+                        // Body is just one tile length.
+                        textureRegion = gameObjectsTextureRegions[1];
+                    } else if (j == 0 && pixelWidth > 32) {
+                        // Body's first tile and it's larger than one tile length.
+                        textureRegion = gameObjectsTextureRegions[0];
+                    } else if (j == pixelWidth - 32) {
+                        // Body's last tile.
+                        textureRegion = gameObjectsTextureRegions[2];
+                    } else {
+                        // Body's middle tile.
+                        textureRegion = gameObjectsTextureRegions[1];
+                    }
+                } else {
+                    textureRegion = gameObjectsTextureRegions[1];
+                }
+                x = (body.getPosition().x - tileSize / 2) - (width / 2 - tileSize / 2) + ( j/100f );
+                y = body.getPosition().y - (i/100f);
+                tiles.add( new Tile( x, y, textureRegion ) );
             }
         }
     }
@@ -203,16 +219,15 @@ public abstract class GameObject {
                     1.0f,
                     body.getTransform().getRotation() * MathUtils.radiansToDegrees);
         } else {
-            float tileSize = Constants.WORLD_TO_SCREEN / 100f;
-            for (int i = 0; i < textureRegions.size; i++) {
-                TextureRegion textureRegion = textureRegions.get(i);
-                batch.draw(textureRegion,
-                        (body.getPosition().x - tileSize / 2) - (width / 2 - tileSize / 2) + i * tileSize,
-                        body.getPosition().y - tileSize / 2,
+            for ( Tile tile : tiles ) {
+                tile.update(Gdx.graphics.getDeltaTime());
+                batch.draw( tile.textureRegion,
+                        tile.x,
+                        tile.y,
                         Constants.WORLD_TO_SCREEN / 2,
                         Constants.WORLD_TO_SCREEN / 2,
-                        tileSize,
-                        tileSize,
+                        Constants.WORLD_TO_SCREEN / 100f,
+                        Constants.WORLD_TO_SCREEN / 100f,
                         1.0f,
                         1.0f,
                         0);
@@ -254,9 +269,13 @@ public abstract class GameObject {
         return userData;
     }
 
+    public float getHeight( ) { return height; }
     public float getWidth() {
         return width;
     }
+
+    public float getX( ) { return x; }
+    public float getY( ) { return y; }
 
     public Body getBody() {
         return body;

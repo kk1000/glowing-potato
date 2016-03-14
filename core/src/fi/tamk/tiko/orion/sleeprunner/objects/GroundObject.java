@@ -16,9 +16,9 @@ public class GroundObject extends GameObject {
      * Tiles (texture regions) for ground's different parts.
      */
 
-    public static final TextureRegion MIDDLE_TEXTURE = Constants.TILESET_SPRITES[0][7];
-    public static final TextureRegion RIGHT_TEXTURE = Constants.TILESET_SPRITES[0][8];
-    public static final TextureRegion LEFT_TEXTURE = Constants.TILESET_SPRITES[0][6];
+    public static final TextureRegion MIDDLE_TEXTURE = Constants.TILESET_SPRITES[2][1];
+    public static final TextureRegion RIGHT_TEXTURE = Constants.TILESET_SPRITES[2][2];
+    public static final TextureRegion LEFT_TEXTURE = Constants.TILESET_SPRITES[2][0];
 
     /**
      * Constructor for game objects which got no animation.
