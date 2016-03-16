@@ -35,20 +35,22 @@ public class MapChunk {
         } else {
             grid = MapGenerator.generateMapChunkGrid();
         }
-        MapGenerator.generateGameObjects( this );
+        MapGenerator.generateGameObjects(this);
     }
 
     /**
-     * Removes game objects which are outside the screen.
+     * Updates map chunks game objects.
      *
      * @param batch Spritebatch.
      */
     public void update(SpriteBatch batch) {
         removeRemovalGameObjects();
         for (GameObject gameObject : gameObjects) {
+            // Move and draw every game objects.
             gameObject.update(Gdx.graphics.getDeltaTime());
-            gameObject.draw(batch);
-            if (!BodyUtils.gameObjectInBounds(gameObject)) {
+            gameObject.draw( batch );
+            if ( BodyUtils.gameObjectPassed( gameObject ) ) {
+                // Remove game objects which has passed the screen.
                 removalGameObjects.add(gameObject);
             }
         }

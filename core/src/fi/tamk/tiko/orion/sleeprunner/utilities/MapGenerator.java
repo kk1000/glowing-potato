@@ -66,7 +66,7 @@ public class MapGenerator {
             // Try to make empty block.
             grid[1][x] = Constants.EMPTY_BLOCK;
             grid[0][x] = Constants.EMPTY_BLOCK;
-            if ( isSymbolInRow( grid, Constants.EMPTY_BLOCK, x, 1, Constants.MAX_EMPTY_AMOUNT + 1 ) ) {
+            if ( isSymbolInRow( grid, Constants.EMPTY_BLOCK, x, 1, Constants.MAX_EMPTY_AMOUNT ) ) {
                 // There is already maximum amount of empty blocks
                 // replace this position with ground.
                 grid[1][x] = Constants.GROUND_BLOCK;
@@ -74,9 +74,15 @@ public class MapGenerator {
             }
         } else {
             // Try to make ground block.
-            // TODO: Minimum space.
             grid[1][x] = Constants.GROUND_BLOCK;
             grid[0][x] = Constants.GROUND_BLOCK;
+            if ( !isSymbolInRow( grid, Constants.EMPTY_BLOCK, x - 1, 1, Constants.MIN_EMPTY_AMOUNT ) &&
+                    !isSymbolAtPosition( grid, Constants.GROUND_BLOCK, x - 1, 1 ) ) {
+                // There is not enough of empty blocks according
+                // to the minimum value, replace this position with empty.
+                grid[1][x] = Constants.EMPTY_BLOCK;
+                grid[0][x] = Constants.EMPTY_BLOCK;
+            }
         }
     }
 
@@ -127,9 +133,9 @@ public class MapGenerator {
         int[][] grid = new int[ Constants.CHUNK_MAX_TILES_HEIGHT ][ Constants.CHUNK_MAX_TILES_WIDTH ];
         Gdx.app.log( "MapGenerator", "Generating new map chunk grid!" );
         for ( int i = 0; i < Constants.CHUNK_MAX_TILES_WIDTH; i++ ) {
-            generateGroundBlock( grid, i );
-            generateSpikeBlock( grid, i );
-            generatePowerUpBlock( grid, i );
+            generateGroundBlock(grid, i);
+            generateSpikeBlock(grid, i);
+            //generatePowerUpBlock( grid, i );
         }
         return grid;
     }
@@ -142,11 +148,8 @@ public class MapGenerator {
     public static int[][] generateMapChunkIntervalGrid( ) {
         int[][] grid = new int[ Constants.CHUNK_MAX_TILES_HEIGHT ][ Constants.CHUNK_MAX_TILES_WIDTH ];
         for ( int i = 0; i < Constants.CHUNK_MAX_TILES_WIDTH; i++ ) {
-            // Last two are empty in the interval map chunk.
-            if (i < (Constants.CHUNK_MAX_TILES_WIDTH - 2)) {
-                grid[0][i] = Constants.GROUND_BLOCK;
-                grid[1][i] = Constants.GROUND_BLOCK;
-            }
+            grid[0][i] = Constants.GROUND_BLOCK;
+            grid[1][i] = Constants.GROUND_BLOCK;
         }
         return grid;
     }
@@ -205,9 +208,9 @@ public class MapGenerator {
         float scale = 1/100f;
         float meterHeight = height * scale;
         float meterWidth = width * scale;
-        float meterX = x * scale;
+        float meterX = ( x * scale ) + ( (offset * Constants.CHUNK_WIDTH_PIXELS )/100f );
         float meterY = y * scale;
-        float centerX = meterWidth/2 + meterX + ( (offset * Constants.CHUNK_WIDTH_PIXELS )/100f );
+        float centerX = meterWidth/2 + meterX;
         float centerY = meterHeight/2 + meterY;
         if ( symbol == Constants.GROUND_BLOCK ) {
             gameObject = new GroundObject( world, centerX, centerY, meterWidth, meterHeight );
@@ -235,7 +238,7 @@ public class MapGenerator {
                 int currentPos = grid[i][j];
                 if (!isInGameObjectBounds(j, i, currentPos, mapChunk )) {
                     // 'Combo' ended, make a game object of the gathered details.
-                    if (currentSymbol != currentPos) {
+                    if (currentSymbol != currentPos || ( j == Constants.CHUNK_MAX_TILES_WIDTH - 1 ) ) {
                         if (currentSymbol > 0) {
                             mapChunk.addGameObject(generateGameObject(mapChunk, startX, startY, rowX * Constants.WORLD_TO_SCREEN, rowY * Constants.WORLD_TO_SCREEN, currentSymbol));
                         }

@@ -1,7 +1,11 @@
 package fi.tamk.tiko.orion.sleeprunner.utilities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Body;
 
+import java.util.Collection;
+
+import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.UserData;
 import fi.tamk.tiko.orion.sleeprunner.objects.GameObject;
 
@@ -45,15 +49,14 @@ public class BodyUtils {
     }
 
     /**
-     * Checks if the given game object is inside the screen.
+     * Is the given game object passed the player already.
      *
      * @param gameObject The game object.
      * @return boolean
      */
-    public static boolean gameObjectInBounds(GameObject gameObject) {
-        UserData userData = gameObject.getUserData();
-        Body body = gameObject.getBody();
-        return (body.getPosition().x + gameObject.getWidth() / 2) > 0;
+    public static boolean gameObjectPassed( GameObject gameObject ) {
+        float x = gameObject.getBody().getPosition().x + gameObject.getWidth()/2;
+        return ( x <= 0 );
     }
 
 }

@@ -14,7 +14,6 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
-import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.Preference;
 import fi.tamk.tiko.orion.sleeprunner.data.Tile;
@@ -34,8 +33,6 @@ public abstract class GameObject {
     protected float width;
     protected float height;
 
-    protected SleepRunner sleepRunner;
-
     protected Texture texture;
 
     protected UserData userData;
@@ -50,7 +47,6 @@ public abstract class GameObject {
     protected float stateTime;
 
     protected Array<Tile> tiles = new Array<Tile>();
-    protected Array<TextureRegion> textureRegions = new Array<TextureRegion>();
 
     protected Preference prefs;
 
@@ -117,7 +113,6 @@ public abstract class GameObject {
 
         createBody(bodyType);
 
-
         prefs = new Preference();
     }
 
@@ -127,7 +122,7 @@ public abstract class GameObject {
     protected void createBody(BodyDef.BodyType bodyType) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = bodyType;
-        bodyDef.position.set(new Vector2(this.x, this.y));
+        bodyDef.position.set(new Vector2( this.x, this.y ) );
 
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(this.width / 2, this.height / 2);
@@ -160,12 +155,12 @@ public abstract class GameObject {
     public void createTiles() {
         TextureRegion[] gameObjectsTextureRegions;
         if (userData.id.equals("GROUND")) {
-            gameObjectsTextureRegions = new TextureRegion[]{GroundObject.LEFT_TEXTURE, GroundObject.MIDDLE_TEXTURE, GroundObject.RIGHT_TEXTURE};
+            gameObjectsTextureRegions = new TextureRegion[]{GroundObject.LEFT_TEXTURE, GroundObject.MIDDLETOP_TEXTURE, GroundObject.MIDDLE_TEXTURE, GroundObject.RIGHT_TEXTURE};
         } else if (userData.id.equals("SPIKES")) {
-            gameObjectsTextureRegions = new TextureRegion[]{SpikesObject.LEFT_TEXTURE, SpikesObject.MIDDLE_TEXTURE, SpikesObject.RIGHT_TEXTURE};
+            gameObjectsTextureRegions = new TextureRegion[]{SpikesObject.LEFT_TEXTURE, SpikesObject.MIDDLE_TEXTURE, SpikesObject.MIDDLE_TEXTURE, SpikesObject.RIGHT_TEXTURE};
         } else {
             // Fallback.
-            gameObjectsTextureRegions = new TextureRegion[]{textureRegion, textureRegion, textureRegion};
+            gameObjectsTextureRegions = new TextureRegion[]{textureRegion, textureRegion, textureRegion, textureRegion};
         }
         int pixelHeight = (int) (height * 100f);
         int pixelWidth = (int) (width * 100f);
@@ -178,13 +173,13 @@ public abstract class GameObject {
                 if ( i <= pixelHeight ) {
                     if (j == 0 && pixelWidth == 32) {
                         // Body is just one tile length.
-                        textureRegion = gameObjectsTextureRegions[1];
+                        textureRegion = gameObjectsTextureRegions[2];
                     } else if (j == 0 && pixelWidth > 32) {
                         // Body's first tile and it's larger than one tile length.
                         textureRegion = gameObjectsTextureRegions[0];
                     } else if (j == pixelWidth - 32) {
                         // Body's last tile.
-                        textureRegion = gameObjectsTextureRegions[2];
+                        textureRegion = gameObjectsTextureRegions[3];
                     } else {
                         // Body's middle tile.
                         textureRegion = gameObjectsTextureRegions[1];
