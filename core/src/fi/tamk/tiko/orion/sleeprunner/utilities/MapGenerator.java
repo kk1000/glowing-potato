@@ -66,8 +66,10 @@ public class MapGenerator {
             // Try to make empty block.
             grid[1][x] = Constants.EMPTY_BLOCK;
             grid[0][x] = Constants.EMPTY_BLOCK;
-            if ( isSymbolInRow( grid, Constants.EMPTY_BLOCK, x, 1, Constants.MAX_EMPTY_AMOUNT ) ) {
+            if ( isSymbolInRow( grid, Constants.EMPTY_BLOCK, x, 1, Constants.MAX_EMPTY_AMOUNT ) ||
+                    !isSymbolInRow( grid, Constants.GROUND_BLOCK, x - 1, 1, Constants.MIN_GROUND_AMOUNT ) ) {
                 // There is already maximum amount of empty blocks
+                // or not enough ground according to min value
                 // replace this position with ground.
                 grid[1][x] = Constants.GROUND_BLOCK;
                 grid[0][x] = Constants.GROUND_BLOCK;

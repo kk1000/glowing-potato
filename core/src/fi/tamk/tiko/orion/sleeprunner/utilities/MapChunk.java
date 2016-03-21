@@ -12,12 +12,12 @@ import fi.tamk.tiko.orion.sleeprunner.objects.GameObject;
  */
 public class MapChunk {
 
-    private World world;
+    private Array<GameObject> removalGameObjects = new Array<GameObject>();
+    private Array<GameObject> gameObjects = new Array<GameObject>();
 
     private int[][] grid;
 
-    private Array<GameObject> removalGameObjects = new Array<GameObject>();
-    private Array<GameObject> gameObjects = new Array<GameObject>();
+    private World world;
 
     private int offset;
 

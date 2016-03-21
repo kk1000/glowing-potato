@@ -3,9 +3,6 @@ package fi.tamk.tiko.orion.sleeprunner.utilities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Body;
 
-import java.util.Collection;
-
-import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.UserData;
 import fi.tamk.tiko.orion.sleeprunner.objects.GameObject;
 
