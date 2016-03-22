@@ -78,10 +78,13 @@ public class MapGenerator {
             // Try to make ground block.
             grid[1][x] = Constants.GROUND_BLOCK;
             grid[0][x] = Constants.GROUND_BLOCK;
-            if ( !isSymbolInRow( grid, Constants.EMPTY_BLOCK, x - 1, 1, Constants.MIN_EMPTY_AMOUNT ) &&
+            if ( isSymbolInRow( grid, Constants.GROUND_BLOCK, x - 1, 1, Constants.MAX_GROUND_AMOUNT ) ||
+                    !isSymbolInRow( grid, Constants.EMPTY_BLOCK, x - 1, 1, Constants.MIN_EMPTY_AMOUNT ) &&
                     !isSymbolAtPosition( grid, Constants.GROUND_BLOCK, x - 1, 1 ) ) {
                 // There is not enough of empty blocks according
-                // to the minimum value, replace this position with empty.
+                // to the minimum value or
+                // there are already max ground amount,
+                // replace this position with empty.
                 grid[1][x] = Constants.EMPTY_BLOCK;
                 grid[0][x] = Constants.EMPTY_BLOCK;
             }
@@ -214,6 +217,7 @@ public class MapGenerator {
         float meterY = y * scale;
         float centerX = meterWidth/2 + meterX;
         float centerY = meterHeight/2 + meterY;
+        if ( centerY == 0.16f ) { centerY = 0f; } // Purkka spike y pos fix.
         if ( symbol == Constants.GROUND_BLOCK ) {
             gameObject = new GroundObject( world, centerX, centerY, meterWidth, meterHeight );
         } else if ( symbol == Constants.SPIKES_BLOCK ) {

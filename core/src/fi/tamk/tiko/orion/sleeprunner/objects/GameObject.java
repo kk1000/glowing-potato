@@ -170,7 +170,7 @@ public abstract class GameObject {
         for (int i = 0; i < pixelHeight; i += 32) {
             for ( int j = 0; j < pixelWidth; j += 32 ) {
                 TextureRegion textureRegion;
-                if ( i <= pixelHeight ) {
+                if ( i < pixelHeight - 32 ) {
                     if (j == 0 && pixelWidth == 32) {
                         // Body is just one tile length.
                         textureRegion = gameObjectsTextureRegions[2];
@@ -185,7 +185,17 @@ public abstract class GameObject {
                         textureRegion = gameObjectsTextureRegions[1];
                     }
                 } else {
-                    textureRegion = gameObjectsTextureRegions[1];
+                    // Not top tile.
+                    if (j == 0 && pixelWidth > 32) {
+                        // Body's first tile and it's larger than one tile length.
+                        textureRegion = gameObjectsTextureRegions[0];
+                    } else if (j == pixelWidth - 32) {
+                        // Body's last tile.
+                        textureRegion = gameObjectsTextureRegions[3];
+                    } else {
+                        // Body's middle tile.
+                        textureRegion = gameObjectsTextureRegions[2];
+                    }
                 }
                 x = (body.getPosition().x - tileSize / 2) - (width / 2 - tileSize / 2) + ( j/100f );
                 y = body.getPosition().y - (i/100f);

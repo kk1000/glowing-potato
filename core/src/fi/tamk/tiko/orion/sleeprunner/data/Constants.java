@@ -48,6 +48,7 @@ public class Constants {
     public static final int MIN_EMPTY_AMOUNT = 2;
 
     public static final int MIN_GROUND_AMOUNT = 2;
+    public static final int MAX_GROUND_AMOUNT = 40;
 
     /**
      * Player physics
@@ -57,6 +58,8 @@ public class Constants {
 
     public static final Vector2 PLAYER_JUMPING_LINEAR_IMPULSE = new Vector2(0, 0.20f);
     public static final float PLAYER_HIT_ANGULAR_IMPULSE = 10f;
+    public static final float PLAYER_START_X = Constants.WORLD_TO_SCREEN * 2 / 100f;
+    public static final float PLAYER_START_Y = Constants.WORLD_TO_SCREEN * 2 / 100f;
     //currently not used
     public static final float FLYING_ENEMY_Y = 3f;
     public static final float RUNNING_SHORT_ENEMY_Y = 1.5f;

@@ -62,12 +62,15 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     private World world;
 
     private BitmapFont scoreFont;
+    private BitmapFont debugFont;
     private SpriteBatch batch;
 
     private float deathTimer = 2;
     private float accumulator = 0f;
 
     private float score = 0;
+
+    private int playTimes;
 
     /**
      * Constructor for GameScreen.
@@ -94,7 +97,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         uiCamera.setToOrtho(false, Constants.APP_WIDTH, Constants.APP_HEIGHT);
 
         scoreFont = new BitmapFont(Gdx.files.internal(Constants.GAME_FONT_PATH));
-
+        debugFont = new BitmapFont();
 
         setupWorld();
         setupTouchControlAreas();
@@ -108,7 +111,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         // TODO: Fix this?
         screenRightSide = new Rectangle(Constants.APP_WIDTH / 2f, 0f, Constants.APP_WIDTH / 2f, Constants.APP_HEIGHT);
         screenLeftSide = new Rectangle(0, 0, Constants.APP_WIDTH / 2, Constants.APP_HEIGHT);
-        Gdx.input.setInputProcessor(gd);
     }
 
     /**
@@ -133,7 +135,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         for (int i = 0; i < 2; i++) {
             mapChunks.add(new MapChunk(world, mapChunks.size));
         }
-        Gdx.app.log("GameScreen", "Generated " + mapChunks.size + " map chunks.");
+
         currentMapChunk++;
 
         player = new PlayerObject(world);
@@ -193,9 +195,32 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         uiCamera.unproject(touchPoint.set(x, y, 0));
     }
 
+    /**
+     * Restarts the game to start new one.
+     */
+    public void restartGame( ) {
+        Gdx.app.log("GameScreen", "Restarting the game.");
+        // Reset chunks.
+        for ( MapChunk mapChunk : mapChunks ) {
+            mapChunk.destroy();
+            removalMapChunks.add( mapChunk );
+        }
+        removeRemovalMapChunks();
+        player = new PlayerObject( world );
+        // Reset attributes.
+        currentMapChunk = 0;
+        accumulator = 0f;
+        deathTimer = 2;
+        score = 0;
+    }
+
     @Override
     public void show() {
-
+        Gdx.input.setInputProcessor(gd);
+        if ( playTimes > 0 ) {
+            restartGame();
+        }
+        playTimes++;
     }
 
     @Override
@@ -219,7 +244,17 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         // Draw UI
         batch.setProjectionMatrix(uiCamera.combined);
         score += delta * 10;
-        scoreFont.draw(batch, "Score:" + (int) score, Constants.WORLD_TO_SCREEN, Constants.APP_HEIGHT - 10);
+        scoreFont.draw( batch, "Score:" + (int) score, Constants.WORLD_TO_SCREEN, Constants.APP_HEIGHT - 10);
+
+        // Debug details.
+        debugFont.draw( batch, "Current map chunk: " + currentMapChunk, Constants.APP_WIDTH - 200, Constants.APP_HEIGHT - 10 );
+        debugFont.draw( batch, "Mapchunks: " + mapChunks.size, Constants.APP_WIDTH - 200, Constants.APP_HEIGHT - 30 );
+        debugFont.draw( batch, "Play times: " + playTimes, Constants.APP_WIDTH - 200, Constants.APP_HEIGHT - 50 );
+
+        debugFont.draw( batch, "Body count: " + world.getBodyCount(), Constants.APP_WIDTH - 200, Constants.APP_HEIGHT - 80 );
+
+        debugFont.draw( batch, "Player X " + player.getBody().getPosition().x, Constants.APP_WIDTH - 200, Constants.APP_HEIGHT - 100 );
+        debugFont.draw( batch, "Player Y " + player.getBody().getPosition().y, Constants.APP_WIDTH - 200, Constants.APP_HEIGHT - 120 );
 
         batch.end();
 
@@ -270,11 +305,16 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         }
         additionMapChunks.clear();
 
-        // Remove map chunks.
+        removeRemovalMapChunks();
+    }
+
+    /**
+     * Removes map chunks which are on the queue.
+     */
+    public void removeRemovalMapChunks( ) {
         for (MapChunk mapChunk : removalMapChunks) {
             mapChunks.removeValue(mapChunk, true);
             currentMapChunk++;
-            Gdx.app.log( "GameScreen", "Current map chunk: " + currentMapChunk );
             additionMapChunks.add(new MapChunk(world, mapChunks.size));
         }
         removalMapChunks.clear();

@@ -88,6 +88,16 @@ public class MapChunk {
     }
 
     /**
+     * Clears map chunk.
+     */
+    public void destroy( ) {
+        for ( GameObject gameObject : gameObjects ) {
+            removalGameObjects.add( gameObject );
+        }
+        removeRemovalGameObjects();
+    }
+
+    /**
      * Getters.
      */
 

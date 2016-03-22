@@ -33,7 +33,7 @@ public class PlayerObject extends GameObject {
      * @param world     Box2D World
      */
     public PlayerObject(World world) {
-        super(world, Constants.WORLD_TO_SCREEN * 2 / 100f, Constants.WORLD_TO_SCREEN * 2 / 100f,
+        super(world, Constants.PLAYER_START_X, Constants.PLAYER_START_Y,
                 Constants.WORLD_TO_SCREEN * 0.85f / 100f, Constants.WORLD_TO_SCREEN * 2 / 100f,
                 Constants.PLAYER_DENSITY,
                 new Texture(Gdx.files.internal(Constants.PLAYER_RUNNING_IMAGE_PATH)),

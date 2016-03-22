@@ -1,6 +1,5 @@
 package fi.tamk.tiko.orion.sleeprunner;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
@@ -8,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
-import fi.tamk.tiko.orion.sleeprunner.screens.MainMenu;
+import fi.tamk.tiko.orion.sleeprunner.screens.MainMenuScreen;
 
 /**
  * SleepRunner is an upcoming sidescroller android game.
@@ -24,7 +23,7 @@ public class SleepRunner extends Game {
 
 	private SpriteBatch batch;
 
-	private MainMenu mainMenuScreen;
+	private MainMenuScreen mainMenuScreen;
 
 	private GameScreen gameScreen;
 
@@ -32,7 +31,6 @@ public class SleepRunner extends Game {
 
 	@Override
 	public void create() {
-
 		music = Gdx.audio.newMusic(Gdx.files.internal(Constants.GAME_MUSIC_PATH));
 
 		batch = new SpriteBatch();
@@ -40,8 +38,6 @@ public class SleepRunner extends Game {
 		music.play();
 		music.setVolume(0.1f);
 		setMainMenuScreen();
-
-
 	}
 
 	public SpriteBatch getBatch() {
@@ -49,22 +45,28 @@ public class SleepRunner extends Game {
 	}
 
 	public void setGameScreen(){
-		setScreen (new GameScreen(this));
+		setScreen( getGameScreen() );
 
 	}
+
 	public void setMainMenuScreen(){
-		setScreen (new MainMenu(this));
-
+		setScreen( getMainMenuScreen() );
 	}
 
-	public MainMenu getMainMenu() {
+	public MainMenuScreen getMainMenuScreen() {
+		if ( mainMenuScreen == null ) {
+			mainMenuScreen = new MainMenuScreen( this );
+		}
 		return mainMenuScreen;
 	}
+
 	public GameScreen getGameScreen() {
+        if ( gameScreen == null ) {
+            gameScreen = new GameScreen( this );
+        }
 		return gameScreen;
 	}
 
 	public Music getMusic( ) { return music; }
-
 
 }
