@@ -254,7 +254,6 @@ public abstract class GameObject {
         userData = null;
         body.setUserData(null);
         world.destroyBody(body);
-        Gdx.app.log("GameObject", "Deleted body, there are total of " + world.getBodyCount());
     }
 
     /**

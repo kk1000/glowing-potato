@@ -59,15 +59,19 @@ public class MapGenerator {
      *
      * @param grid The 2D integer map grid.
      * @param x    Current x position. (grid index)
+     * @param minEmptyBlocks  Minimum amount of empty blocks in the chunk.
+     * @param maxEmptyBlocks  Maximum amount of empty blocks in the chunk.
+     * @param minGroundBlocks Minimum amount of ground blocks in the chunk.
+     * @param maxGroundBlocks Maximum amount of ground blocks in the chunk.
      */
-    private static void generateGroundBlock( int[][] grid, int x ) {
+    private static void generateGroundBlock( int[][] grid, int x, int minEmptyBlocks, int maxEmptyBlocks, int minGroundBlocks, int maxGroundBlocks ) {
         int random = MathUtils.random(0, 4); // Probability to get empty block.
         if (random == 0) {
             // Try to make empty block.
             grid[1][x] = Constants.EMPTY_BLOCK;
             grid[0][x] = Constants.EMPTY_BLOCK;
-            if ( isSymbolInRow( grid, Constants.EMPTY_BLOCK, x, 1, Constants.MAX_EMPTY_AMOUNT ) ||
-                    !isSymbolInRow( grid, Constants.GROUND_BLOCK, x - 1, 1, Constants.MIN_GROUND_AMOUNT ) ) {
+            if ( isSymbolInRow( grid, Constants.EMPTY_BLOCK, x, 1, maxEmptyBlocks ) ||
+                    !isSymbolInRow( grid, Constants.GROUND_BLOCK, x - 1, 1, minGroundBlocks ) ) {
                 // There is already maximum amount of empty blocks
                 // or not enough ground according to min value
                 // replace this position with ground.
@@ -78,8 +82,8 @@ public class MapGenerator {
             // Try to make ground block.
             grid[1][x] = Constants.GROUND_BLOCK;
             grid[0][x] = Constants.GROUND_BLOCK;
-            if ( isSymbolInRow( grid, Constants.GROUND_BLOCK, x - 1, 1, Constants.MAX_GROUND_AMOUNT ) ||
-                    !isSymbolInRow( grid, Constants.EMPTY_BLOCK, x - 1, 1, Constants.MIN_EMPTY_AMOUNT ) &&
+            if ( isSymbolInRow( grid, Constants.GROUND_BLOCK, x - 1, 1, maxGroundBlocks ) ||
+                    !isSymbolInRow( grid, Constants.EMPTY_BLOCK, x - 1, 1, minEmptyBlocks ) &&
                     !isSymbolAtPosition( grid, Constants.GROUND_BLOCK, x - 1, 1 ) ) {
                 // There is not enough of empty blocks according
                 // to the minimum value or
@@ -129,32 +133,20 @@ public class MapGenerator {
     }
 
     /**
-     * Generates semi random positions for grounds
-     * and spikes to the 2D integer array.
+     * Generates semi random map chunk.
      *
+     * @param minEmptyBlocks  Minimum amount of empty blocks in the chunk.
+     * @param maxEmptyBlocks  Maximum amount of empty blocks in the chunk.
+     * @param minGroundBlocks Minimum amount of ground blocks in the chunk.
+     * @param maxGroundBlocks Maximum amount of ground blocks in the chunk.
      * @return Filled 2D integer array.
      */
-    public static int[][] generateMapChunkGrid() {
+    public static int[][] generateMapChunkGrid( int minEmptyBlocks, int maxEmptyBlocks, int minGroundBlocks, int maxGroundBlocks ) {
         int[][] grid = new int[ Constants.CHUNK_MAX_TILES_HEIGHT ][ Constants.CHUNK_MAX_TILES_WIDTH ];
-        Gdx.app.log( "MapGenerator", "Generating new map chunk grid!" );
         for ( int i = 0; i < Constants.CHUNK_MAX_TILES_WIDTH; i++ ) {
-            generateGroundBlock(grid, i);
+            generateGroundBlock(grid, i, minEmptyBlocks, maxEmptyBlocks, minGroundBlocks, maxGroundBlocks );
             generateSpikeBlock(grid, i);
             //generatePowerUpBlock( grid, i );
-        }
-        return grid;
-    }
-
-    /**
-     * Generates only ground map chunk grid.
-     *
-     * @return Filled 2D integer array.
-     */
-    public static int[][] generateMapChunkIntervalGrid( ) {
-        int[][] grid = new int[ Constants.CHUNK_MAX_TILES_HEIGHT ][ Constants.CHUNK_MAX_TILES_WIDTH ];
-        for ( int i = 0; i < Constants.CHUNK_MAX_TILES_WIDTH; i++ ) {
-            grid[0][i] = Constants.GROUND_BLOCK;
-            grid[1][i] = Constants.GROUND_BLOCK;
         }
         return grid;
     }
@@ -170,7 +162,7 @@ public class MapGenerator {
      */
     public static boolean isInGameObjectBounds( int x, int y, int symbol, MapChunk mapChunk ) {
         Array<GameObject> gameObjects = mapChunk.getGameObjects();
-        float offsetLength = ( mapChunk.getOffset() * Constants.CHUNK_WIDTH_PIXELS )/100f;
+        float offsetLength = ( mapChunk.getPosition() * Constants.CHUNK_WIDTH_PIXELS )/100f;
         float gameObjectHeight;
         float gameObjectWidth;
         float gameObjectX;
@@ -209,7 +201,7 @@ public class MapGenerator {
     public static GameObject generateGameObject( MapChunk mapChunk, int x, int y, int width, int height, int symbol ) {
         GameObject gameObject = null;
         World world = mapChunk.getWorld();
-        float offset = mapChunk.getOffset();
+        float offset = mapChunk.getPosition();
         float scale = 1/100f;
         float meterHeight = height * scale;
         float meterWidth = width * scale;

@@ -44,12 +44,6 @@ public class Constants {
     public static final int SPIKES_BLOCK = 2;
     public static final int POWERUP_SHIELD_BLOCK = 3;
 
-    public static final int MAX_EMPTY_AMOUNT = 4;
-    public static final int MIN_EMPTY_AMOUNT = 2;
-
-    public static final int MIN_GROUND_AMOUNT = 2;
-    public static final int MAX_GROUND_AMOUNT = 40;
-
     /**
      * Player physics
      */

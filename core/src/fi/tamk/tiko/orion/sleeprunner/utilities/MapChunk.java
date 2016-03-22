@@ -19,22 +19,31 @@ public class MapChunk {
 
     private World world;
 
-    private int offset;
+    private int maxEmptyBlocks;
+    private int minEmptyBlocks;
+    private int maxGroundBlocks;
+    private int minGroundBlocks;
+
+    private int position;
 
     /**
      * Constructor for MapChunk.
      *
-     * @param world   The Box2D game world.
-     * @param offset  Map chunk's position in the mapChunks array.
+     * @param world     The Box2D game world.
+     * @param position  Map chunk's position in the mapChunks array.
+     * @param minEmptyBlocks  Minimum amount of empty blocks in the chunk.
+     * @param maxEmptyBlocks  Maximum amount of empty blocks in the chunk.
+     * @param minGroundBlocks Minimum amount of ground blocks in the chunk.
+     * @param maxGroundBlocks Maximum amount of ground blocks in the chunk.
      */
-    public MapChunk(World world, int offset) {
+    public MapChunk(World world, int position, int minEmptyBlocks, int maxEmptyBlocks, int minGroundBlocks, int maxGroundBlocks ) {
         this.world = world;
-        this.offset = offset;
-        if (offset == 0) {
-            grid = MapGenerator.generateMapChunkIntervalGrid();
-        } else {
-            grid = MapGenerator.generateMapChunkGrid();
-        }
+        this.position = position;
+        this.minEmptyBlocks = minEmptyBlocks;
+        this.maxEmptyBlocks = maxEmptyBlocks;
+        this.minGroundBlocks = minGroundBlocks;
+        this.maxGroundBlocks = maxGroundBlocks;
+        this.grid = MapGenerator.generateMapChunkGrid( this.minEmptyBlocks, this.maxEmptyBlocks, this.minGroundBlocks, this.maxGroundBlocks );
         MapGenerator.generateGameObjects(this);
     }
 
@@ -101,9 +110,9 @@ public class MapChunk {
      * Getters.
      */
 
-    public int[][] getGrid( ) { return grid; }
-    public int getOffset( ) { return offset; }
-    public World getWorld( ) { return world; }
     public Array<GameObject> getGameObjects( ) { return gameObjects; }
+    public World getWorld( ) { return world; }
+    public int getPosition( ) { return position; }
+    public int[][] getGrid( ) { return grid; }
 
 }
