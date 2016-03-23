@@ -293,13 +293,13 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
                 }
                 mapChunks.add( mapChunk );
             }
+            currentMapChunk = mapChunks.first();
         } else if ( mapChunks.size == 1 ) {
             // There is need for one new map chunk.
             int nextChunkNumber = currentMapChunk.getChunkNumber() + 2;
+            currentMapChunk = mapChunks.first();
             mapChunks.add(new MapChunk( currentMapChunk, world, mapChunks.size, nextChunkNumber));
         }
-        // Current map chunk is always the first in the array.
-        currentMapChunk = mapChunks.first();
     }
 
     /**

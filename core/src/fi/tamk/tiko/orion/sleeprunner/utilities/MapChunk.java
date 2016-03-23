@@ -73,18 +73,18 @@ public class MapChunk {
      */
     public void calculateValues() {
         if ( previousMapChunk != null ) {
-            int minGroundBlocks = previousMapChunk.getMinGroundBlocks();
-            int maxGroundBlocks = previousMapChunk.getMaxGroundBlocks();
+            int minGround = previousMapChunk.getMinGroundBlocks();
+            int maxGround = previousMapChunk.getMaxGroundBlocks();
             if (chunkNumber % Constants.DIFFICULTY_CHANGE_INTERVAL == 0) {
                 // How many times difficulty has changed.
-                int changeAmount = chunkNumber / Constants.DIFFICULTY_CHANGE_INTERVAL;
+                //int changeAmount = chunkNumber / Constants.DIFFICULTY_CHANGE_INTERVAL;
                 // Decrease the minimum and maximum values to make the game little bit harder.
-                minGroundBlocks = minGroundBlocks - changeAmount;
-                maxGroundBlocks = maxGroundBlocks - changeAmount;
+                minGround -= 1;
+                maxGround -= 1;
             }
             // Set chunks attributes to match calculated values.
-            setMinGroundBlocks(minGroundBlocks);
-            setMaxGroundBlocks(maxGroundBlocks);
+            setMinGroundBlocks(minGround);
+            setMaxGroundBlocks(maxGround);
         }
     }
 
