@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
@@ -29,11 +30,15 @@ public class SleepRunner extends Game {
 
 	private Music music;
 
+	private Skin skin;
+
 	@Override
 	public void create() {
 		music = Gdx.audio.newMusic(Gdx.files.internal(Constants.GAME_MUSIC_PATH));
 
 		batch = new SpriteBatch();
+
+		skin  = new Skin(Gdx.files.internal(Constants.SKIN_PATH));
 
 		music.play();
 		music.setVolume(0.1f);
@@ -68,5 +73,7 @@ public class SleepRunner extends Game {
 	}
 
 	public Music getMusic( ) { return music; }
+
+	public Skin getSkin() { return skin;}
 
 }

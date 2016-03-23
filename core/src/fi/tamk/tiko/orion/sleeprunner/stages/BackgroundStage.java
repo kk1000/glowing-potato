@@ -25,7 +25,10 @@ public class BackgroundStage extends Stage {
      * Uses background camera from GameScreen.
      */
     public BackgroundStage(SleepRunner g, OrthographicCamera worldCamera, Batch batch) {
-        super(new ScalingViewport(Scaling.stretch, Constants.APP_WIDTH, Constants.APP_HEIGHT, worldCamera), batch);
+        super(new ScalingViewport(Scaling.stretch,
+                Constants.APP_WIDTH,
+                Constants.APP_HEIGHT,
+                worldCamera), batch);
         game = g;
 
         setupBackgrounds();

@@ -24,6 +24,7 @@ import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.objects.PlayerObject;
 import fi.tamk.tiko.orion.sleeprunner.stages.BackgroundStage;
+import fi.tamk.tiko.orion.sleeprunner.stages.PauseStage;
 import fi.tamk.tiko.orion.sleeprunner.utilities.BodyUtils;
 import fi.tamk.tiko.orion.sleeprunner.utilities.MapChunk;
 
@@ -46,6 +47,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     private OrthographicCamera uiCamera;
 
     private BackgroundStage backgroundStage;
+    private PauseStage pauseStage;
 
     private Rectangle screenRightSide;
     private Rectangle screenLeftSide;
@@ -70,6 +72,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     private float score = 0;
 
     private int playTimes;
+    private boolean paused = false;
 
     /**
      * Constructor for GameScreen.
@@ -94,6 +97,8 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
         uiCamera = new OrthographicCamera();
         uiCamera.setToOrtho(false, Constants.APP_WIDTH, Constants.APP_HEIGHT);
+
+        pauseStage = new PauseStage(game,uiCamera,batch);
 
         scoreFont = new BitmapFont(Gdx.files.internal(Constants.GAME_FONT_PATH));
         debugFont = new BitmapFont();
@@ -237,7 +242,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         // Draw UI
         batch.setProjectionMatrix(uiCamera.combined);
         score += delta * 10;
-        scoreFont.draw( batch, "Score:" + (int) score, Constants.WORLD_TO_SCREEN, Constants.APP_HEIGHT - 10);
+        scoreFont.draw(batch, "Score:" + (int) score, Constants.WORLD_TO_SCREEN, Constants.APP_HEIGHT - 10);
 
         // Debug details.
         debugFont.draw( batch, "Chunk number: " + currentMapChunk.getChunkNumber(), Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 10 );
@@ -253,6 +258,12 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         debugFont.draw( batch, "Play times: " + playTimes, Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 180 );
 
         batch.end();
+
+        // Draw pausemenu if paused.
+        if(paused) {
+            pauseStage.act(delta);
+            pauseStage.draw();
+        }
 
         debugRenderer.render(world, gameCamera.combined);
 
@@ -272,6 +283,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         // Check for death.
         if (player.isDead()) {
             deathTimer -= delta;
+            paused = true;
         }
         if (deathTimer <= 0) {
             game.setMainMenuScreen();

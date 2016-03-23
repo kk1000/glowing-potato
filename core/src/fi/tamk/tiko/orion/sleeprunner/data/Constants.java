@@ -87,6 +87,7 @@ public class Constants {
     public static final String PLAYER_RUNNING_IMAGE_PATH = "graphics/player.png";
     // UI
     public static final String MAINMENU_LOGO_IMAGE_PATH = "graphics/mainmenu.png";
+    public static final String PAUSEMENU_IMAGE_PATH = "graphics/pausescreen.png";
 
     /**
      * SoundEffects paths
