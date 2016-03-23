@@ -57,7 +57,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     private Array<MapChunk> removalMapChunks = new Array<MapChunk>();
     private Array<MapChunk> mapChunks = new Array<MapChunk>();
     private MapChunk currentMapChunk;
-    //private int currentMapChunk
     private PlayerObject player;
     private World world;
 

@@ -22,10 +22,10 @@ public class MapChunk {
 
     private World world;
 
-    private int maxGroundBlocks;
-    private int minGroundBlocks;
-    private int maxEmptyBlocks;
-    private int minEmptyBlocks;
+    private int maxGroundBlocks = Constants.START_MAX_GROUND_BLOCKS;
+    private int minGroundBlocks = Constants.START_MIN_GROUND_BLOCKS;
+    private int maxEmptyBlocks = Constants.START_MAX_EMPTY_BLOCKS;
+    private int minEmptyBlocks = Constants.START_MIN_EMPTY_BLOCKS;
 
     private int chunkNumber;
     private int position;
@@ -33,7 +33,7 @@ public class MapChunk {
     /**
      * Constructor for MapChunk.
      *
-     * @param previousMapChunk Previous map chunk. Note that it's game objects are deleted.
+     * @param previousMapChunk Previous map chunk. Note that its game objects are deleted.
      * @param world            The Box2D game world.
      * @param position         Map chunk's position in the mapChunks array.
      * @param chunkNumber      Current map chunk's number.
@@ -43,6 +43,7 @@ public class MapChunk {
         this.world = world;
         this.position = position;
         this.chunkNumber = chunkNumber;
+        // Note that first MapChunk uses start values, others calculate them by method below.
         calculateValues();
         this.grid = MapGenerator.generateMapChunkGrid( this );
         MapGenerator.generateGameObjects(this);
@@ -71,40 +72,20 @@ public class MapChunk {
      * Such as ground min and max amount and possibility for power up.
      */
     public void calculateValues() {
-        int minEmptyBlocks;
-        int maxEmptyBlocks;
-        int minGroundBlocks;
-        int maxGroundBlocks;
-        if ( previousMapChunk == null ) {
-            // This is first chunk so use start values.
-            minEmptyBlocks = Constants.START_MIN_EMPTY_BLOCKS;
-            maxEmptyBlocks = Constants.START_MAX_EMPTY_BLOCKS;
-            minGroundBlocks = Constants.START_MIN_GROUND_BLOCKS;
-            maxGroundBlocks = Constants.START_MAX_GROUND_BLOCKS;
-        } else {
-            minEmptyBlocks = previousMapChunk.getMinEmptyBlocks();
-            maxEmptyBlocks = previousMapChunk.getMaxEmptyBlocks();
-            minGroundBlocks = previousMapChunk.getMinGroundBlocks();
-            maxGroundBlocks = previousMapChunk.getMaxGroundBlocks();
-        }
-        if ( chunkNumber % Constants.DIFFICULTY_CHANGE_INTERVAL == 0 ) {
-            // How many times difficulty has changed.
-            int changeAmount = chunkNumber / Constants.DIFFICULTY_CHANGE_INTERVAL;
-            // Decrease the minimum and maximum values to make the game little bit harder.
-            minGroundBlocks = minGroundBlocks - changeAmount;
-            maxGroundBlocks = maxGroundBlocks - changeAmount;
-            if ( minGroundBlocks < 1 ) {
-                minGroundBlocks = 1;
+        if ( previousMapChunk != null ) {
+            int minGroundBlocks = previousMapChunk.getMinGroundBlocks();
+            int maxGroundBlocks = previousMapChunk.getMaxGroundBlocks();
+            if (chunkNumber % Constants.DIFFICULTY_CHANGE_INTERVAL == 0) {
+                // How many times difficulty has changed.
+                int changeAmount = chunkNumber / Constants.DIFFICULTY_CHANGE_INTERVAL;
+                // Decrease the minimum and maximum values to make the game little bit harder.
+                minGroundBlocks = minGroundBlocks - changeAmount;
+                maxGroundBlocks = maxGroundBlocks - changeAmount;
             }
-            if ( maxGroundBlocks < 1 ) {
-                maxGroundBlocks = 1;
-            }
+            // Set chunks attributes to match calculated values.
+            setMinGroundBlocks(minGroundBlocks);
+            setMaxGroundBlocks(maxGroundBlocks);
         }
-        // Set chunks attributes to match calculated values.
-        setMinEmptyBlocks( minEmptyBlocks );
-        setMaxEmptyBlocks( maxEmptyBlocks );
-        setMinGroundBlocks( minGroundBlocks );
-        setMaxGroundBlocks( maxGroundBlocks );
     }
 
     /**
