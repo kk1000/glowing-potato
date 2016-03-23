@@ -36,7 +36,6 @@ public class Tools {
                 }
             }
         }
-        Gdx.app.log("Tools", "Created animation with " + frames.length + " frames.");
         return new Animation(fps, frames);
     }
 

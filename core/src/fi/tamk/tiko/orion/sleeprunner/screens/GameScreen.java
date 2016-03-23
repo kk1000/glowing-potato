@@ -56,7 +56,8 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
     private Array<MapChunk> removalMapChunks = new Array<MapChunk>();
     private Array<MapChunk> mapChunks = new Array<MapChunk>();
-    private int currentMapChunk = 0;
+    private MapChunk currentMapChunk;
+    //private int currentMapChunk
     private PlayerObject player;
     private World world;
 
@@ -131,7 +132,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         world.setContactListener(this);
 
         createMapChunks();
-        currentMapChunk++;
 
         player = new PlayerObject(world);
     }
@@ -203,7 +203,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         removeRemovalMapChunks();
         player = new PlayerObject( world );
         // Reset attributes.
-        currentMapChunk = 0;
         accumulator = 0f;
         deathTimer = 2;
         score = 0;
@@ -242,14 +241,17 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         scoreFont.draw( batch, "Score:" + (int) score, Constants.WORLD_TO_SCREEN, Constants.APP_HEIGHT - 10);
 
         // Debug details.
-        debugFont.draw( batch, "Current map chunk: " + currentMapChunk, Constants.APP_WIDTH - 200, Constants.APP_HEIGHT - 10 );
-        debugFont.draw( batch, "Map chunks: " + mapChunks.size, Constants.APP_WIDTH - 200, Constants.APP_HEIGHT - 30 );
-        debugFont.draw( batch, "Play times: " + playTimes, Constants.APP_WIDTH - 200, Constants.APP_HEIGHT - 50 );
+        debugFont.draw( batch, "Chunk number: " + currentMapChunk.getChunkNumber(), Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 10 );
+        debugFont.draw( batch, "Max Ground: " + currentMapChunk.getMaxGroundBlocks(), Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 30 );
+        debugFont.draw( batch, "Min Ground: " + currentMapChunk.getMinGroundBlocks(), Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 50 );
+        debugFont.draw( batch, "Change per chunk: " + Constants.DIFFICULTY_CHANGE_INTERVAL, Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 70 );
 
-        debugFont.draw( batch, "Body count: " + world.getBodyCount(), Constants.APP_WIDTH - 200, Constants.APP_HEIGHT - 80 );
+        debugFont.draw( batch, "Body count: " + world.getBodyCount(), Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 100 );
 
-        debugFont.draw( batch, "Player X " + player.getBody().getPosition().x, Constants.APP_WIDTH - 200, Constants.APP_HEIGHT - 100 );
-        debugFont.draw( batch, "Player Y " + player.getBody().getPosition().y, Constants.APP_WIDTH - 200, Constants.APP_HEIGHT - 120 );
+        debugFont.draw( batch, "Player X " + player.getBody().getPosition().x, Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 130 );
+        debugFont.draw( batch, "Player Y " + player.getBody().getPosition().y, Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 150 );
+
+        debugFont.draw( batch, "Play times: " + playTimes, Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 180 );
 
         batch.end();
 
@@ -285,20 +287,20 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
             // There are no map chunks set, set couple to start the world.
             for (int i = 0; i < 2; i++) {
                 MapChunk mapChunk;
-                if (i == 0) {
-                    // First map chunk is only ground.
-                    mapChunk = new MapChunk(world, mapChunks.size, 0, 0, Constants.CHUNK_MAX_TILES_WIDTH, Constants.CHUNK_MAX_TILES_WIDTH);
+                if ( i == 0 ) {
+                    mapChunk = new MapChunk( null, world, 0, ( i + 1 ) );
                 } else {
-                    mapChunk = new MapChunk(world, mapChunks.size, 2, 4, 2, 10);
+                    mapChunk = new MapChunk( mapChunks.get( i - 1 ), world, mapChunks.size, ( i + 1 ) );
                 }
-                mapChunks.add(mapChunk);
+                mapChunks.add( mapChunk );
             }
         } else if ( mapChunks.size == 1 ) {
             // There is need for one new map chunk.
-            mapChunks.add( new MapChunk( world, mapChunks.size, 2, 4, 2, 10 ) );
-            // Player has gone through one map chunk.
-            currentMapChunk++;
+            int nextChunkNumber = currentMapChunk.getChunkNumber() + 2;
+            mapChunks.add(new MapChunk( currentMapChunk, world, mapChunks.size, nextChunkNumber));
         }
+        // Current map chunk is always the first in the array.
+        currentMapChunk = mapChunks.first();
     }
 
     /**

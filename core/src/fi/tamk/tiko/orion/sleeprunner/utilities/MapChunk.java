@@ -5,12 +5,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
+import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.objects.GameObject;
 
 /**
  * Contains one map chunks game objects and information.
  */
 public class MapChunk {
+
+    private MapChunk previousMapChunk;
 
     private Array<GameObject> removalGameObjects = new Array<GameObject>();
     private Array<GameObject> gameObjects = new Array<GameObject>();
@@ -19,31 +22,29 @@ public class MapChunk {
 
     private World world;
 
-    private int maxEmptyBlocks;
-    private int minEmptyBlocks;
     private int maxGroundBlocks;
     private int minGroundBlocks;
+    private int maxEmptyBlocks;
+    private int minEmptyBlocks;
 
+    private int chunkNumber;
     private int position;
 
     /**
      * Constructor for MapChunk.
      *
-     * @param world     The Box2D game world.
-     * @param position  Map chunk's position in the mapChunks array.
-     * @param minEmptyBlocks  Minimum amount of empty blocks in the chunk.
-     * @param maxEmptyBlocks  Maximum amount of empty blocks in the chunk.
-     * @param minGroundBlocks Minimum amount of ground blocks in the chunk.
-     * @param maxGroundBlocks Maximum amount of ground blocks in the chunk.
+     * @param previousMapChunk Previous map chunk. Note that it's game objects are deleted.
+     * @param world            The Box2D game world.
+     * @param position         Map chunk's position in the mapChunks array.
+     * @param chunkNumber      Current map chunk's number.
      */
-    public MapChunk(World world, int position, int minEmptyBlocks, int maxEmptyBlocks, int minGroundBlocks, int maxGroundBlocks ) {
+    public MapChunk(MapChunk previousMapChunk, World world, int position, int chunkNumber ) {
+        this.previousMapChunk = previousMapChunk;
         this.world = world;
         this.position = position;
-        this.minEmptyBlocks = minEmptyBlocks;
-        this.maxEmptyBlocks = maxEmptyBlocks;
-        this.minGroundBlocks = minGroundBlocks;
-        this.maxGroundBlocks = maxGroundBlocks;
-        this.grid = MapGenerator.generateMapChunkGrid( this.minEmptyBlocks, this.maxEmptyBlocks, this.minGroundBlocks, this.maxGroundBlocks );
+        this.chunkNumber = chunkNumber;
+        calculateValues();
+        this.grid = MapGenerator.generateMapChunkGrid( this );
         MapGenerator.generateGameObjects(this);
     }
 
@@ -63,6 +64,47 @@ public class MapChunk {
                 removalGameObjects.add(gameObject);
             }
         }
+    }
+
+    /**
+     * Calculates current chunks generating values.
+     * Such as ground min and max amount and possibility for power up.
+     */
+    public void calculateValues() {
+        int minEmptyBlocks;
+        int maxEmptyBlocks;
+        int minGroundBlocks;
+        int maxGroundBlocks;
+        if ( previousMapChunk == null ) {
+            // This is first chunk so use start values.
+            minEmptyBlocks = Constants.START_MIN_EMPTY_BLOCKS;
+            maxEmptyBlocks = Constants.START_MAX_EMPTY_BLOCKS;
+            minGroundBlocks = Constants.START_MIN_GROUND_BLOCKS;
+            maxGroundBlocks = Constants.START_MAX_GROUND_BLOCKS;
+        } else {
+            minEmptyBlocks = previousMapChunk.getMinEmptyBlocks();
+            maxEmptyBlocks = previousMapChunk.getMaxEmptyBlocks();
+            minGroundBlocks = previousMapChunk.getMinGroundBlocks();
+            maxGroundBlocks = previousMapChunk.getMaxGroundBlocks();
+        }
+        if ( chunkNumber % Constants.DIFFICULTY_CHANGE_INTERVAL == 0 ) {
+            // How many times difficulty has changed.
+            int changeAmount = chunkNumber / Constants.DIFFICULTY_CHANGE_INTERVAL;
+            // Decrease the minimum and maximum values to make the game little bit harder.
+            minGroundBlocks = minGroundBlocks - changeAmount;
+            maxGroundBlocks = maxGroundBlocks - changeAmount;
+            if ( minGroundBlocks < 1 ) {
+                minGroundBlocks = 1;
+            }
+            if ( maxGroundBlocks < 1 ) {
+                maxGroundBlocks = 1;
+            }
+        }
+        // Set chunks attributes to match calculated values.
+        setMinEmptyBlocks( minEmptyBlocks );
+        setMaxEmptyBlocks( maxEmptyBlocks );
+        setMinGroundBlocks( minGroundBlocks );
+        setMaxGroundBlocks( maxGroundBlocks );
     }
 
     /**
@@ -107,12 +149,42 @@ public class MapChunk {
     }
 
     /**
+     * Setters.
+     */
+
+    public void setMaxGroundBlocks( int maxGroundBlocks ) {
+        // Minimum of maximum ground blocks is 1. (yes, it's pretty trippy!)
+        if ( maxGroundBlocks < 1 ) {
+            this.maxGroundBlocks = 1;
+        } else {
+            this.maxGroundBlocks = maxGroundBlocks;
+        }
+    }
+
+    public void setMinGroundBlocks( int minGroundBlocks ) {
+        if ( minGroundBlocks < 1 ) {
+            this.minGroundBlocks = 1;
+        } else {
+            this.minGroundBlocks = minGroundBlocks;
+        }
+    }
+
+    public void setMaxEmptyBlocks( int maxEmptyBlocks ) { this.maxEmptyBlocks = maxEmptyBlocks; }
+    public void setMinEmptyBlocks( int minEmptyBlocks ) { this.minEmptyBlocks = minEmptyBlocks; }
+
+    /**
      * Getters.
      */
 
+    public int getMaxGroundBlocks( ) { return maxGroundBlocks; }
+    public int getMinGroundBlocks( ) { return minGroundBlocks; }
+    public int getMaxEmptyBlocks( ) { return maxEmptyBlocks; }
+    public int getMinEmptyBlocks( ) { return minEmptyBlocks; }
+
     public Array<GameObject> getGameObjects( ) { return gameObjects; }
-    public World getWorld( ) { return world; }
+    public int getChunkNumber( ) { return chunkNumber; }
     public int getPosition( ) { return position; }
     public int[][] getGrid( ) { return grid; }
+    public World getWorld( ) { return world; }
 
 }

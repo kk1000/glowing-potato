@@ -44,6 +44,13 @@ public class Constants {
     public static final int SPIKES_BLOCK = 2;
     public static final int POWERUP_SHIELD_BLOCK = 3;
 
+    public static final int DIFFICULTY_CHANGE_INTERVAL = 3;
+
+    public static final int START_MIN_EMPTY_BLOCKS = 2;
+    public static final int START_MAX_EMPTY_BLOCKS = 4;
+    public static final int START_MIN_GROUND_BLOCKS = 6;
+    public static final int START_MAX_GROUND_BLOCKS = 48;
+
     /**
      * Player physics
      */

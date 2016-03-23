@@ -5,6 +5,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
+import java.util.Map;
+
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.objects.GameObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.GroundObject;
@@ -132,21 +134,29 @@ public class MapGenerator {
         }
     }
 
+
+
     /**
      * Generates semi random map chunk.
      *
-     * @param minEmptyBlocks  Minimum amount of empty blocks in the chunk.
-     * @param maxEmptyBlocks  Maximum amount of empty blocks in the chunk.
-     * @param minGroundBlocks Minimum amount of ground blocks in the chunk.
-     * @param maxGroundBlocks Maximum amount of ground blocks in the chunk.
-     * @return Filled 2D integer array.
+     * @param mapChunk The map chunk.
+     * @return         Filled 2D integer array.
      */
-    public static int[][] generateMapChunkGrid( int minEmptyBlocks, int maxEmptyBlocks, int minGroundBlocks, int maxGroundBlocks ) {
+    public static int[][] generateMapChunkGrid( MapChunk mapChunk ) {
+        boolean isFirstMapChunk = ( mapChunk.getPosition() == 0 );
         int[][] grid = new int[ Constants.CHUNK_MAX_TILES_HEIGHT ][ Constants.CHUNK_MAX_TILES_WIDTH ];
+        int[] values = new int[] { mapChunk.getMinEmptyBlocks(), mapChunk.getMaxEmptyBlocks(), mapChunk.getMinGroundBlocks(), mapChunk.getMaxGroundBlocks() };
         for ( int i = 0; i < Constants.CHUNK_MAX_TILES_WIDTH; i++ ) {
-            generateGroundBlock(grid, i, minEmptyBlocks, maxEmptyBlocks, minGroundBlocks, maxGroundBlocks );
-            generateSpikeBlock(grid, i);
-            //generatePowerUpBlock( grid, i );
+            if ( isFirstMapChunk ) {
+                // This is first map chunk of the world.
+                // Create ground by force.
+                grid[ 1 ][ i ] = Constants.GROUND_BLOCK;
+                grid[ 0 ][ i ] = Constants.GROUND_BLOCK;
+            } else {
+                generateGroundBlock(grid, i, values[ 0 ], values[ 1 ], values[ 2 ], values[ 3 ] );
+                generateSpikeBlock(grid, i);
+                //generatePowerUpBlock( grid, i );
+            }
         }
         return grid;
     }
