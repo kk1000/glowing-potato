@@ -118,10 +118,9 @@ public class PlayerObject extends GameObject {
 
     @Override
     public void update(float delta) {
-
         runSound.setVolume(1,prefs.getSoundVolume());
         if (dodging) {
-            dodgeTimer += Gdx.graphics.getDeltaTime();
+            dodgeTimer += delta;
             if (dodgeTimer > 1) {
                 stopDodge();
                 dodgeTimer = 0;

@@ -27,6 +27,15 @@ public class Constants {
     public static final Vector2 WORLD_GRAVITY = new Vector2(0, -10);
 
     /**
+     * Game states
+     */
+
+    public static final int GAME_READY = 0;
+    public static final int GAME_RUNNING = 1;
+    public static final int GAME_PAUSED = 2;
+    public static final int GAME_OVER = 3;
+
+    /**
      * Map generation
      */
 

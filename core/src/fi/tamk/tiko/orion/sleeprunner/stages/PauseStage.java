@@ -9,7 +9,6 @@ import com.badlogic.gdx.utils.viewport.ScalingViewport;
 
 import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
-import fi.tamk.tiko.orion.sleeprunner.graphics.MovingBackground;
 import fi.tamk.tiko.orion.sleeprunner.graphics.PauseMenu;
 
 /**
@@ -34,16 +33,12 @@ public class PauseStage extends Stage {
 
     @Override
     public void act(float delta) {
-
         super.act(delta);
-
     }
 
     @Override
     public void draw() {
-
         super.draw();
-
     }
 
 }

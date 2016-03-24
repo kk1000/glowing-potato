@@ -39,7 +39,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
     private SleepRunner game;
 
-
     private Box2DDebugRenderer debugRenderer;
 
     private OrthographicCamera backgroundCamera;
@@ -72,7 +71,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     private float score = 0;
 
     private int playTimes;
-    private boolean paused = false;
+    private int gameState;
 
     /**
      * Constructor for GameScreen.
@@ -105,6 +104,8 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
         setupWorld();
         setupTouchControlAreas();
+
+        gameState = Constants.GAME_READY;
     }
 
     /**
@@ -205,70 +206,77 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
             removalMapChunks.add( mapChunk );
         }
         removeRemovalMapChunks();
+        createMapChunks();
         player = new PlayerObject( world );
         // Reset attributes.
         accumulator = 0f;
         deathTimer = 2;
         score = 0;
+        gameState = Constants.GAME_READY;
     }
 
-    @Override
-    public void show() {
-        Gdx.input.setInputProcessor(gd);
-        if ( playTimes > 0 ) {
-            restartGame();
-        }
-        playTimes++;
-    }
-
-    @Override
-    public void render(float delta) {
-        // Clear screen.
-        Gdx.gl.glClearColor(0.1f, 0.1f, 0.5f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        // Draw background.
-        batch.setProjectionMatrix(backgroundCamera.combined);
-        backgroundStage.act(delta);
-        backgroundStage.draw();
-
-        batch.begin();
-
-        // Draw game objects.
-        batch.setProjectionMatrix(gameCamera.combined);
-        updateMapChunks();
-        updatePlayer(delta);
-
-        // Draw UI
-        batch.setProjectionMatrix(uiCamera.combined);
-        score += delta * 10;
-        scoreFont.draw(batch, "Score:" + (int) score, Constants.WORLD_TO_SCREEN, Constants.APP_HEIGHT - 10);
-
-        // Debug details.
-        debugFont.draw( batch, "Chunk number: " + currentMapChunk.getChunkNumber(), Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 10 );
-        debugFont.draw( batch, "Max Ground: " + currentMapChunk.getMaxGroundBlocks(), Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 30 );
-        debugFont.draw( batch, "Min Ground: " + currentMapChunk.getMinGroundBlocks(), Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 50 );
-        debugFont.draw( batch, "Change per chunk: " + Constants.DIFFICULTY_CHANGE_INTERVAL, Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 70 );
-
-        debugFont.draw( batch, "Body count: " + world.getBodyCount(), Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 100 );
-
-        debugFont.draw( batch, "Player X " + player.getBody().getPosition().x, Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 130 );
-        debugFont.draw( batch, "Player Y " + player.getBody().getPosition().y, Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 150 );
-
-        debugFont.draw( batch, "Play times: " + playTimes, Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 180 );
-
-        batch.end();
-
-        // Draw pausemenu if paused.
-        if(paused) {
-            pauseStage.act(delta);
-            pauseStage.draw();
-        }
-
-        debugRenderer.render(world, gameCamera.combined);
-
-        desktopListener();
+    /**
+     * Updates game on every frame according current game state.
+     *
+     * @param delta The delta time.
+     */
+    public void update( float delta ) {
         doPhysicsStep(delta);
+        // Update different game states.
+        switch ( gameState ) {
+            case Constants.GAME_READY:
+                // Character menu?
+                updateGameReady();
+                break;
+            case Constants.GAME_RUNNING:
+                updateGameRunning( delta );
+                break;
+            case Constants.GAME_PAUSED:
+                updateGamePaused();
+                break;
+            case Constants.GAME_OVER:
+                updateGameOver();
+                break;
+        }
+    }
+
+    /**
+     * Updates when game is ready.
+     */
+    private void updateGameReady( ) {
+        if ( Gdx.input.isTouched() ) {
+            gameState = Constants.GAME_RUNNING;
+        }
+    }
+
+    /**
+     * Updates when game is running.
+     *
+     * @param delta The delta time.
+     */
+    private void updateGameRunning( float delta ) {
+        desktopListener();
+        updateMapChunks(delta);
+        updatePlayer(delta);
+        score += delta * 10;
+    }
+
+    /**
+     * Updates when game is paused.
+     */
+    private void updateGamePaused( ) {
+        if ( Gdx.input.isTouched() ) {
+            gameState = Constants.GAME_RUNNING;
+        }
+    }
+
+    /**
+     * Runs when game is over.
+     */
+    private void updateGameOver( ) {
+        if ( Gdx.input.isTouched() ) {
+            game.setMainMenuScreen();
+        }
     }
 
     /**
@@ -276,24 +284,55 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      *
      * @param delta The delta time.
      */
-    public void updatePlayer(float delta) {
+    private void updatePlayer(float delta) {
         player.update(delta);
-        player.draw(batch);
 
         // Check for death.
         if (player.isDead()) {
             deathTimer -= delta;
-            paused = true;
         }
+
         if (deathTimer <= 0) {
-            game.setMainMenuScreen();
+            gameState = Constants.GAME_OVER;
         }
+    }
+
+    /**
+     * Updates map chunks (and its game objects) in every frame.
+     *
+     * @param delta The delta time.
+     */
+    private void updateMapChunks( float delta ) {
+        removeRemovalMapChunks();
+        createMapChunks();
+
+        // Update map chunks.
+        for (MapChunk mapChunk : mapChunks) {
+            mapChunk.update( delta );
+        }
+
+        // Check for empty map chunks, they will be removed.
+        for (MapChunk mapChunk : mapChunks) {
+            if (mapChunk.isEmpty()) {
+                removalMapChunks.add(mapChunk);
+            }
+        }
+    }
+
+    /**
+     * Removes map chunks which are on the queue.
+     */
+    private void removeRemovalMapChunks( ) {
+        for (MapChunk mapChunk : removalMapChunks) {
+            mapChunks.removeValue(mapChunk, true);
+        }
+        removalMapChunks.clear();
     }
 
     /**
      * Creates new chunks if needed.
      */
-    public void createMapChunks( ) {
+    private void createMapChunks( ) {
         if ( mapChunks.size == 0 ) {
             // There are no map chunks set, set couple to start the world.
             for (int i = 0; i < 2; i++) {
@@ -312,37 +351,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
             currentMapChunk = mapChunks.first();
             mapChunks.add(new MapChunk( currentMapChunk, world, mapChunks.size, nextChunkNumber));
         }
-    }
-
-    /**
-     * Handles map chunks in every frame.
-     * This also moves and draws the map chunks game objects.
-     */
-    public void updateMapChunks() {
-        removeRemovalMapChunks();
-        createMapChunks();
-
-        // Update map chunks.
-        for (MapChunk mapChunk : mapChunks) {
-            mapChunk.update(batch);
-        }
-
-        // Check for empty map chunks, they will be removed.
-        for (MapChunk mapChunk : mapChunks) {
-            if (mapChunk.isEmpty()) {
-                removalMapChunks.add(mapChunk);
-            }
-        }
-    }
-
-    /**
-     * Removes map chunks which are on the queue.
-     */
-    public void removeRemovalMapChunks( ) {
-        for (MapChunk mapChunk : removalMapChunks) {
-            mapChunks.removeValue(mapChunk, true);
-        }
-        removalMapChunks.clear();
     }
 
     /**
@@ -368,15 +376,138 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         }
     }
 
+    /**
+     * Draws game elements on every frame according to game state.
+     *
+     * @param delta The delta time.
+     */
+    public void draw( float delta ) {
+        // Clear screen.
+        Gdx.gl.glClearColor(0.1f, 0.1f, 0.5f, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        debugRenderer.render(world, gameCamera.combined);
 
+        // TODO: Draw player without animation if game is not running.
+        // TODO: Same for backgrounds!
+
+        // Draw background.
+        batch.setProjectionMatrix(backgroundCamera.combined);
+        backgroundStage.act(delta);
+        backgroundStage.draw();
+
+        batch.begin();
+
+        // Draw game objects.
+        batch.setProjectionMatrix(gameCamera.combined);
+        drawMapChunks();
+        player.draw(batch);
+
+        // Draw UI
+        batch.setProjectionMatrix(uiCamera.combined);
+        scoreFont.draw(batch, "Score:" + (int) score, Constants.WORLD_TO_SCREEN, Constants.APP_HEIGHT - 10);
+
+        // Debug details.
+        if ( Constants.DEBUG ) {
+            debugFont.draw(batch, "Chunk number: " + currentMapChunk.getChunkNumber(), Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 10);
+            debugFont.draw(batch, "Max Ground: " + currentMapChunk.getMaxGroundBlocks(), Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 30);
+            debugFont.draw(batch, "Min Ground: " + currentMapChunk.getMinGroundBlocks(), Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 50);
+            debugFont.draw(batch, "Change per chunk: " + Constants.DIFFICULTY_CHANGE_INTERVAL, Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 70);
+
+            debugFont.draw(batch, "Body count: " + world.getBodyCount(), Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 100);
+
+            debugFont.draw(batch, "Player X " + player.getBody().getPosition().x, Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 130);
+            debugFont.draw(batch, "Player Y " + player.getBody().getPosition().y, Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 150);
+
+            debugFont.draw(batch, "Play times: " + playTimes, Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 180);
+        }
+
+        // Draw different game states.
+        switch ( gameState ) {
+            case Constants.GAME_READY:
+                // Character menu?
+                drawGameReady();
+                break;
+            case Constants.GAME_RUNNING:
+                drawGameRunning();
+                break;
+            case Constants.GAME_PAUSED:
+                drawGamePaused( delta );
+                break;
+            case Constants.GAME_OVER:
+                drawGameOver();
+                break;
+        }
+
+        batch.end();
+    }
+
+    /**
+     * Draws when game is ready.
+     */
+    private void drawGameReady( ) {
+        scoreFont.draw( batch, "Game is ready!", Constants.APP_WIDTH/2, Constants.APP_HEIGHT/2 );
+    }
+
+    /**
+     * Draws when game is running.
+     */
+    private void drawGameRunning( ) {
+
+    }
+
+    /**
+     * Draws when game is paused.
+     *
+     * @param delta The delta time.
+     */
+    private void drawGamePaused( float delta ) {
+        scoreFont.draw( batch, "Game is paused!", Constants.APP_WIDTH/2, Constants.APP_HEIGHT/2 );
+        //pauseStage.act(delta);
+        //pauseStage.draw();
+    }
+
+    /**
+     * Draws when game is over.
+     */
+    private void drawGameOver( ) {
+        scoreFont.draw( batch, "Game is over!", Constants.APP_WIDTH/2, Constants.APP_HEIGHT/2 );
+    }
+
+    /**
+     * Draws map chunk's game objects.
+     */
+    public void drawMapChunks( ) {
+        for ( MapChunk mapChunk : mapChunks ) {
+            mapChunk.draw( batch );
+        }
+    }
+
+    @Override
+    public void show() {
+        Gdx.input.setInputProcessor(gd);
+        if ( playTimes > 0 ) {
+            restartGame();
+        }
+        playTimes++;
+    }
+
+    @Override
+    public void render(float delta) {
+        update( delta );
+        draw( delta );
+    }
+
+    @Override
     public void resize(int width, int height) {
 
     }
 
     @Override
     public void pause() {
-
+        if ( gameState == Constants.GAME_RUNNING ) {
+            gameState = Constants.GAME_PAUSED;
+        }
     }
 
     @Override

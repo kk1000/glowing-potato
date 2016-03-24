@@ -36,6 +36,7 @@ public class GroundObject extends GameObject {
 
     @Override
     public void update(float delta) {
+        updateTiles( delta );
         body.setLinearVelocity(Constants.ENEMY_LINEAR_VELOCITY);
     }
 

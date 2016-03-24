@@ -50,24 +50,6 @@ public class MapChunk {
     }
 
     /**
-     * Updates map chunks game objects.
-     *
-     * @param batch Spritebatch.
-     */
-    public void update(SpriteBatch batch) {
-        removeRemovalGameObjects();
-        for (GameObject gameObject : gameObjects) {
-            // Move and draw every game objects.
-            gameObject.update(Gdx.graphics.getDeltaTime());
-            gameObject.draw( batch );
-            if ( BodyUtils.gameObjectPassed( gameObject ) ) {
-                // Remove game objects which has passed the screen.
-                removalGameObjects.add(gameObject);
-            }
-        }
-    }
-
-    /**
      * Calculates current chunks generating values.
      * Such as ground min and max amount and possibility for power up.
      */
@@ -89,6 +71,23 @@ public class MapChunk {
     }
 
     /**
+     * Updates map chunks game objects.
+     *
+     * @param delta The delta time.
+     */
+    public void update( float delta ) {
+        removeRemovalGameObjects();
+        for (GameObject gameObject : gameObjects) {
+            // Move and draw every game objects.
+            gameObject.update(delta);
+            if ( BodyUtils.gameObjectPassed( gameObject ) ) {
+                // Remove game objects which has passed the screen.
+                removalGameObjects.add(gameObject);
+            }
+        }
+    }
+
+    /**
      * Removes game objects which are set to removalGameObjects array.
      */
     public void removeRemovalGameObjects() {
@@ -97,6 +96,17 @@ public class MapChunk {
             gameObjects.removeValue(gameObject, true);
         }
         removalGameObjects.clear();
+    }
+
+    /**
+     * Draws map chunks game objects.
+     *
+     * @param batch Spritebatch.
+     */
+    public void draw( SpriteBatch batch ) {
+        for ( GameObject gameObject : gameObjects ) {
+            gameObject.draw(batch);
+        }
     }
 
     /**

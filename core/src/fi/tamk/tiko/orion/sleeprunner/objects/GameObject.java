@@ -225,7 +225,6 @@ public abstract class GameObject {
                     body.getTransform().getRotation() * MathUtils.radiansToDegrees);
         } else {
             for ( Tile tile : tiles ) {
-                tile.update(Gdx.graphics.getDeltaTime());
                 batch.draw( tile.textureRegion,
                         tile.x,
                         tile.y,
@@ -246,6 +245,17 @@ public abstract class GameObject {
      * @param delta Delta time.
      */
     public abstract void update(float delta);
+
+    /**
+     * Updates game object's tile positions.
+     *
+     * @param delta Delta time.
+     */
+    public void updateTiles( float delta ) {
+        for ( Tile tile : tiles ) {
+            tile.update(delta);
+        }
+    }
 
     /**
      * Destroys game object.
