@@ -18,7 +18,7 @@ public class PauseMenu extends Actor {
         this.texture = new Texture(Gdx.files.internal(Constants.PAUSEMENU_IMAGE_PATH));
         this.setX(x);
         this.setY(y);
-    }
+    } 
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
