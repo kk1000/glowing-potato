@@ -221,7 +221,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      * @param delta The delta time.
      */
     public void update( float delta ) {
-        doPhysicsStep(delta);
         // Update different game states.
         switch ( gameState ) {
             case Constants.GAME_READY:
@@ -259,6 +258,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         updateMapChunks(delta);
         updatePlayer(delta);
         score += delta * 10;
+        doPhysicsStep(delta);
     }
 
     /**
@@ -397,7 +397,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         backgroundStage.act(delta);
         backgroundStage.draw();
 
-
         batch.begin();
 
         // Draw game objects.
@@ -424,7 +423,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
             debugFont.draw(batch, "Play times: " + playTimes, Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 180);
         }
 
-
         // Draw different game states.
         switch ( gameState ) {
             case Constants.GAME_READY:
@@ -443,9 +441,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         }
 
         batch.end();
-
-
-
     }
 
     /**
