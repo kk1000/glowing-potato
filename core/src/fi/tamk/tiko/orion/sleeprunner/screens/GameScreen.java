@@ -253,7 +253,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      *
      * @param delta The delta time.
      */
-    private void updateGameRunning( float delta ) {
+    private void updateGameRunning( float delta) {
         desktopListener();
         updateMapChunks(delta);
         updatePlayer(delta);
@@ -388,8 +388,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.5f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        debugRenderer.render(world, gameCamera.combined);
-
         // TODO: Draw player without animation if game is not running.
         // TODO: Same for backgrounds!
 
@@ -442,6 +440,9 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         }
 
         batch.end();
+
+        debugRenderer.render(world, gameCamera.combined);
+
     }
 
     /**
