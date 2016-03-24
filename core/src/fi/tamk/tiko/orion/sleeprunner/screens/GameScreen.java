@@ -277,6 +277,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         if ( Gdx.input.isTouched() ) {
             game.setMainMenuScreen();
         }
+        pauseStage.act();
     }
 
     /**
@@ -396,6 +397,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         backgroundStage.act(delta);
         backgroundStage.draw();
 
+
         batch.begin();
 
         // Draw game objects.
@@ -422,6 +424,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
             debugFont.draw(batch, "Play times: " + playTimes, Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 180);
         }
 
+
         // Draw different game states.
         switch ( gameState ) {
             case Constants.GAME_READY:
@@ -435,11 +438,14 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
                 drawGamePaused( delta );
                 break;
             case Constants.GAME_OVER:
-                drawGameOver();
+                drawGameOver(delta);
                 break;
         }
 
         batch.end();
+
+
+
     }
 
     /**
@@ -462,16 +468,16 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      * @param delta The delta time.
      */
     private void drawGamePaused( float delta ) {
-        scoreFont.draw( batch, "Game is paused!", Constants.APP_WIDTH/2, Constants.APP_HEIGHT/2 );
-        //pauseStage.act(delta);
-        //pauseStage.draw();
+        scoreFont.draw(batch, "Game is paused!", Constants.APP_WIDTH / 2, Constants.APP_HEIGHT / 2);
     }
 
     /**
      * Draws when game is over.
      */
-    private void drawGameOver( ) {
-        scoreFont.draw( batch, "Game is over!", Constants.APP_WIDTH/2, Constants.APP_HEIGHT/2 );
+    private void drawGameOver(float delta) {
+        batch.end();
+        pauseStage.draw();
+        batch.begin();
     }
 
     /**
