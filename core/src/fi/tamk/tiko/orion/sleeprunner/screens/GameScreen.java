@@ -271,7 +271,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     }
 
     /**
-     * Runs when game is over.
+     *  Runs when game is over.
      */
     private void updateGameOver( ) {
         Gdx.input.setInputProcessor(pauseStage);
