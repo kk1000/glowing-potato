@@ -4,11 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
@@ -28,7 +30,7 @@ public class PauseStage extends Stage {
 
     private PauseMenu pauseMenu;
 
-    private MoveToAction moveToAction;
+    private Actions actions;
 
     private Actor newGameButton;
     private Actor mainMenuButton;
@@ -51,9 +53,8 @@ public class PauseStage extends Stage {
 
     private void setupMenu(){
 
-        pauseMenu = new PauseMenu(Constants.APP_WIDTH / 4, Constants.APP_HEIGHT*2);
+        pauseMenu = new PauseMenu(Constants.APP_WIDTH / 4, Constants.APP_HEIGHT / 4);
         setupAnimation();
-        pauseMenu.addAction(moveToAction);
         setupButtons();
         addActor(pauseMenu);
         addActor(newGameButton);
@@ -100,9 +101,9 @@ public class PauseStage extends Stage {
 
     private void setupAnimation(){
 
-        moveToAction = new MoveToAction();
-        moveToAction.setPosition(Constants.APP_WIDTH / 4, Constants.APP_HEIGHT / 4);
-        moveToAction.setDuration(0.35f);
+        this.getRoot().addAction(Actions.sequence(Actions.fadeIn(5)));
+
+
     }
 
     public boolean isNewGameButtonTouched(){
