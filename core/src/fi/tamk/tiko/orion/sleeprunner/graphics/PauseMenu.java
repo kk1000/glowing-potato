@@ -22,9 +22,6 @@ public class PauseMenu extends Actor {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        //batch.draw(texture,this.getX(),this.getY(),this.getOriginX(),this.getOriginY(),this.getWidth(),
-        //        this.getHeight(),this.getScaleX(), this.getScaleY(),this.getRotation(),0,0,
-        //        texture.getWidth(),texture.getHeight(),false,false);
         batch.draw(texture,getX(),getY());
     }
 
