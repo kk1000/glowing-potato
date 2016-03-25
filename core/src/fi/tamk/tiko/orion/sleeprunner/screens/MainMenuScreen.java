@@ -102,8 +102,6 @@ public class MainMenuScreen implements Screen{
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
-
         batch.begin();
         game.getMusic().setVolume(prefs.getMusicVolume());
         Gdx.input.setInputProcessor(stage);
@@ -114,12 +112,8 @@ public class MainMenuScreen implements Screen{
         stage.act();
         stage.draw();
         batch.end();
-
     }
 
-    /**
-     Method for resizing.
-     */
     @Override
     public void resize(int width, int height) {
 

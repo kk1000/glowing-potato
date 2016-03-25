@@ -97,10 +97,10 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         uiCamera = new OrthographicCamera();
         uiCamera.setToOrtho(false, Constants.APP_WIDTH, Constants.APP_HEIGHT);
 
-        pauseStage = new PauseStage(game,uiCamera,batch);
-
         scoreFont = new BitmapFont(Gdx.files.internal(Constants.GAME_FONT_PATH));
         debugFont = new BitmapFont();
+
+        pauseStage = new PauseStage(game,uiCamera,batch, scoreFont );
 
         setupWorld();
         setupTouchControlAreas();
@@ -255,6 +255,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      */
     private void updateGameRunning( float delta) {
         desktopListener();
+        backgroundStage.act(delta);
         updateMapChunks(delta);
         updatePlayer(delta);
         score += delta * 10;
@@ -380,10 +381,8 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
     /**
      * Draws game elements on every frame according to game state.
-     *
-     * @param delta The delta time.
      */
-    public void draw( float delta ) {
+    public void draw() {
         // Clear screen.
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.5f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -393,7 +392,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
         // Draw background.
         batch.setProjectionMatrix(backgroundCamera.combined);
-        backgroundStage.act(delta);
         backgroundStage.draw();
 
         batch.begin();
@@ -401,7 +399,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         // Draw game objects.
         batch.setProjectionMatrix(gameCamera.combined);
         drawMapChunks();
-        player.draw(batch);
+
 
         // Draw UI
         batch.setProjectionMatrix(uiCamera.combined);
@@ -432,10 +430,10 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
                 drawGameRunning();
                 break;
             case Constants.GAME_PAUSED:
-                drawGamePaused( delta );
+                drawGamePaused();
                 break;
             case Constants.GAME_OVER:
-                drawGameOver(delta);
+                drawGameOver();
                 break;
         }
 
@@ -456,22 +454,21 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      * Draws when game is running.
      */
     private void drawGameRunning( ) {
-
+        batch.setProjectionMatrix(gameCamera.combined);
+        player.draw(batch);
     }
 
     /**
      * Draws when game is paused.
-     *
-     * @param delta The delta time.
      */
-    private void drawGamePaused( float delta ) {
+    private void drawGamePaused() {
         scoreFont.draw(batch, "Game is paused!", Constants.APP_WIDTH / 2, Constants.APP_HEIGHT / 2);
     }
 
     /**
      * Draws when game is over.
      */
-    private void drawGameOver(float delta) {
+    private void drawGameOver() {
         batch.end();
         pauseStage.draw();
         batch.begin();
@@ -498,7 +495,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     @Override
     public void render(float delta) {
         update( delta );
-        draw( delta );
+        draw();
     }
 
     @Override

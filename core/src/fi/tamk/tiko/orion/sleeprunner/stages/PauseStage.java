@@ -1,17 +1,14 @@
 package fi.tamk.tiko.orion.sleeprunner.stages;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 
@@ -25,47 +22,55 @@ import fi.tamk.tiko.orion.sleeprunner.graphics.PauseMenu;
  */
 public class PauseStage extends Stage {
 
-    private SleepRunner game;
     private OrthographicCamera camera;
+    private SleepRunner game;
 
     private PauseMenu pauseMenu;
-
-    private Actions actions;
 
     private Actor newGameButton;
     private Actor mainMenuButton;
 
+    private BitmapFont font;
     private Batch batch;
 
     private boolean isNewGameButtonTouched = false;
     private boolean isMainMenuButtonTouched = false;
 
-    public PauseStage(SleepRunner g, OrthographicCamera worldCamera,Batch batch){
+    /**
+     * Constructor for the pause stage.
+     *
+     * @param g             Reference to SleepRunner class. (why?)
+     * @param worldCamera   Game's UI camera. (world camera?)
+     * @param batch         The spritebatch.
+     * @param font          The game's general font.
+     */
+    public PauseStage(SleepRunner g, OrthographicCamera worldCamera,Batch batch, BitmapFont font ){
         super(new ScalingViewport(Scaling.stretch, Constants.APP_WIDTH, Constants.APP_HEIGHT, worldCamera), batch);
-        game = g;
+        this.game = g;
         this.batch = batch;
-
-
+        this.camera = worldCamera;
+        this.font = font;
         setupMenu();
-
-        camera = worldCamera;
     }
 
+    /**
+     * Setups menu wholly.
+     */
     private void setupMenu(){
-
-        pauseMenu = new PauseMenu(Constants.APP_WIDTH / 4, Constants.APP_HEIGHT / 4);
+        pauseMenu = new PauseMenu(Constants.APP_WIDTH / 4, Constants.APP_HEIGHT / 4, font, "Game Over!");
         setupAnimation();
         setupButtons();
         addActor(pauseMenu);
         addActor(newGameButton);
         addActor(mainMenuButton);
-
         mainMenuButton.debug();
         newGameButton.debug();
     }
 
+    /**
+     * Setups menu's buttons.
+     */
     private void setupButtons(){
-
         newGameButton = new Actor();
         newGameButton.setBounds(Constants.APP_WIDTH / 2.5f,
                 Constants.APP_HEIGHT / 2.4f,
@@ -80,7 +85,6 @@ public class PauseStage extends Stage {
                 return true;
             }
         });
-
 
         mainMenuButton = new Actor();
         mainMenuButton.setBounds(Constants.APP_WIDTH / 2.5f,
@@ -99,19 +103,11 @@ public class PauseStage extends Stage {
 
     }
 
-    private void setupAnimation(){
-
+    /**
+     * Setups pause menu's fade animation.
+     */
+    private void setupAnimation() {
         this.getRoot().addAction(Actions.sequence(Actions.fadeIn(5)));
-
-
-    }
-
-    public boolean isNewGameButtonTouched(){
-        return isNewGameButtonTouched;
-    }
-
-    public boolean isMainMenuButtonTouched(){
-        return isMainMenuButtonTouched;
     }
 
     @Override
@@ -122,6 +118,18 @@ public class PauseStage extends Stage {
     @Override
     public void draw() {
         super.draw();
+    }
+
+    /**
+     * Getters.
+     */
+
+    public boolean isNewGameButtonTouched(){
+        return isNewGameButtonTouched;
+    }
+
+    public boolean isMainMenuButtonTouched(){
+        return isMainMenuButtonTouched;
     }
 
 }
