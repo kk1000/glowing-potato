@@ -1,6 +1,7 @@
 package fi.tamk.tiko.orion.sleeprunner.utilities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -11,6 +12,7 @@ import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.objects.GameObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.GroundObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.ShieldPowerUpObject;
+import fi.tamk.tiko.orion.sleeprunner.objects.SignObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.SpikesObject;
 
 /**
@@ -134,8 +136,6 @@ public class MapGenerator {
         }
     }
 
-
-
     /**
      * Generates semi random map chunk.
      *
@@ -147,9 +147,13 @@ public class MapGenerator {
         int[][] grid = new int[ Constants.CHUNK_MAX_TILES_HEIGHT ][ Constants.CHUNK_MAX_TILES_WIDTH ];
         int[] values = new int[] { mapChunk.getMinEmptyBlocks(), mapChunk.getMaxEmptyBlocks(), mapChunk.getMinGroundBlocks(), mapChunk.getMaxGroundBlocks() };
         for ( int i = 0; i < Constants.CHUNK_MAX_TILES_WIDTH; i++ ) {
-            if ( isFirstMapChunk ) {
-                // This is first map chunk of the world.
+            if ( isFirstMapChunk || mapChunk.getChunkNumber() % Constants.DIFFICULTY_CHANGE_INTERVAL == 0 ) {
+                // This is first map chunk of the world
+                // or sleep stage changing chunk!
                 // Create ground by force.
+                if ( i == 5 ) {
+                    grid[ 2 ][ i ] = Constants.SIGN_BLOCK;
+                }
                 grid[ 1 ][ i ] = Constants.GROUND_BLOCK;
                 grid[ 0 ][ i ] = Constants.GROUND_BLOCK;
             } else {
@@ -223,7 +227,9 @@ public class MapGenerator {
         if ( symbol == Constants.GROUND_BLOCK ) {
             gameObject = new GroundObject( world, centerX, centerY, meterWidth, meterHeight );
         } else if ( symbol == Constants.SPIKES_BLOCK ) {
-            gameObject = new SpikesObject( world, centerX, centerY, meterWidth, meterHeight );
+            gameObject = new SpikesObject(world, centerX, centerY, meterWidth, meterHeight);
+        } else if ( symbol == Constants.SIGN_BLOCK ) {
+            gameObject = new SignObject( world, centerX, centerY, meterWidth, meterHeight, new BitmapFont(), mapChunk.getSleepStage() );
         } else if ( symbol == Constants.POWERUP_SHIELD_BLOCK ) {
             gameObject = new ShieldPowerUpObject( world, centerX, centerY, meterWidth, meterHeight );
         }

@@ -22,7 +22,7 @@ public class GroundObject extends GameObject {
     public static final TextureRegion LEFT_TEXTURE = Constants.TILESET_SPRITES[2][0];
 
     /**
-     * Constructor for game objects which got no animation.
+     * Constructor for ground object.
      *
      * @param world        Box2D World
      * @param x            X-position.

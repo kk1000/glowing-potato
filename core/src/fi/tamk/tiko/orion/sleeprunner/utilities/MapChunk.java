@@ -27,6 +27,7 @@ public class MapChunk {
     private int maxEmptyBlocks = Constants.START_MAX_EMPTY_BLOCKS;
     private int minEmptyBlocks = Constants.START_MIN_EMPTY_BLOCKS;
 
+    private String sleepStage = "REM UNI";
     private int chunkNumber;
     private int position;
 
@@ -173,6 +174,7 @@ public class MapChunk {
     public int getMinEmptyBlocks( ) { return minEmptyBlocks; }
 
     public Array<GameObject> getGameObjects( ) { return gameObjects; }
+    public String getSleepStage( ) { return sleepStage; }
     public int getChunkNumber( ) { return chunkNumber; }
     public int getPosition( ) { return position; }
     public int[][] getGrid( ) { return grid; }
