@@ -27,7 +27,7 @@ public class MapChunk {
     private int maxEmptyBlocks = Constants.START_MAX_EMPTY_BLOCKS;
     private int minEmptyBlocks = Constants.START_MIN_EMPTY_BLOCKS;
 
-    private String sleepStage = "REM UNI";
+    private String sleepStage = "REM";
     private int chunkNumber;
     private int position;
 

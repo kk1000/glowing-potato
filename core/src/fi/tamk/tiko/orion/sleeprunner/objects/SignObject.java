@@ -1,9 +1,7 @@
 package fi.tamk.tiko.orion.sleeprunner.objects;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -15,9 +13,16 @@ import fi.tamk.tiko.orion.sleeprunner.data.UserData;
  */
 public class SignObject extends GameObject {
 
-    private GlyphLayout glyphLayout;
-    private BitmapFont font;
-    private String text;
+
+    /**
+     * Tiles (texture regions) for different signs.
+     */
+
+    public static final TextureRegion DEEPSLEEP_TEXTURE = Constants.TILESET_SPRITES[4][2];
+    public static final TextureRegion REMSLEEP_TEXTURE = Constants.TILESET_SPRITES[4][1];
+    public static final TextureRegion EMPTY_TEXTURE = Constants.TILESET_SPRITES[4][0];
+
+    private String sleepStage;
 
     /**
      * Constructor for sign object.
@@ -27,36 +32,32 @@ public class SignObject extends GameObject {
      * @param y            Y-position.
      * @param width        Width of the body.
      * @param height       Height of the body.
-     * @param text         Text of the sign.
+     * @param sleepStage   What sleep stage does the sign represent.
      */
-    public SignObject(World world, float x, float y, float width, float height, BitmapFont font, String text ) {
-        super(world, x, y, width, height, 0f, Constants.TILESET_SPRITES[0][0], BodyDef.BodyType.KinematicBody, new UserData("SIGN") );
-        this.font = font;
-        this.text = text;
-        this.glyphLayout = new GlyphLayout( this.font, this.text );
+    public SignObject(World world, float x, float y, float width, float height, String sleepStage ) {
+        super(world, x, y, width, height, 0f, Constants.TILESET_SPRITES[0][4], BodyDef.BodyType.KinematicBody, new UserData("SIGN") );
+        this.sleepStage = sleepStage;
+        setSignTexture();
     }
 
     /**
-     * Calculates sign's text position.
-     *
-     * @param bodyX Body's x position.
-     * @param bodyY Body's y position.
-     * @return x and y in an integer array
+     * Chooses right texture for the sign.
      */
-    private int[] calculateTextPositions( float bodyX, float bodyY ) {
-        int[] pos = new int[ 2 ];
-        pos[ 0 ] = (int) ( ( bodyX * 100f ) + glyphLayout.width/2 );
-        pos[ 1 ] = (int) ( ( bodyY * 100f ) - glyphLayout.height/2 );
-        return pos;
+    private void setSignTexture( ) {
+        if ( sleepStage.equals( "REM" ) ) {
+            this.textureRegion = REMSLEEP_TEXTURE;
+        } else if ( sleepStage.equals( "DEEPSLEEP" ) ) {
+            this.textureRegion = DEEPSLEEP_TEXTURE;
+        } else {
+            this.textureRegion = EMPTY_TEXTURE;
+        }
     }
 
     @Override
     public void draw( Batch batch ) {
-        float bodyX = body.getPosition().x;
-        float bodyY = body.getPosition().y;
         batch.draw( textureRegion,
-                bodyX,
-                bodyY,
+                body.getPosition().x,
+                body.getPosition().y,
                 Constants.WORLD_TO_SCREEN / 2,
                 Constants.WORLD_TO_SCREEN / 2,
                 Constants.WORLD_TO_SCREEN / 100f,
@@ -64,9 +65,6 @@ public class SignObject extends GameObject {
                 1.0f,
                 1.0f,
                 0);
-        int[] textPositions = calculateTextPositions( bodyX, bodyY );
-        //batch.setProjectionMatrix(  );
-        //font.draw( batch, text, textPositions[0], textPositions[1] );
     }
 
     @Override

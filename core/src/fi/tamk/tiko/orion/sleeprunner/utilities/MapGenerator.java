@@ -229,7 +229,7 @@ public class MapGenerator {
         } else if ( symbol == Constants.SPIKES_BLOCK ) {
             gameObject = new SpikesObject(world, centerX, centerY, meterWidth, meterHeight);
         } else if ( symbol == Constants.SIGN_BLOCK ) {
-            gameObject = new SignObject( world, centerX, centerY, meterWidth, meterHeight, new BitmapFont(), mapChunk.getSleepStage() );
+            gameObject = new SignObject( world, centerX, centerY, meterWidth, meterHeight, mapChunk.getSleepStage() );
         } else if ( symbol == Constants.POWERUP_SHIELD_BLOCK ) {
             gameObject = new ShieldPowerUpObject( world, centerX, centerY, meterWidth, meterHeight );
         }
