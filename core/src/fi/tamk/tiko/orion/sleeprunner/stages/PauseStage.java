@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 
@@ -63,15 +64,13 @@ public class PauseStage extends Stage {
         addActor(pauseMenu);
         addActor(newGameButton);
         addActor(mainMenuButton);
-        mainMenuButton.debug();
-        newGameButton.debug();
     }
 
     /**
      * Setups menu's buttons.
      */
     private void setupButtons(){
-        newGameButton = new Actor();
+        newGameButton = new TextButton("Play Again", game.getSkin());
         newGameButton.setBounds(Constants.APP_WIDTH / 2.5f,
                 Constants.APP_HEIGHT / 2.4f,
                 Constants.APP_WIDTH / 5f,
@@ -86,7 +85,7 @@ public class PauseStage extends Stage {
             }
         });
 
-        mainMenuButton = new Actor();
+        mainMenuButton = new TextButton("Main Menu", game.getSkin());
         mainMenuButton.setBounds(Constants.APP_WIDTH / 2.5f,
                 Constants.APP_HEIGHT / 3.42f,
                 Constants.APP_WIDTH / 5f,
