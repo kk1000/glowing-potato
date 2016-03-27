@@ -53,7 +53,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
     private Vector3 touchPoint;
 
-    private GestureDetector gd;
+    private GestureDetector gestureDetector;
 
     private Array<MapChunk> removalMapChunks = new Array<MapChunk>();
     private Array<MapChunk> mapChunks = new Array<MapChunk>();
@@ -81,7 +81,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     public GameScreen(SleepRunner sleepRunner) {
         game = sleepRunner;
 
-        gd = new GestureDetector(new GestureListener());
+        gestureDetector = new GestureDetector(new GestureListener());
 
         batch = game.getBatch();
 
@@ -485,7 +485,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(gd);
+        Gdx.input.setInputProcessor(gestureDetector);
         if ( playTimes > 0 ) {
             restartGame();
         }
@@ -531,6 +531,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         Body b = contact.getFixtureB().getBody();
 
         if ((BodyUtils.bodyIsPlayer(a) && BodyUtils.bodyIsSpikes(b)) || (BodyUtils.bodyIsPlayer(b) && BodyUtils.bodyIsSpikes(a))) {
+            Gdx.app.log( "GameScreen", "Hit spikes!" );
             player.hit();
         } else if ((BodyUtils.bodyIsPlayer(a) && BodyUtils.bodyIsGround(b)) || (BodyUtils.bodyIsGround(a) && BodyUtils.bodyIsPlayer(b))) {
             player.landed();

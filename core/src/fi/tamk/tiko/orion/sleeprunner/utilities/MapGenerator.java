@@ -223,7 +223,6 @@ public class MapGenerator {
         float meterY = y * scale;
         float centerX = meterWidth/2 + meterX;
         float centerY = meterHeight/2 + meterY;
-        if ( centerY == 0.16f ) { centerY = 0f; } // Purkka spike y pos fix.
         if ( symbol == Constants.GROUND_BLOCK ) {
             gameObject = new GroundObject( world, centerX, centerY, meterWidth, meterHeight );
         } else if ( symbol == Constants.SPIKES_BLOCK ) {

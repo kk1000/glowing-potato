@@ -138,7 +138,7 @@ public abstract class GameObject {
             fixtureDef.density = this.density;
             fixtureDef.shape = shape;
             body.createFixture(fixtureDef);
-        } else if (userData.id.equals("GROUND")) {
+        } else if (userData.id.equals("GROUND") || userData.id.equals( "SPIKES" ) ) {
             body.createFixture(shape, this.density);
         }
 
@@ -199,6 +199,7 @@ public abstract class GameObject {
                 }
                 x = (body.getPosition().x - tileSize / 2) - (width / 2 - tileSize / 2) + ( j/100f );
                 y = body.getPosition().y - (i/100f);
+                if ( y == 0.16f ) { y = 0; } // Purkka tile position fix.
                 tiles.add( new Tile( x, y, textureRegion ) );
             }
         }
