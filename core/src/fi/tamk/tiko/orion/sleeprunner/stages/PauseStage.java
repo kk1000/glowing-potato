@@ -34,8 +34,7 @@ public class PauseStage extends Stage {
     private BitmapFont font;
     private Batch batch;
 
-    private boolean isNewGameButtonTouched = false;
-    private boolean isMainMenuButtonTouched = false;
+
 
     /**
      * Constructor for the pause stage.
@@ -80,7 +79,7 @@ public class PauseStage extends Stage {
             @Override
             public boolean touchDown(InputEvent event, float x, float y,
                                      int pointer, int button) {
-                isNewGameButtonTouched = true;
+                game.getGameScreen().restartGame();
                 return true;
             }
         });
@@ -95,7 +94,7 @@ public class PauseStage extends Stage {
             @Override
             public boolean touchDown(InputEvent event, float x, float y,
                                      int pointer, int button) {
-                isMainMenuButtonTouched = true;
+                game.setMainMenuScreen();
                 return true;
             }
         });
@@ -119,16 +118,7 @@ public class PauseStage extends Stage {
         super.draw();
     }
 
-    /**
-     * Getters.
-     */
 
-    public boolean isNewGameButtonTouched(){
-        return isNewGameButtonTouched;
-    }
 
-    public boolean isMainMenuButtonTouched(){
-        return isMainMenuButtonTouched;
-    }
 
 }

@@ -276,12 +276,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      */
     private void updateGameOver( ) {
         Gdx.input.setInputProcessor(pauseStage);
-        if ( pauseStage.isMainMenuButtonTouched() ) {
-            game.setMainMenuScreen();
-        }
-        if ( pauseStage.isNewGameButtonTouched() ) {
-            restartGame();
-        }
         pauseStage.act();
     }
 
