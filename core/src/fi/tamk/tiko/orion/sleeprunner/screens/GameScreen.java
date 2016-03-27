@@ -279,6 +279,9 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         if ( pauseStage.isMainMenuButtonTouched() ) {
             game.setMainMenuScreen();
         }
+        if ( pauseStage.isNewGameButtonTouched() ) {
+            restartGame();
+        }
         pauseStage.act();
     }
 
