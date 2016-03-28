@@ -212,8 +212,6 @@ public abstract class GameObject {
      */
     public void draw(Batch batch) {
         if (hasAnimation) {
-            stateTime += Gdx.graphics.getDeltaTime();
-            currentFrame = currentAnimation.getKeyFrame(stateTime, true);
             batch.draw(currentFrame,
                     body.getPosition().x - currentFrame.getRegionWidth() / 100f / 2,
                     body.getPosition().y - currentFrame.getRegionHeight() / 100f / 2,

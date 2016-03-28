@@ -248,6 +248,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     private void updateGameReady( ) {
         if ( Gdx.input.isTouched() ) {
             gameState = Constants.GAME_RUNNING;
+            player.startAnimation();
         }
     }
 
@@ -271,6 +272,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     private void updateGamePaused( ) {
         if ( Gdx.input.isTouched() ) {
             gameState = Constants.GAME_RUNNING;
+            player.startAnimation();
         }
     }
 
@@ -399,7 +401,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         // Draw game objects.
         batch.setProjectionMatrix(gameCamera.combined);
         drawMapChunks();
-
+        player.draw( batch );
 
         // Draw UI
         batch.setProjectionMatrix(uiCamera.combined);
@@ -455,7 +457,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      */
     private void drawGameRunning( ) {
         batch.setProjectionMatrix(gameCamera.combined);
-        player.draw(batch);
+        //player.draw(batch);
     }
 
     /**
@@ -506,6 +508,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     @Override
     public void pause() {
         if ( gameState == Constants.GAME_RUNNING ) {
+            player.pauseAnimation();
             gameState = Constants.GAME_PAUSED;
         }
     }
@@ -533,6 +536,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         if ((BodyUtils.bodyIsPlayer(a) && BodyUtils.bodyIsSpikes(b)) || (BodyUtils.bodyIsPlayer(b) && BodyUtils.bodyIsSpikes(a))) {
             Gdx.app.log( "GameScreen", "Hit spikes!" );
             player.hit();
+            player.pauseAnimation();
         } else if ((BodyUtils.bodyIsPlayer(a) && BodyUtils.bodyIsGround(b)) || (BodyUtils.bodyIsGround(a) && BodyUtils.bodyIsPlayer(b))) {
             player.landed();
         }

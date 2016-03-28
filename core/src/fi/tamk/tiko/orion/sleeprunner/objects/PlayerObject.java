@@ -19,6 +19,7 @@ public class PlayerObject extends GameObject {
 
     private Animation runAnimation;
 
+    private boolean animationPaused;
     private boolean jumping;
     private boolean dodging;
     private boolean dead;
@@ -43,8 +44,8 @@ public class PlayerObject extends GameObject {
         body.setFixedRotation(true);
 
         runAnimation = Tools.createAnimation(texture, 8, 1, 1, 8, 1/60f);
-
         currentAnimation = runAnimation;
+        pauseAnimation();
 
         runSound = Gdx.audio.newSound(Gdx.files.internal(Constants.PLAYER_RUN_SOUND_PATH));
         runSound.stop();
@@ -118,7 +119,7 @@ public class PlayerObject extends GameObject {
 
     @Override
     public void update(float delta) {
-        runSound.setVolume(1,prefs.getSoundVolume());
+        runSound.setVolume(1, prefs.getSoundVolume());
         if (dodging) {
             dodgeTimer += delta;
             if (dodgeTimer > 1) {
@@ -129,6 +130,26 @@ public class PlayerObject extends GameObject {
         if (body.getPosition().y < 0 || body.getPosition().x < 0) {
             dead = true;
         }
+        // Update animation if it's not paused.
+        if (!animationPaused) {
+            stateTime += Gdx.graphics.getDeltaTime();
+            currentFrame = currentAnimation.getKeyFrame(stateTime, true);
+        }
+    }
+
+    /**
+     * Starts player's animation.
+     */
+    public void startAnimation( ) {
+        animationPaused = false;
+    }
+
+    /**
+     * Pauses player's animation.
+     */
+    public void pauseAnimation( ) {
+        animationPaused = true;
+        currentFrame = currentAnimation.getKeyFrame(0,false);
     }
 
     /**

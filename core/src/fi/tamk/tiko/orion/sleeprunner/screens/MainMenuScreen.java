@@ -73,7 +73,7 @@ public class MainMenuScreen implements Screen{
             }
         });
 
-        muteButton = new TextButton("Sounds", skin);
+        muteButton = new TextButton("SOUNDS", skin);
         muteButton.setBounds(width * 0.8f, height * 0.8f, width / 9, height / 8);
         muteButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
