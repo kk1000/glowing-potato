@@ -154,8 +154,10 @@ public class MapGenerator {
                 if ( i == 5 ) {
                     grid[ 2 ][ i ] = Constants.SIGN_BLOCK;
                 }
-                grid[ 1 ][ i ] = Constants.GROUND_BLOCK;
-                grid[ 0 ][ i ] = Constants.GROUND_BLOCK;
+                if ( i < Constants.CHUNK_MAX_TILES_WIDTH - 2 ) {
+                    grid[1][i] = Constants.GROUND_BLOCK;
+                    grid[0][i] = Constants.GROUND_BLOCK;
+                }
             } else {
                 generateGroundBlock(grid, i, values[ 0 ], values[ 1 ], values[ 2 ], values[ 3 ] );
                 generateSpikeBlock(grid, i);

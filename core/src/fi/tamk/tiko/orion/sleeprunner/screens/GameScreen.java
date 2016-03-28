@@ -262,7 +262,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         backgroundStage.act(delta);
         updateMapChunks(delta);
         updatePlayer(delta);
-        score += delta * 10;
+        score += delta * 2;
         doPhysicsStep(delta);
     }
 
