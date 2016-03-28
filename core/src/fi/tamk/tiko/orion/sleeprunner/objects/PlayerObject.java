@@ -59,8 +59,8 @@ public class PlayerObject extends GameObject {
     public void jump(float velY){
         if(!jumping || dodging || hit){
             if(dodging) stopDodge();
-            velY *= 0.0001f;
-            Constants.PLAYER_JUMPING_LINEAR_IMPULSE.set(0, 0.1f + velY > 0.40f ? 0.40f : 0.1f + velY);
+            velY *= 0.0002f;
+            Constants.PLAYER_JUMPING_LINEAR_IMPULSE.set(0, 0.1f + velY > 0.50f ? 0.50f : 0.1f + velY);
             body.applyLinearImpulse(Constants.PLAYER_JUMPING_LINEAR_IMPULSE, body.getWorldCenter(), true);
             runAnimation.setFrameDuration( 1/3f );
             jumping = true;
