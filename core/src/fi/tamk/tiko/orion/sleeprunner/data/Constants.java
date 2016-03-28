@@ -92,6 +92,7 @@ public class Constants {
     // Background
     public static final String BACKGROUND_IMAGE_PATH = "graphics/backgrounds/sky.png";
     public static final String MOVING_BACKGROUND_IMAGE_PATH = "graphics/backgrounds/hills.png";
+    public static final String MOVING_BACKGROUND2_IMAGE_PATH = "graphics/backgrounds/hills2.png";
     public static final String BACKGROUND_CLOUDS_IMAGE_PATH = "graphics/backgrounds/clouds.png";
     // Player
     public static final String PLAYER_RUNNING_IMAGE_PATH = "graphics/player.png";

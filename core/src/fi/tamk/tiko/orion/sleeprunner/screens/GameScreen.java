@@ -200,6 +200,9 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      */
     public void restartGame( ) {
         Gdx.app.log("GameScreen", "Restarting the game.");
+
+        Gdx.input.setInputProcessor(gestureDetector);
+        
         // Reset chunks.
         for ( MapChunk mapChunk : mapChunks ) {
             mapChunk.destroy();
