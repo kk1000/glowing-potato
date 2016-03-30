@@ -1,6 +1,5 @@
 package fi.tamk.tiko.orion.sleeprunner.utilities;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Body;
 
 import fi.tamk.tiko.orion.sleeprunner.data.UserData;
@@ -13,36 +12,15 @@ import fi.tamk.tiko.orion.sleeprunner.objects.GameObject;
 public class BodyUtils {
 
     /**
-     * Checks if the body is the player.
+     * Checks if the body has given id in its userdata.
      *
-     * @param body Body used in game.
-     * @return boolean
+     * @param body      Body used in game.
+     * @param id        UserData ID to check.
+     * @return          Boolean.
      */
-    public static boolean bodyIsPlayer(Body body){
+    public static boolean bodyHasID( Body body, String id ) {
         UserData userData = (UserData) body.getUserData();
-        return userData != null && userData.id.equals("PLAYER");
-    }
-
-    /**
-     * Checks if the body is ground.
-     *
-     * @param body  Body used in game.
-     * @return boolean
-     */
-    public static boolean bodyIsGround(Body body){
-        UserData userData = (UserData) body.getUserData();
-        return userData != null && userData.id.equals("GROUND");
-    }
-
-    /**
-     * Checks if the body is a spikes.
-     *
-     * @param body Body used in game.
-     * @return boolean
-     */
-    public static boolean bodyIsSpikes(Body body) {
-        UserData userData = (UserData) body.getUserData();
-        return userData != null && userData.id.equals("SPIKES");
+        return userData != null && userData.id.equals( id );
     }
 
     /**

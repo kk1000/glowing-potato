@@ -62,6 +62,13 @@ public class Constants {
     public static final int START_MAX_GROUND_BLOCKS = 48;
 
     /**
+     * Nightmare stuff.
+     */
+
+    public static final float NIGHTMARE_START_X = -((800/100f)/4);
+    public static final float NIGHTMARE_START_Y = (400/100f)/1.5f;
+
+    /**
      * Player physics
      */
 
@@ -96,6 +103,8 @@ public class Constants {
     public static final String BACKGROUND_CLOUDS_IMAGE_PATH = "graphics/backgrounds/clouds.png";
     // Player
     public static final String PLAYER_RUNNING_IMAGE_PATH = "graphics/player.png";
+    // Nightmare
+    public static final String NIGHTMARE_BACKGROUND_IMAGE_PATH = "graphics/nightmare.png";
     // UI
     public static final String MAINMENU_LOGO_IMAGE_PATH = "graphics/mainmenu.png";
     public static final String PAUSEMENU_IMAGE_PATH = "graphics/pausescreen.png";

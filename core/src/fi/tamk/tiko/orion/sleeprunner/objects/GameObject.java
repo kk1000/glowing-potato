@@ -138,7 +138,7 @@ public abstract class GameObject {
             fixtureDef.density = this.density;
             fixtureDef.shape = shape;
             body.createFixture(fixtureDef);
-        } else if (userData.id.equals("GROUND") || userData.id.equals( "SPIKES" ) ) {
+        } else {
             body.createFixture(shape, this.density);
         }
 

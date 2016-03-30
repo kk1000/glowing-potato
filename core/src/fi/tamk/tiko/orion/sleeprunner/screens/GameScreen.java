@@ -22,6 +22,7 @@ import com.badlogic.gdx.utils.Array;
 
 import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
+import fi.tamk.tiko.orion.sleeprunner.objects.NightmareObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.PlayerObject;
 import fi.tamk.tiko.orion.sleeprunner.stages.BackgroundStage;
 import fi.tamk.tiko.orion.sleeprunner.stages.PauseStage;
@@ -58,6 +59,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     private Array<MapChunk> removalMapChunks = new Array<MapChunk>();
     private Array<MapChunk> mapChunks = new Array<MapChunk>();
     private MapChunk currentMapChunk;
+    private NightmareObject nightmare;
     private PlayerObject player;
     private World world;
 
@@ -138,6 +140,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
         createMapChunks();
 
+        nightmare = new NightmareObject(world);
         player = new PlayerObject(world);
     }
 
@@ -210,6 +213,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         }
         removeRemovalMapChunks();
         createMapChunks();
+        nightmare = new NightmareObject( world );
         player = new PlayerObject( world );
         // Reset attributes.
         accumulator = 0f;
@@ -262,6 +266,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         backgroundStage.act(delta);
         updateMapChunks(delta);
         updatePlayer(delta);
+        nightmare.update(delta);
         score += delta * 2;
         doPhysicsStep(delta);
     }
@@ -400,6 +405,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
         // Draw game objects.
         batch.setProjectionMatrix(gameCamera.combined);
+        nightmare.draw(batch );
         drawMapChunks();
         player.draw( batch );
 
@@ -456,8 +462,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      * Draws when game is running.
      */
     private void drawGameRunning( ) {
-        batch.setProjectionMatrix(gameCamera.combined);
-        //player.draw(batch);
     }
 
     /**
@@ -533,11 +537,18 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         Body a = contact.getFixtureA().getBody();
         Body b = contact.getFixtureB().getBody();
 
-        if ((BodyUtils.bodyIsPlayer(a) && BodyUtils.bodyIsSpikes(b)) || (BodyUtils.bodyIsPlayer(b) && BodyUtils.bodyIsSpikes(a))) {
-            Gdx.app.log( "GameScreen", "Hit spikes!" );
+        // Player to spikes collision check.
+        if ((BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "SPIKES")) ||
+                (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "SPIKES")) ) {
+            Gdx.app.log( "GameScreen", "Player hit spikes!" );
             player.hit();
             player.pauseAnimation();
-        } else if ((BodyUtils.bodyIsPlayer(a) && BodyUtils.bodyIsGround(b)) || (BodyUtils.bodyIsGround(a) && BodyUtils.bodyIsPlayer(b))) {
+        }
+
+        // Player to ground collision check.
+        if ((BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "GROUND")) ||
+                (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "GROUND")) ) {
+            Gdx.app.log( "GameScreen", "Player hit ground!" );
             player.landed();
         }
 
@@ -550,7 +561,16 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
+        Body a = contact.getFixtureA().getBody();
+        Body b = contact.getFixtureB().getBody();
 
+        // If the collision is sign or nightmare, ignore it!
+        if ( (BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "SIGN")) ||
+                (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "SIGN")) ||
+                (BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "NIGHTMARE")) ||
+                (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "NIGHTMARE")) ) {
+            contact.setEnabled( false );
+        }
     }
 
     @Override
