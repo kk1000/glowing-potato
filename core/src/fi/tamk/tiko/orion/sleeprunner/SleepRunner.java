@@ -51,7 +51,6 @@ public class SleepRunner extends Game {
 
 	public void setGameScreen(){
 		setScreen( getGameScreen() );
-
 	}
 
 	public void setMainMenuScreen(){
@@ -60,6 +59,7 @@ public class SleepRunner extends Game {
 
 	public MainMenuScreen getMainMenuScreen() {
 		if ( mainMenuScreen == null ) {
+            Gdx.app.log( "SleepRunner", "Creating new MainMenuScreen instance" );
 			mainMenuScreen = new MainMenuScreen( this );
 		}
 		return mainMenuScreen;
@@ -67,6 +67,7 @@ public class SleepRunner extends Game {
 
 	public GameScreen getGameScreen() {
         if ( gameScreen == null ) {
+			Gdx.app.log( "SleepRunner", "Creating new GameScreen instance" );
             gameScreen = new GameScreen( this );
         }
 		return gameScreen;

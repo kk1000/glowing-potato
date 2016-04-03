@@ -22,18 +22,18 @@ import com.badlogic.gdx.utils.Array;
 
 import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
+import fi.tamk.tiko.orion.sleeprunner.graphics.NightmareMeter;
 import fi.tamk.tiko.orion.sleeprunner.objects.NightmareObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.PlayerObject;
 import fi.tamk.tiko.orion.sleeprunner.stages.BackgroundStage;
 import fi.tamk.tiko.orion.sleeprunner.stages.PauseStage;
+import fi.tamk.tiko.orion.sleeprunner.stages.UIStage;
 import fi.tamk.tiko.orion.sleeprunner.utilities.BodyUtils;
 import fi.tamk.tiko.orion.sleeprunner.utilities.MapChunk;
 
 /**
- * Screen for the game.
- * Uses different stages for the game.
+ * Screen for the gameplay.
  */
-
 public class GameScreen extends InputAdapter implements Screen, ContactListener {
 
     private final float TIME_STEP = 1 / 300f;
@@ -48,6 +48,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
     private BackgroundStage backgroundStage;
     private PauseStage pauseStage;
+    private UIStage uiStage;
 
     private Rectangle screenRightSide;
     private Rectangle screenLeftSide;
@@ -69,8 +70,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
     private float deathTimer = 2;
     private float accumulator = 0f;
-
-    private float score = 0;
 
     private int playTimes;
     private int gameState;
@@ -102,11 +101,12 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         scoreFont = new BitmapFont(Gdx.files.internal(Constants.GAME_FONT_PATH));
         debugFont = new BitmapFont();
 
-        pauseStage = new PauseStage(game,uiCamera,batch, scoreFont );
+        pauseStage = new PauseStage(game,uiCamera,batch, scoreFont);
 
         setupWorld();
         setupTouchControlAreas();
 
+        uiStage = new UIStage(this, uiCamera, debugFont, scoreFont, batch);
         gameState = Constants.GAME_READY;
     }
 
@@ -203,9 +203,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      */
     public void restartGame( ) {
         Gdx.app.log("GameScreen", "Restarting the game.");
-
         Gdx.input.setInputProcessor(gestureDetector);
-
         // Reset chunks.
         for ( MapChunk mapChunk : mapChunks ) {
             mapChunk.destroy();
@@ -215,10 +213,10 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         createMapChunks();
         nightmare = new NightmareObject( world );
         player = new PlayerObject( world );
+        uiStage.reset();
         // Reset attributes.
         accumulator = 0f;
         deathTimer = 2;
-        score = 0;
         gameState = Constants.GAME_READY;
     }
 
@@ -267,7 +265,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         updateMapChunks(delta);
         updatePlayer(delta);
         nightmare.update(delta);
-        score += delta * 2;
+        uiStage.act( delta );
         doPhysicsStep(delta);
     }
 
@@ -394,9 +392,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.5f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // TODO: Draw player without animation if game is not running.
-        // TODO: Same for backgrounds!
-
         // Draw background.
         batch.setProjectionMatrix(backgroundCamera.combined);
         backgroundStage.draw();
@@ -405,28 +400,15 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
         // Draw game objects.
         batch.setProjectionMatrix(gameCamera.combined);
-        nightmare.draw(batch );
+        nightmare.draw(batch);
         drawMapChunks();
-        player.draw( batch );
+        player.draw(batch);
 
-        // Draw UI
+        // Draw UI.
         batch.setProjectionMatrix(uiCamera.combined);
-        scoreFont.draw(batch, "Score:" + (int) score, Constants.WORLD_TO_SCREEN, Constants.APP_HEIGHT - 10);
-
-        // Debug details.
-        if ( Constants.DEBUG ) {
-            debugFont.draw(batch, "Chunk number: " + currentMapChunk.getChunkNumber(), Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 10);
-            debugFont.draw(batch, "Max Ground: " + currentMapChunk.getMaxGroundBlocks(), Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 30);
-            debugFont.draw(batch, "Min Ground: " + currentMapChunk.getMinGroundBlocks(), Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 50);
-            debugFont.draw(batch, "Change per chunk: " + Constants.DIFFICULTY_CHANGE_INTERVAL, Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 70);
-
-            debugFont.draw(batch, "Body count: " + world.getBodyCount(), Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 100);
-
-            debugFont.draw(batch, "Player X " + player.getBody().getPosition().x, Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 130);
-            debugFont.draw(batch, "Player Y " + player.getBody().getPosition().y, Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 150);
-
-            debugFont.draw(batch, "Play times: " + playTimes, Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 180);
-        }
+        batch.end();
+        uiStage.draw();
+        batch.begin();
 
         // Draw different game states.
         switch ( gameState ) {
@@ -592,4 +574,12 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         }
     }
 
+    /**
+     * Getters.
+     */
+
+    public MapChunk getCurrentMapChunk( ) { return currentMapChunk; }
+    public NightmareObject getNightmare( ) { return nightmare; }
+    public PlayerObject getPlayer( ) { return player; }
+    public World getWorld( ) { return world; }
 }

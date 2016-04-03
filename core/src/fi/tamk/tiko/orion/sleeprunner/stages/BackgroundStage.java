@@ -30,7 +30,6 @@ public class BackgroundStage extends Stage {
                 Constants.APP_HEIGHT,
                 worldCamera), batch);
         game = g;
-
         setupBackgrounds();
         camera = worldCamera;
     }
@@ -39,34 +38,24 @@ public class BackgroundStage extends Stage {
      * Setups all background-layers.
      */
     private void setupBackgrounds(){
-
-        // deep layer
+        // Deep layer
         addActor(new MovingBackground(Constants.BACKGROUND_IMAGE_PATH, 2));
-        // mid layer
+        // Mid layer
         addActor(new MovingBackground(Constants.MOVING_BACKGROUND_IMAGE_PATH, 1));
-        // mid layer 2
+        // Mid layer 2
         addActor(new MovingBackground(Constants.MOVING_BACKGROUND2_IMAGE_PATH, 0.75f));
-        // top layer
+        // Top layer
         addActor(new MovingBackground(Constants.BACKGROUND_CLOUDS_IMAGE_PATH,0.5f));
-
     }
-
-
 
     @Override
     public void act(float delta) {
-
         super.act(delta);
-
     }
 
     @Override
     public void draw() {
-
         super.draw();
-
     }
-
-
 
 }

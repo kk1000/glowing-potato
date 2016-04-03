@@ -1,0 +1,77 @@
+package fi.tamk.tiko.orion.sleeprunner.graphics;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+
+import fi.tamk.tiko.orion.sleeprunner.data.Constants;
+import fi.tamk.tiko.orion.sleeprunner.objects.PlayerObject;
+import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
+import fi.tamk.tiko.orion.sleeprunner.utilities.MapChunk;
+
+/**
+ * Handle's UIStage's drawable texts.
+ */
+public class UIText extends Actor {
+
+    private GameScreen gameScreen;
+    private BitmapFont debugFont;
+    private PlayerObject player;
+    private BitmapFont font;
+    private World world;
+
+    private int playTimes = 0;
+    private float score = 0;
+
+    /**
+     * Constructor for UIText
+     *
+     * @param gameScreen    GameScreen reference.
+     * @param debugFont     Game's debug font.
+     * @param font          Game's general font.
+     */
+    public UIText( GameScreen gameScreen, BitmapFont debugFont, BitmapFont font) {
+        this.gameScreen = gameScreen;
+        this.debugFont = debugFont;
+        this.font = font;
+        this.player = gameScreen.getPlayer();
+        this.world = gameScreen.getWorld();
+    }
+
+    /**
+     * Resets UI's texts for the new game.
+     */
+    public void reset( ) {
+        playTimes++;
+        score = 0;
+    }
+
+    @Override
+    public void act(float delta) {
+        super.act( delta );
+        score += delta * 10;
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        MapChunk currentMapChunk = gameScreen.getCurrentMapChunk();
+        font.draw(batch, "Score:" + (int) score, Constants.WORLD_TO_SCREEN, Constants.APP_HEIGHT - 10);
+        // Debug details.
+        if ( Constants.DEBUG ) {
+            debugFont.draw(batch, "Chunk number: " + currentMapChunk.getChunkNumber(), Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 10);
+            debugFont.draw(batch, "Max Ground: " + currentMapChunk.getMaxGroundBlocks(), Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 30);
+            debugFont.draw(batch, "Min Ground: " + currentMapChunk.getMinGroundBlocks(), Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 50);
+            debugFont.draw(batch, "Change per chunk: " + Constants.DIFFICULTY_CHANGE_INTERVAL, Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 70);
+
+            debugFont.draw(batch, "Body count: " + world.getBodyCount(), Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 100);
+
+            debugFont.draw(batch, "Player X " + player.getBody().getPosition().x, Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 130);
+            debugFont.draw(batch, "Player Y " + player.getBody().getPosition().y, Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 150);
+
+            debugFont.draw(batch, "Play times: " + playTimes, Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 180);
+        }
+    }
+
+}

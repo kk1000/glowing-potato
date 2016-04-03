@@ -26,7 +26,7 @@ public class PauseMenu extends Actor {
      *
      * @param x     X-position.
      * @param y     Y-position.
-     * @param font          The game's general font.
+     * @param font  The game's general font.
      * @param text  Pause menu's text.
      */
     public PauseMenu(float x, float y, BitmapFont font, String text){

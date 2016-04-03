@@ -34,13 +34,11 @@ public class PauseStage extends Stage {
     private BitmapFont font;
     private Batch batch;
 
-
-
     /**
      * Constructor for the pause stage.
      *
-     * @param g             Reference to SleepRunner class. (why?)
-     * @param worldCamera   Game's UI camera. (world camera?)
+     * @param g             Reference to SleepRunner class.
+     * @param worldCamera   Game's UI camera.
      * @param batch         The spritebatch.
      * @param font          The game's general font.
      */
