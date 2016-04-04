@@ -69,6 +69,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     private BitmapFont scoreFont;
     private BitmapFont debugFont;
     private SpriteBatch batch;
+    private boolean setupReady = false;
 
     private float deathTimer = 2;
     private float accumulator = 0f;
@@ -109,7 +110,8 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         setupWorld();
         setupTouchControlAreas();
 
-        uiStage = new UIStage(game, this, uiCamera, debugFont, scoreFont, batch);
+
+        uiStage = new UIStage(game, uiCamera, debugFont, scoreFont, batch);
 
         im = new InputMultiplexer();
         im.addProcessor(gestureDetector);
@@ -118,6 +120,8 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         Gdx.input.setInputProcessor(im);
 
         gameState = Constants.GAME_READY;
+
+
     }
 
     /**
@@ -260,6 +264,10 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      * Updates when game is ready.
      */
     private void updateGameReady( ) {
+        if(!setupReady){
+            uiStage.setupUiStage();
+            setupReady = true;
+        }
         if ( Gdx.input.isTouched() ) {
             gameState = Constants.GAME_RUNNING;
             player.resumeAnimation();

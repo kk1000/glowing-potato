@@ -23,7 +23,6 @@ import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 public class UIStage extends Stage {
 
     private OrthographicCamera uiCamera;
-    private GameScreen gameScreen;
     private BitmapFont debugFont;
     private BitmapFont font;
     private TextButton pauseButton;
@@ -35,31 +34,36 @@ public class UIStage extends Stage {
     /**
      * Constructor for the UIStage.
      *
-     * @param gameScreen    Reference to SleepRunner class.
      * @param debugFont     Game's debug font.
      * @param uiCamera      Game's UI camera.
      * @param font          Game's general font.
      * @param batch         The spritebatch.
      * @param g             Game.
      */
-    public UIStage(SleepRunner g, final GameScreen gameScreen, OrthographicCamera uiCamera, BitmapFont debugFont, BitmapFont font, Batch batch ) {
+    public UIStage(SleepRunner g, OrthographicCamera uiCamera, BitmapFont debugFont, BitmapFont font, Batch batch ) {
         super(new ScalingViewport(Scaling.stretch, Constants.APP_WIDTH, Constants.APP_HEIGHT, uiCamera), batch);
-        this.gameScreen = gameScreen;
         this.game = g;
         this.uiCamera = uiCamera;
         this.debugFont = debugFont;
         this.font = font;
+    }
 
-        this.nightmareMeter = new NightmareMeter( this.gameScreen );
-        this.uiText = new UIText( this.gameScreen, debugFont, this.font );
+    /**
+     * Setups the stage.
+     */
 
+    public void setupUiStage(){
         this.pauseButton = new TextButton("Pause", game.getSkin());
         this.pauseButton.setBounds(Constants.APP_WIDTH * 0.8f, Constants.APP_HEIGHT * 0.8f, Constants.APP_WIDTH / 9, Constants.APP_HEIGHT / 8);
         this.pauseButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
-                gameScreen.pause();
+                game.getGameScreen().pause();
             }
         });
+
+        this.nightmareMeter = new NightmareMeter( game.getGameScreen() );
+        this.uiText = new UIText( game.getGameScreen(), debugFont, this.font );
+
         addActor( pauseButton );
         addActor( nightmareMeter );
         addActor( uiText );
