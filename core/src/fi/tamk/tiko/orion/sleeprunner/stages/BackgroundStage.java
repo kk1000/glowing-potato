@@ -43,7 +43,7 @@ public class BackgroundStage extends Stage {
         // Mid layer
         addActor(new MovingBackground(Constants.MOVING_BACKGROUND_IMAGE_PATH, 1));
         // Mid layer 2
-        addActor(new MovingBackground(Constants.MOVING_BACKGROUND2_IMAGE_PATH, 0.75f));
+        //addActor(new MovingBackground(Constants.MOVING_BACKGROUND2_IMAGE_PATH, 0.75f));
         // Top layer
         addActor(new MovingBackground(Constants.BACKGROUND_CLOUDS_IMAGE_PATH,0.5f));
     }

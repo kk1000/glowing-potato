@@ -41,17 +41,14 @@ public abstract class GameObject {
     protected float textureWidth;
     protected float textureHeight;
 
-    protected boolean hasAnimation = false;
-    protected Animation currentAnimation; // THIS NEEDS TO MANUALLY SET ATM.
-    protected TextureRegion currentFrame;
-    protected float stateTime;
+
 
     protected Array<Tile> tiles = new Array<Tile>();
 
     protected Preference prefs;
 
     /**
-     * Constructor for game objects which got no animation.
+     * Constructor for game objects with texture region.
      *
      * @param world         Box2D World
      * @param x             X-position.
@@ -76,12 +73,11 @@ public abstract class GameObject {
         this.userData = userData;
         createBody(bodyType);
         createTiles();
-
         prefs = new Preference();
     }
 
     /**
-     * Constructor for animated game objects.
+     * Constructor for game objects with texture.
      *
      * @param world             Box2D World
      * @param x                 X-position.
@@ -104,15 +100,7 @@ public abstract class GameObject {
         this.width = width;
         this.height = height;
         this.userData = userData;
-        hasAnimation = true;
-
-        // IMPORTANT!
-        // Remember to set animations and current frame!
-        // There should be AnimatedGameObject (TODO)
-        // to properly handle animated game objects and their animations.
-
         createBody(bodyType);
-
         prefs = new Preference();
     }
 
@@ -211,30 +199,17 @@ public abstract class GameObject {
      * @param batch Spritebatch.
      */
     public void draw(Batch batch) {
-        if (hasAnimation) {
-            batch.draw(currentFrame,
-                    body.getPosition().x - currentFrame.getRegionWidth() / 100f / 2,
-                    body.getPosition().y - currentFrame.getRegionHeight() / 100f / 2,
-                    currentFrame.getRegionWidth() / 2 / 100f,
-                    currentFrame.getRegionHeight()/ 2 / 100f,
-                    currentFrame.getRegionWidth() / 100f,
-                    currentFrame.getRegionHeight() / 100f,
+        for ( Tile tile : tiles ) {
+            batch.draw( tile.textureRegion,
+                    tile.x,
+                    tile.y,
+                    Constants.WORLD_TO_SCREEN / 2,
+                    Constants.WORLD_TO_SCREEN / 2,
+                    Constants.WORLD_TO_SCREEN / 100f,
+                    Constants.WORLD_TO_SCREEN / 100f,
                     1.0f,
                     1.0f,
-                    body.getTransform().getRotation() * MathUtils.radiansToDegrees);
-        } else {
-            for ( Tile tile : tiles ) {
-                batch.draw( tile.textureRegion,
-                        tile.x,
-                        tile.y,
-                        Constants.WORLD_TO_SCREEN / 2,
-                        Constants.WORLD_TO_SCREEN / 2,
-                        Constants.WORLD_TO_SCREEN / 100f,
-                        Constants.WORLD_TO_SCREEN / 100f,
-                        1.0f,
-                        1.0f,
-                        0);
-            }
+                    0);
         }
     }
 
@@ -263,15 +238,6 @@ public abstract class GameObject {
         userData = null;
         body.setUserData(null);
         world.destroyBody(body);
-    }
-
-    /**
-     * Setters.
-     */
-
-    // This is moved in the future.
-    public void setAnimation(Animation animation) {
-        this.currentAnimation = animation;
     }
 
     /**

@@ -260,7 +260,8 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     private void updateGameReady( ) {
         if ( Gdx.input.isTouched() ) {
             gameState = Constants.GAME_RUNNING;
-            player.startAnimation();
+            player.resumeAnimation();
+            nightmare.resumeAnimation();
         }
     }
 
@@ -523,6 +524,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     public void pause() {
         Gdx.app.log("GameScreen","Game paused");
         if ( gameState == Constants.GAME_RUNNING ) {
+            nightmare.pauseAnimation();
             player.pauseAnimation();
             gameState = Constants.GAME_PAUSED;
             pauseStage.setupMenu();

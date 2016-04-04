@@ -15,11 +15,8 @@ import fi.tamk.tiko.orion.sleeprunner.utilities.Tools;
  * PlayerObject actor class.
  * Extended from GameObject.
  */
-public class PlayerObject extends GameObject {
+public class PlayerObject extends AnimatedGameObject {
 
-    private Animation runAnimation;
-
-    private boolean animationPaused;
     private boolean jumping;
     private boolean dodging;
     private boolean dead;
@@ -39,13 +36,10 @@ public class PlayerObject extends GameObject {
                 Constants.PLAYER_DENSITY,
                 new Texture(Gdx.files.internal(Constants.PLAYER_RUNNING_IMAGE_PATH)),
                 BodyDef.BodyType.DynamicBody,
-                new UserData("PLAYER"));
+                new UserData("PLAYER"),
+                8, 1, 1, 8, 1/60f, false );
 
         body.setFixedRotation(true);
-
-        runAnimation = Tools.createAnimation(texture, 8, 1, 1, 8, 1/60f);
-        currentAnimation = runAnimation;
-        pauseAnimation();
 
         runSound = Gdx.audio.newSound(Gdx.files.internal(Constants.PLAYER_RUN_SOUND_PATH));
         runSound.stop();
@@ -62,7 +56,7 @@ public class PlayerObject extends GameObject {
             velY *= 0.0002f;
             Constants.PLAYER_JUMPING_LINEAR_IMPULSE.set(0, 0.1f + velY > 0.50f ? 0.50f : 0.1f + velY);
             body.applyLinearImpulse(Constants.PLAYER_JUMPING_LINEAR_IMPULSE, body.getWorldCenter(), true);
-            runAnimation.setFrameDuration( 1/3f );
+            changeFPS( 1/3f );
             jumping = true;
         }
         runSound.stop();
@@ -74,7 +68,7 @@ public class PlayerObject extends GameObject {
      */
     public void landed(){
         jumping = false;
-        runAnimation.setFrameDuration( 1/10f );
+        changeFPS( 1/10f );
         runSound.stop();
         runSound.play(prefs.getSoundVolume());
     }
@@ -119,6 +113,7 @@ public class PlayerObject extends GameObject {
 
     @Override
     public void update(float delta) {
+        super.update( delta );
         runSound.setVolume(1, prefs.getSoundVolume());
         if (dodging) {
             dodgeTimer += delta;
@@ -130,26 +125,6 @@ public class PlayerObject extends GameObject {
         if (body.getPosition().y < 0 || body.getPosition().x < 0) {
             dead = true;
         }
-        // Update animation if it's not paused.
-        if (!animationPaused) {
-            stateTime += Gdx.graphics.getDeltaTime();
-            currentFrame = currentAnimation.getKeyFrame(stateTime, true);
-        }
-    }
-
-    /**
-     * Starts player's animation.
-     */
-    public void startAnimation( ) {
-        animationPaused = false;
-    }
-
-    /**
-     * Pauses player's animation.
-     */
-    public void pauseAnimation( ) {
-        animationPaused = true;
-        currentFrame = currentAnimation.getKeyFrame(0,false);
     }
 
     /**

@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.graphics.PauseMenu;
+import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 
 /**
  * Class for pause stage, which uses pauseMenu as actor.
@@ -123,9 +124,11 @@ public class PauseStage extends Stage {
             @Override
             public boolean touchDown(InputEvent event, float x, float y,
                                      int pointer, int button) {
-                game.getGameScreen().setGameState(Constants.GAME_RUNNING);
-                game.getGameScreen().getPlayer().startAnimation();
-                game.getGameScreen().setInputProcessor(1);
+                GameScreen gameScreen = game.getGameScreen();
+                gameScreen.setGameState(Constants.GAME_RUNNING);
+                gameScreen.getPlayer().resumeAnimation();
+                gameScreen.getNightmare().resumeAnimation();
+                gameScreen.setInputProcessor(1);
                 return true;
             }
         });

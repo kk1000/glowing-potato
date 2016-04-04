@@ -38,7 +38,7 @@ public class MovingBackground extends Actor {
             srcX += 1;
             updateTimer = 0;
         }
-        updateTimer += Gdx.graphics.getDeltaTime();
+        updateTimer += delta;
     }
 
 }
