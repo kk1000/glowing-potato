@@ -449,7 +449,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      * Draws when game is ready.
      */
     private void drawGameReady( ) {
-        scoreFont.draw(batch, "Game is ready!", Constants.APP_WIDTH / 2, Constants.APP_HEIGHT / 2);
+        scoreFont.draw(batch, "Tap anywhere to start!", Constants.APP_WIDTH / 2 - 200, Constants.APP_HEIGHT / 2);
     }
 
     /**
@@ -462,7 +462,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      * Draws when game is paused.
      */
     private void drawGamePaused() {
-        scoreFont.draw(batch, "Game is paused!", Constants.APP_WIDTH / 2, Constants.APP_HEIGHT / 2);
         batch.end();
         pauseStage.draw();
         batch.begin();

@@ -42,7 +42,7 @@ public class UIStage extends Stage {
      * @param batch         The spritebatch.
      * @param g             Game.
      */
-    public UIStage(SleepRunner g, GameScreen gameScreen, OrthographicCamera uiCamera, BitmapFont debugFont, BitmapFont font, Batch batch ) {
+    public UIStage(SleepRunner g, final GameScreen gameScreen, OrthographicCamera uiCamera, BitmapFont debugFont, BitmapFont font, Batch batch ) {
         super(new ScalingViewport(Scaling.stretch, Constants.APP_WIDTH, Constants.APP_HEIGHT, uiCamera), batch);
         this.gameScreen = gameScreen;
         this.game = g;
@@ -57,7 +57,7 @@ public class UIStage extends Stage {
         this.pauseButton.setBounds(Constants.APP_WIDTH * 0.8f, Constants.APP_HEIGHT * 0.8f, Constants.APP_WIDTH / 9, Constants.APP_HEIGHT / 8);
         this.pauseButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
-                game.getGameScreen().pause();
+                gameScreen.pause();
             }
         });
         addActor( pauseButton );
