@@ -3,6 +3,7 @@ package fi.tamk.tiko.orion.sleeprunner.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -56,6 +57,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     private Vector3 touchPoint;
 
     private GestureDetector gestureDetector;
+    private InputMultiplexer im;
 
     private Array<MapChunk> removalMapChunks = new Array<MapChunk>();
     private Array<MapChunk> mapChunks = new Array<MapChunk>();
@@ -84,6 +86,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
         gestureDetector = new GestureDetector(new GestureListener());
 
+
         batch = game.getBatch();
 
         debugRenderer = new Box2DDebugRenderer();
@@ -106,7 +109,14 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         setupWorld();
         setupTouchControlAreas();
 
-        uiStage = new UIStage(this, uiCamera, debugFont, scoreFont, batch);
+        uiStage = new UIStage(game, this, uiCamera, debugFont, scoreFont, batch);
+
+        im = new InputMultiplexer();
+        im.addProcessor(gestureDetector);
+        im.addProcessor(uiStage);
+
+        Gdx.input.setInputProcessor(im);
+
         gameState = Constants.GAME_READY;
     }
 
@@ -273,10 +283,8 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      * Updates when game is paused.
      */
     private void updateGamePaused( ) {
-        if ( Gdx.input.isTouched() ) {
-            gameState = Constants.GAME_RUNNING;
-            player.startAnimation();
-        }
+        Gdx.input.setInputProcessor(pauseStage);
+        pauseStage.act();
     }
 
     /**
@@ -302,6 +310,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
         if (deathTimer <= 0) {
             gameState = Constants.GAME_OVER;
+            pauseStage.setupMenu();
         }
     }
 
@@ -437,7 +446,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      * Draws when game is ready.
      */
     private void drawGameReady( ) {
-        scoreFont.draw( batch, "Game is ready!", Constants.APP_WIDTH/2, Constants.APP_HEIGHT/2 );
+        scoreFont.draw(batch, "Game is ready!", Constants.APP_WIDTH / 2, Constants.APP_HEIGHT / 2);
     }
 
     /**
@@ -451,6 +460,9 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      */
     private void drawGamePaused() {
         scoreFont.draw(batch, "Game is paused!", Constants.APP_WIDTH / 2, Constants.APP_HEIGHT / 2);
+        batch.end();
+        pauseStage.draw();
+        batch.begin();
     }
 
     /**
@@ -471,9 +483,25 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         }
     }
 
+    /**
+     * Sets gamestate
+     */
+    public void setGameState(int state){
+        gameState = state;
+    }
+
+    public void setInputProcessor(int input){
+        if(input == 1){
+            Gdx.input.setInputProcessor(im);
+        }
+        if(input == 2){
+            Gdx.input.setInputProcessor(pauseStage);
+        }
+    }
+
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(gestureDetector);
+        Gdx.input.setInputProcessor(im);
         if ( playTimes > 0 ) {
             restartGame();
         }
@@ -493,9 +521,11 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
     @Override
     public void pause() {
+        Gdx.app.log("GameScreen","Game paused");
         if ( gameState == Constants.GAME_RUNNING ) {
             player.pauseAnimation();
             gameState = Constants.GAME_PAUSED;
+            pauseStage.setupMenu();
         }
     }
 
@@ -582,4 +612,5 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     public NightmareObject getNightmare( ) { return nightmare; }
     public PlayerObject getPlayer( ) { return player; }
     public World getWorld( ) { return world; }
+    public int getGameState(){ return gameState; }
 }

@@ -28,8 +28,8 @@ public class PauseStage extends Stage {
 
     private PauseMenu pauseMenu;
 
-    private Actor newGameButton;
-    private Actor mainMenuButton;
+    private Actor button1;
+    private Actor button2;
 
     private BitmapFont font;
     private Batch batch;
@@ -48,32 +48,44 @@ public class PauseStage extends Stage {
         this.batch = batch;
         this.camera = worldCamera;
         this.font = font;
-        setupMenu();
     }
 
     /**
      * Setups menu wholly.
      */
-    private void setupMenu(){
-        pauseMenu = new PauseMenu(Constants.APP_WIDTH / 4, Constants.APP_HEIGHT / 4, font, "Game Over!");
-        setupAnimation();
-        setupButtons();
-        addActor(pauseMenu);
-        addActor(newGameButton);
-        addActor(mainMenuButton);
+    public void setupMenu(){
+        if(game.getGameScreen().getGameState() == Constants.GAME_OVER) {
+            pauseMenu = new PauseMenu(Constants.APP_WIDTH / 4, Constants.APP_HEIGHT / 4, font, "Game Over!");
+            setupAnimation();
+            setupNewGameButton();
+            setupMainMenuButton();
+            addActor(pauseMenu);
+            addActor(button1);
+            addActor(button2);
+        }
+        if(game.getGameScreen().getGameState() == Constants.GAME_PAUSED){
+            pauseMenu = new PauseMenu(Constants.APP_WIDTH / 4, Constants.APP_HEIGHT / 4, font, "Game Paused!");
+            setupAnimation();
+            setupContinueButton();
+            setupMainMenuButton();
+            addActor(pauseMenu);
+            addActor(button1);
+            addActor(button2);
+        }
     }
 
     /**
      * Setups menu's buttons.
      */
-    private void setupButtons(){
-        newGameButton = new TextButton("Play Again", game.getSkin());
-        newGameButton.setBounds(Constants.APP_WIDTH / 2.5f,
+
+    private void setupNewGameButton(){
+        button1 = new TextButton("Play Again", game.getSkin());
+        button1.setBounds(Constants.APP_WIDTH / 2.5f,
                 Constants.APP_HEIGHT / 2.4f,
                 Constants.APP_WIDTH / 5f,
                 Constants.APP_HEIGHT / 9.6f);
-        newGameButton.setTouchable(Touchable.enabled);
-        newGameButton.addListener(new InputListener() {
+        button1.setTouchable(Touchable.enabled);
+        button1.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y,
                                      int pointer, int button) {
@@ -81,14 +93,16 @@ public class PauseStage extends Stage {
                 return true;
             }
         });
+    }
 
-        mainMenuButton = new TextButton("Main Menu", game.getSkin());
-        mainMenuButton.setBounds(Constants.APP_WIDTH / 2.5f,
+    private void setupMainMenuButton(){
+        button2 = new TextButton("Main Menu", game.getSkin());
+        button2.setBounds(Constants.APP_WIDTH / 2.5f,
                 Constants.APP_HEIGHT / 3.42f,
                 Constants.APP_WIDTH / 5f,
                 Constants.APP_HEIGHT / 9.6f);
-        mainMenuButton.setTouchable(Touchable.enabled);
-        mainMenuButton.addListener(new InputListener() {
+        button2.setTouchable(Touchable.enabled);
+        button2.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y,
                                      int pointer, int button) {
@@ -96,7 +110,25 @@ public class PauseStage extends Stage {
                 return true;
             }
         });
+    }
 
+    private void setupContinueButton(){
+        button1 = new TextButton("Continue", game.getSkin());
+        button1.setBounds(Constants.APP_WIDTH / 2.5f,
+                Constants.APP_HEIGHT / 2.4f,
+                Constants.APP_WIDTH / 5f,
+                Constants.APP_HEIGHT / 9.6f);
+        button1.setTouchable(Touchable.enabled);
+        button1.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y,
+                                     int pointer, int button) {
+                game.getGameScreen().setGameState(Constants.GAME_RUNNING);
+                game.getGameScreen().getPlayer().startAnimation();
+                game.getGameScreen().setInputProcessor(1);
+                return true;
+            }
+        });
     }
 
     /**
