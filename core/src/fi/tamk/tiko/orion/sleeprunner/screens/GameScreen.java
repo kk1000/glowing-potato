@@ -601,7 +601,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
                 player.dodge();
             }
             if (velocityY < -1) {
-                player.jump(velocityY);
+                player.jump(Math.abs(velocityY));
             }
             return true;
         }
