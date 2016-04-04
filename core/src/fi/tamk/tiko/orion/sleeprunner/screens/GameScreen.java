@@ -221,6 +221,8 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         }
         removeRemovalMapChunks();
         createMapChunks();
+        nightmare.dispose();
+        player.dispose();
         nightmare = new NightmareObject( world );
         player = new PlayerObject( world );
         uiStage.reset();
