@@ -598,10 +598,10 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
         @Override
         public boolean fling(float velocityX, float velocityY, int button) {
-            if (velocityY < -1) {
+            if (velocityY > 1) {
                 player.dodge();
             }
-            if (velocityY > 1) {
+            if (velocityY < -1) {
                 player.jump(velocityY);
             }
             return true;
