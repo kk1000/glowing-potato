@@ -113,7 +113,7 @@ public class PlayerObject extends AnimatedGameObject {
 
     @Override
     public void update(float delta) {
-        super.update( delta );
+        super.update(delta);
         runSound.setVolume(1, prefs.getSoundVolume());
         if (dodging) {
             dodgeTimer += delta;
@@ -125,6 +125,15 @@ public class PlayerObject extends AnimatedGameObject {
         if (body.getPosition().y < 0 || body.getPosition().x < 0) {
             dead = true;
         }
+    }
+
+    @Override
+    public void reset( ) {
+        super.reset();
+        jumping = false;
+        dodging = false;
+        dead = false;
+        hit = false;
     }
 
     /**

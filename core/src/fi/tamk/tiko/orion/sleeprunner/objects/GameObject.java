@@ -232,6 +232,16 @@ public abstract class GameObject {
     }
 
     /**
+     * Resets game object's body to its starting position.
+     */
+    public void reset( ) {
+        Gdx.app.log( "GameObject", "Resetting, " + userData.id );
+        body.setTransform(new Vector2(this.x, this.y), body.getAngle());
+        body.setLinearVelocity( new Vector2( 0, 0 ) );
+        body.setAngularVelocity( 0 );
+    }
+
+    /**
      * Destroys game object.
      */
     public void dispose() {

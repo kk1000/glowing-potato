@@ -76,7 +76,7 @@ public class Constants {
 
     public static final Vector2 PLAYER_JUMPING_LINEAR_IMPULSE = new Vector2(0, 0.20f);
     public static final float PLAYER_HIT_ANGULAR_IMPULSE = 10f;
-    public static final float PLAYER_START_X = Constants.WORLD_TO_SCREEN * 2 / 100f;
+    public static final float PLAYER_START_X = Constants.WORLD_TO_SCREEN * 3 / 100f;
     public static final float PLAYER_START_Y = Constants.WORLD_TO_SCREEN * 3 / 100f;
     //currently not used
     public static final float FLYING_ENEMY_Y = 3f;

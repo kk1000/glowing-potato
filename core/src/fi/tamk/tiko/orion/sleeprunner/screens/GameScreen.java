@@ -221,10 +221,10 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         }
         removeRemovalMapChunks();
         createMapChunks();
-        nightmare.dispose();
-        player.dispose();
-        nightmare = new NightmareObject( world );
-        player = new PlayerObject( world );
+        nightmare.reset();
+        player.reset();
+       // nightmare = new NightmareObject( world );
+       // player = new PlayerObject( world );
         uiStage.reset();
         // Reset attributes.
         accumulator = 0f;
@@ -316,8 +316,10 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         }
 
         if (deathTimer <= 0) {
-            gameState = Constants.GAME_OVER;
-            pauseStage.setupMenu();
+            deathTimer = 2;
+            player.reset();
+            //gameState = Constants.GAME_OVER;
+            //pauseStage.setupMenu();
         }
     }
 
@@ -559,9 +561,9 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         // Player to spikes collision check.
         if ((BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "SPIKES")) ||
                 (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "SPIKES")) ) {
-            Gdx.app.log( "GameScreen", "Player hit spikes!" );
+            Gdx.app.log( "GameScreen", "Player hit spikes!");
             player.hit();
-            player.pauseAnimation();
+            //player.pauseAnimation();
         }
 
         // Player to ground collision check.
