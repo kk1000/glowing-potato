@@ -317,9 +317,9 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
         if (deathTimer <= 0) {
             deathTimer = 2;
+            nightmare.moveForward();
+            uiStage.moveNightmareMeter();
             player.reset();
-            //gameState = Constants.GAME_OVER;
-            //pauseStage.setupMenu();
         }
     }
 
@@ -563,7 +563,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
                 (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "SPIKES")) ) {
             Gdx.app.log( "GameScreen", "Player hit spikes!");
             player.hit();
-            //player.pauseAnimation();
+            player.pauseAnimation();
         }
 
         // Player to ground collision check.
@@ -618,6 +618,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      */
 
     public MapChunk getCurrentMapChunk( ) { return currentMapChunk; }
+    public PauseStage getPauseStage( ) { return pauseStage; }
     public NightmareObject getNightmare( ) { return nightmare; }
     public PlayerObject getPlayer( ) { return player; }
     public World getWorld( ) { return world; }

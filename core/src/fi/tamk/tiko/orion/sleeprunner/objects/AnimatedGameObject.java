@@ -105,6 +105,13 @@ public abstract class AnimatedGameObject extends GameObject {
         animationPaused = false;
     }
 
+    public void reset( ) {
+        super.reset();
+        if ( animationPaused ) {
+            resumeAnimation();
+        }
+    }
+
     public void update(float delta) {
         // Remember to call this or implement this for child classes.
         if ( !animationPaused ) {
@@ -112,7 +119,6 @@ public abstract class AnimatedGameObject extends GameObject {
             currentFrame = currentAnimation.getKeyFrame(stateTime, true);
         }
     }
-
 
     public void draw( Batch batch) {
         batch.draw(currentFrame,

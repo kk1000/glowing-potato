@@ -65,8 +65,8 @@ public class Constants {
      * Nightmare stuff.
      */
 
-    public static final float NIGHTMARE_START_X = -((800/100f)/2.3f);
-    public static final float NIGHTMARE_START_Y = (400/100f)/1.5f;
+    public static final float NIGHTMARE_START_X = -6f;
+    public static final float NIGHTMARE_START_Y = 2.4f;
 
     /**
      * Player physics

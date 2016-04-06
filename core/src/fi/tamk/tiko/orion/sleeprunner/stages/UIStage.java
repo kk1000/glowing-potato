@@ -49,6 +49,21 @@ public class UIStage extends Stage {
     }
 
     /**
+     * Moves Nightmare meter by one step.
+     */
+    public void moveNightmareMeter( ) {
+        float value = nightmareMeter.getValue();
+        if ( value == nightmareMeter.getMaxValue() ) {
+            // Nightmare has reached, it's game over.
+            GameScreen gameScreen = game.getGameScreen();
+            gameScreen.setGameState( Constants.GAME_OVER );
+            gameScreen.getPauseStage().setupMenu();
+        } else {
+            nightmareMeter.setValue( value + nightmareMeter.getStepSize() );
+        }
+    }
+
+    /**
      * Setups the stage.
      */
 
@@ -73,6 +88,7 @@ public class UIStage extends Stage {
      * Resets user interface for the new game.
      */
     public void reset( ) {
+        nightmareMeter.reset();
         uiText.reset();
     }
 

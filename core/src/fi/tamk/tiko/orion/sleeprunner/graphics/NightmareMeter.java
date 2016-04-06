@@ -7,6 +7,8 @@ import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.objects.NightmareObject;
 import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 
+// TODO: This class is pretty unnecessary, progressbar could be straight in UIStage.
+
 /**
  * Meter for displaying nightmare's position.
  */
@@ -32,8 +34,11 @@ public class NightmareMeter extends ProgressBar {
         setPosition( Constants.WORLD_TO_SCREEN, Constants.APP_HEIGHT - getHeight() - 60 );
     }
 
-    public void act( float delta ) {
-        // Create connection between the nightmare and the meter.
+    /**
+     * Resets meter.
+     */
+    public void reset( ) {
+        setValue( 0 );
     }
 
 }

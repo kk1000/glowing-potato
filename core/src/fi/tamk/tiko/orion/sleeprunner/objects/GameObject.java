@@ -232,7 +232,7 @@ public abstract class GameObject {
     }
 
     /**
-     * Resets game object's body to its starting position.
+     * Resets game object.
      */
     public void reset( ) {
         Gdx.app.log( "GameObject", "Resetting, " + userData.id );
