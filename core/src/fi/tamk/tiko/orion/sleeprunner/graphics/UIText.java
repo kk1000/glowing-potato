@@ -58,6 +58,7 @@ public class UIText extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         MapChunk currentMapChunk = gameScreen.getCurrentMapChunk();
         font.draw(batch, "Score:" + (int) score, Constants.WORLD_TO_SCREEN, Constants.APP_HEIGHT - 10);
+        font.draw(batch, "Nightmare:", Constants.WORLD_TO_SCREEN, Constants.APP_HEIGHT - 40);
         // Debug details.
         if ( Constants.DEBUG ) {
             debugFont.draw(batch, "Chunk number: " + currentMapChunk.getChunkNumber(), Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 10);

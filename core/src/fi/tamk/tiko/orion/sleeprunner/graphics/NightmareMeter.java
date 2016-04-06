@@ -1,8 +1,7 @@
 package fi.tamk.tiko.orion.sleeprunner.graphics;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.objects.NightmareObject;
@@ -11,26 +10,30 @@ import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 /**
  * Meter for displaying nightmare's position.
  */
-public class NightmareMeter extends Actor {
+public class NightmareMeter extends ProgressBar {
 
     private NightmareObject nightmare;
-    private ProgressBar progressBar;
     private GameScreen gameScreen;
+    private Skin skin;
 
     /**
      * Constructor.
+     *
+     * @param gameScreen GameScreen reference.
+     * @param skin       UI Skim.
      */
-    public NightmareMeter( GameScreen gameScreen ) {
-        this.setX( Constants.APP_WIDTH - 150 );
-        this.setY( Constants.APP_HEIGHT - 10 );
+    public NightmareMeter( GameScreen gameScreen, Skin skin ) {
+        super( 0, 10, 1, false, skin );
         this.gameScreen = gameScreen;
-        this.progressBar = new ProgressBar( 0, 10, 1, false, new ProgressBar.ProgressBarStyle() );
+        this.skin = skin;
         this.nightmare = this.gameScreen.getNightmare();
+        setWidth( getPrefWidth());
+        setHeight(getPrefHeight());
+        setPosition( Constants.WORLD_TO_SCREEN, Constants.APP_HEIGHT - getHeight() - 60 );
     }
 
-    @Override
-    public void act(float delta) {
-        super.act(delta);
+    public void act( float delta ) {
+        // Create connection between the nightmare and the meter.
     }
 
 }

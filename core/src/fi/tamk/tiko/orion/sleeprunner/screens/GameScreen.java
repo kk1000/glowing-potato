@@ -5,10 +5,12 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
@@ -58,7 +60,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
     private GestureDetector gestureDetector;
     private InputMultiplexer im;
-
     private Array<MapChunk> removalMapChunks = new Array<MapChunk>();
     private Array<MapChunk> mapChunks = new Array<MapChunk>();
     private MapChunk currentMapChunk;
@@ -87,7 +88,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
         gestureDetector = new GestureDetector(new GestureListener());
 
-
         batch = game.getBatch();
 
         debugRenderer = new Box2DDebugRenderer();
@@ -101,7 +101,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
         uiCamera = new OrthographicCamera();
         uiCamera.setToOrtho(false, Constants.APP_WIDTH, Constants.APP_HEIGHT);
-
         scoreFont = new BitmapFont(Gdx.files.internal(Constants.GAME_FONT_PATH));
         debugFont = new BitmapFont();
 
@@ -109,7 +108,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
         setupWorld();
         setupTouchControlAreas();
-
 
         uiStage = new UIStage(game, uiCamera, debugFont, scoreFont, batch);
 
@@ -120,8 +118,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         Gdx.input.setInputProcessor(im);
 
         gameState = Constants.GAME_READY;
-
-
     }
 
     /**

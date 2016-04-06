@@ -61,7 +61,7 @@ public class UIStage extends Stage {
             }
         });
 
-        this.nightmareMeter = new NightmareMeter( game.getGameScreen() );
+        this.nightmareMeter = new NightmareMeter( game.getGameScreen(), game.getSkin() );
         this.uiText = new UIText( game.getGameScreen(), debugFont, this.font );
 
         addActor( pauseButton );
