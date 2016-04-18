@@ -15,8 +15,7 @@ import fi.tamk.tiko.orion.sleeprunner.data.UserData;
  */
 public class MaskPowerUpObject extends GameObject {
 
-
-    public static final TextureRegion SHIELD_TEXTURE = new TextureRegion( new Texture( Gdx.files.internal( "graphics/powerup_sleepingmask.png" ) ) );
+    public static final TextureRegion MASK_TEXTURE = new TextureRegion( new Texture( Gdx.files.internal( "graphics/powerup_sleepingmask.png" ) ) );
 
     /**
      * Constructor for ShieldPowerUpObject
@@ -28,7 +27,7 @@ public class MaskPowerUpObject extends GameObject {
      * @param height         Height of the body.
      */
     public MaskPowerUpObject(World world, float x, float y, float width, float height) {
-        super(world, x, y, width, height, 0f, SHIELD_TEXTURE, BodyDef.BodyType.KinematicBody, new UserData("MASK"));
+        super(world, x, y, width, height, 0f, MASK_TEXTURE, BodyDef.BodyType.KinematicBody, new UserData("MASK"));
     }
 
     @Override

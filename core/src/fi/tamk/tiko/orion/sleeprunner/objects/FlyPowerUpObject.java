@@ -16,7 +16,7 @@ import fi.tamk.tiko.orion.sleeprunner.data.UserData;
 public class FlyPowerUpObject extends GameObject {
 
 
-    public static final TextureRegion SHIELD_TEXTURE = new TextureRegion( new Texture( Gdx.files.internal( "graphics/powerup_fly.png" ) ) );
+    public static final TextureRegion FLY_TEXTURE = new TextureRegion( new Texture( Gdx.files.internal( "graphics/powerup_fly.png" ) ) );
 
     /**
      * Constructor for FlyPowerUpObject
@@ -28,7 +28,7 @@ public class FlyPowerUpObject extends GameObject {
      * @param height         Height of the body.
      */
     public FlyPowerUpObject(World world, float x, float y, float width, float height) {
-        super(world, x, y, width, height, 0f, SHIELD_TEXTURE, BodyDef.BodyType.KinematicBody, new UserData("FLY"));
+        super(world, x, y, width, height, 0f, FLY_TEXTURE, BodyDef.BodyType.KinematicBody, new UserData("FLY"));
     }
 
     @Override
