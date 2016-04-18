@@ -20,8 +20,6 @@ public class FlyingSpikesObject extends GameObject {
 
     public static final TextureRegion FLYING_SPIKE_TEXTURE = Constants.TILESET_SPRITES[3][2];
 
-    private Vector2 flyingSpikeSpeed = new Vector2(-3.5f, 0);
-
     /**
      * Constructor for SpikesObject.
      *
@@ -37,7 +35,7 @@ public class FlyingSpikesObject extends GameObject {
 
     @Override
     public void update(float delta) {
-        body.setLinearVelocity(flyingSpikeSpeed);
+        body.setLinearVelocity(Constants.ENEMY_LINEAR_VELOCITY);
     }
 
     @Override
