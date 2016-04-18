@@ -55,6 +55,7 @@ public class Constants {
     public static final int POWERUP_SHIELD_BLOCK = 4;
     public static final int POWERUP_FLY_BLOCK = 5;
     public static final int POWERUP_MASK_BLOCK = 6;
+    public static final int FLYING_SPIKES_BLOCK = 7;
 
     public static final int DIFFICULTY_CHANGE_INTERVAL = 6;
 

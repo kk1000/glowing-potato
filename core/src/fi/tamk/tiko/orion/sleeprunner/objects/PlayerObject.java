@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -134,6 +135,8 @@ public class PlayerObject extends AnimatedGameObject {
         dodging = false;
         dead = false;
         hit = false;
+        // Reset the world's speed too.
+        Constants.ENEMY_LINEAR_VELOCITY = new Vector2(-3.0f, 0);
     }
 
     /**

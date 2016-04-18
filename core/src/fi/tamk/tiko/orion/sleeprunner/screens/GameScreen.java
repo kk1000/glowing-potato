@@ -577,7 +577,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         // Player to spikes collision check.
         if ((BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "SPIKES")) ||
                 (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "SPIKES")) ) {
-            Gdx.app.log( "GameScreen", "Player hit spikes!");
             player.hit();
             player.pauseAnimation();
         }
@@ -628,6 +627,17 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
             contact.setEnabled( false );
             currentMapChunk.clearGameObject( "MASK" );
         }
+
+        // Player to flying spikes collision check.
+        /* Crashed the game?
+        if ((BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "FLYING_SPIKES")) ||
+                (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "FLYING_SPIKES")) ) {
+            contact.setEnabled( false );
+            Gdx.app.log( "GameScreen", "Hit flying spikes!" );
+            nightmare.moveForward();
+            uiStage.moveNightmareMeter();
+        }
+        */
 
     }
 
