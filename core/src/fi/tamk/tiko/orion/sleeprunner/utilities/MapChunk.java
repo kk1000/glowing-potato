@@ -52,6 +52,11 @@ public class MapChunk {
         calculateValues();
         this.grid = MapGenerator.generateMapChunkGrid( this );
         MapGenerator.generateGameObjects(this);
+        // Update game speed every 5 map chunk.
+        if ( chunkNumber % 5 == 0 ) {
+            Gdx.app.log( "MapChunk", "Add speed!" );
+            Constants.ENEMY_LINEAR_VELOCITY = Constants.ENEMY_LINEAR_VELOCITY.add( -0.2f, 0 );
+        }
     }
 
     /**

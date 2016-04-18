@@ -613,6 +613,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         }
 
         // Player to flying spikes collision check.
+        /* Crashed the game?
         if ((BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "FLYING_SPIKES")) ||
                 (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "FLYING_SPIKES")) ) {
             contact.setEnabled( false );
@@ -620,6 +621,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
             nightmare.moveForward();
             uiStage.moveNightmareMeter();
         }
+        */
 
     }
 
