@@ -28,6 +28,7 @@ public class MapChunk {
     private int minEmptyBlocks = Constants.START_MIN_EMPTY_BLOCKS;
 
     private String sleepStage = "REM";
+    private boolean canContainPowerup;
     private int chunkNumber;
     private int position;
 
@@ -44,6 +45,7 @@ public class MapChunk {
         this.world = world;
         this.position = position;
         this.chunkNumber = chunkNumber;
+        this.canContainPowerup = ( this.chunkNumber % 4 == 0 );
         // Note that first MapChunk uses start values, others calculate them by method below.
         calculateValues();
         this.grid = MapGenerator.generateMapChunkGrid( this );
@@ -68,6 +70,19 @@ public class MapChunk {
             // Set chunks attributes to match calculated values.
             setMinGroundBlocks(minGround);
             setMaxGroundBlocks(maxGround);
+        }
+    }
+
+    /**
+     * Clears game object from map chunk
+     *
+     * @param id Game object's UserData id.
+     */
+    public void clearGameObject( String id ) {
+        for ( GameObject gameObject : gameObjects) {
+            if ( gameObject.getUserData().id.equals( id ) ) {
+                removalGameObjects.add( gameObject );
+            }
         }
     }
 
@@ -173,7 +188,9 @@ public class MapChunk {
     public int getMaxEmptyBlocks( ) { return maxEmptyBlocks; }
     public int getMinEmptyBlocks( ) { return minEmptyBlocks; }
 
+    public boolean canContainPowerup( ) { return canContainPowerup; }
     public Array<GameObject> getGameObjects( ) { return gameObjects; }
+    public MapChunk getPreviousMapChunk( ) { return previousMapChunk; }
     public String getSleepStage( ) { return sleepStage; }
     public int getChunkNumber( ) { return chunkNumber; }
     public int getPosition( ) { return position; }

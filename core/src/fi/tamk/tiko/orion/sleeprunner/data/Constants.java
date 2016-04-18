@@ -53,6 +53,8 @@ public class Constants {
     public static final int SPIKES_BLOCK = 2;
     public static final int SIGN_BLOCK = 3;
     public static final int POWERUP_SHIELD_BLOCK = 4;
+    public static final int POWERUP_FLY_BLOCK = 5;
+    public static final int POWERUP_MASK_BLOCK = 6;
 
     public static final int DIFFICULTY_CHANGE_INTERVAL = 6;
 
@@ -121,7 +123,7 @@ public class Constants {
      * Enemy/obstacle physics
      */
 
-    public static Vector2 ENEMY_LINEAR_VELOCITY = new Vector2(-2.5f, 0);
+    public static Vector2 ENEMY_LINEAR_VELOCITY = new Vector2(-3.0f, 0);
 
 
 

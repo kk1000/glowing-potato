@@ -282,7 +282,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         updateMapChunks(delta);
         updatePlayer(delta);
         nightmare.update(delta);
-        uiStage.act( delta );
+        uiStage.act(delta);
         doPhysicsStep(delta);
     }
 
@@ -529,7 +529,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
     @Override
     public void pause() {
-        Gdx.app.log("GameScreen","Game paused");
+        Gdx.app.log("GameScreen", "Game paused");
         if ( gameState == Constants.GAME_RUNNING ) {
             nightmare.pauseAnimation();
             player.pauseAnimation();
@@ -569,7 +569,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         // Player to ground collision check.
         if ((BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "GROUND")) ||
                 (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "GROUND")) ) {
-            Gdx.app.log( "GameScreen", "Player hit ground!" );
             player.landed();
         }
 
@@ -590,8 +589,30 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
                 (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "SIGN")) ||
                 (BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "NIGHTMARE")) ||
                 (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "NIGHTMARE")) ) {
-            contact.setEnabled( false );
+            contact.setEnabled(false);
         }
+
+        // Shield power up collision.
+        if ( (BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "SHIELD")) ||
+                (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "SHIELD")) ) {
+            contact.setEnabled( false );
+            currentMapChunk.clearGameObject("SHIELD");
+        }
+
+        // Fly power up collision.
+        if ( (BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "FLY")) ||
+                (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "FLY")) ) {
+            contact.setEnabled(false);
+            currentMapChunk.clearGameObject("FLY");
+        }
+
+        // Mask power up collision.
+        if ( (BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "MASK")) ||
+                (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "MASK")) ) {
+            contact.setEnabled( false );
+            currentMapChunk.clearGameObject( "MASK" );
+        }
+
     }
 
     @Override

@@ -1,16 +1,15 @@
 package fi.tamk.tiko.orion.sleeprunner.utilities;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
-import java.util.Map;
-
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
+import fi.tamk.tiko.orion.sleeprunner.objects.FlyPowerUpObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.GameObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.GroundObject;
+import fi.tamk.tiko.orion.sleeprunner.objects.MaskPowerUpObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.ShieldPowerUpObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.SignObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.SpikesObject;
@@ -59,10 +58,26 @@ public class MapGenerator {
     }
 
     /**
+     * Count how many specific symbols there are in a vertical row.
+     *
+     * @param grid   The map chunk grid.
+     * @param symbol The integer symbol to look for.
+     * @param x      The (starting) x position. (grid index)
+     * @param y      The y position. (grid index)
+     */
+    public static int countSymbolsInRow(int[][] grid, int symbol, int x, int y) {
+        int count = 0;
+        while ( isSymbolAtPosition( grid, symbol, x - count, y ) ) {
+            count++;
+        }
+        return count;
+    }
+
+    /**
      * Adds ground or empty to the current position.
      *
-     * @param grid The 2D integer map grid.
-     * @param x    Current x position. (grid index)
+     * @param grid            The 2D integer map grid.
+     * @param x               Current x position. (grid index)
      * @param minEmptyBlocks  Minimum amount of empty blocks in the chunk.
      * @param maxEmptyBlocks  Maximum amount of empty blocks in the chunk.
      * @param minGroundBlocks Minimum amount of ground blocks in the chunk.
@@ -106,13 +121,12 @@ public class MapGenerator {
      * @param x    Current x position. (grid index)
      */
     private static void generatePowerUpBlock( int[][] grid, int x ) {
-        int random = MathUtils.random( 0, 10 ); // Probability to get any power up.
-        if ( random == 0 ) {
-            // Random power ups y position.
-            int y = MathUtils.random( 4, 6 );
-            if ( isSymbolAtPosition( grid, Constants.EMPTY_BLOCK, x, y ) ) {
-                grid[ y ][ x ] = Constants.POWERUP_SHIELD_BLOCK;
-            }
+        // Random power up
+        int powerUp = MathUtils.random( 4, 6 );
+        // Random power ups y position.
+        int y = MathUtils.random( 5, 8 );
+        if ( isSymbolAtPosition( grid, Constants.EMPTY_BLOCK, x, y ) ) {
+            grid[ y ][ x ] = powerUp;
         }
     }
 
@@ -143,25 +157,38 @@ public class MapGenerator {
      * @return         Filled 2D integer array.
      */
     public static int[][] generateMapChunkGrid( MapChunk mapChunk ) {
-        boolean isFirstMapChunk = ( mapChunk.getPosition() == 0 );
+        MapChunk previousMapChunk = mapChunk.getPreviousMapChunk();
+        boolean isFirstMapChunk = ( previousMapChunk == null );
         int[][] grid = new int[ Constants.CHUNK_MAX_TILES_HEIGHT ][ Constants.CHUNK_MAX_TILES_WIDTH ];
         int[] values = new int[] { mapChunk.getMinEmptyBlocks(), mapChunk.getMaxEmptyBlocks(), mapChunk.getMinGroundBlocks(), mapChunk.getMaxGroundBlocks() };
+        boolean canContainPowerup = mapChunk.canContainPowerup();
         for ( int i = 0; i < Constants.CHUNK_MAX_TILES_WIDTH; i++ ) {
-            if ( isFirstMapChunk || mapChunk.getChunkNumber() % Constants.DIFFICULTY_CHANGE_INTERVAL == 0 ) {
+            if (isFirstMapChunk || mapChunk.getChunkNumber() % Constants.DIFFICULTY_CHANGE_INTERVAL == 0) {
                 // This is first map chunk of the world
-                // or sleep stage changing chunk!
+                // OR sleep stage changing chunk!
                 // Create ground by force.
-                if ( i == 5 ) {
-                    grid[ 2 ][ i ] = Constants.SIGN_BLOCK;
+                if (i == 5) {
+                    grid[2][i] = Constants.SIGN_BLOCK;
                 }
-                if ( i < Constants.CHUNK_MAX_TILES_WIDTH - 2 ) {
+                if (i < Constants.CHUNK_MAX_TILES_WIDTH - 2) {
                     grid[1][i] = Constants.GROUND_BLOCK;
                     grid[0][i] = Constants.GROUND_BLOCK;
                 }
             } else {
-                generateGroundBlock(grid, i, values[ 0 ], values[ 1 ], values[ 2 ], values[ 3 ] );
+                generateGroundBlock(grid, i, values[0], values[1], values[2], values[3]);
                 generateSpikeBlock(grid, i);
-                //generatePowerUpBlock( grid, i );
+                if ( canContainPowerup ) {
+                    generatePowerUpBlock(grid, i);
+                    canContainPowerup = false;
+                }
+            }
+            // If previous map chunk ended with ground force empty block to this chunk's start.
+            if ( i == 0 && previousMapChunk != null ) {
+                int[][] previousGrid = previousMapChunk.getGrid();
+                if ( previousGrid[ 0 ][ Constants.CHUNK_MAX_TILES_WIDTH - 1 ] == Constants.GROUND_BLOCK ){
+                    grid[ 1 ][ i ] = Constants.EMPTY_BLOCK;
+                    grid[ 0 ][ i ] = Constants.EMPTY_BLOCK;
+                }
             }
         }
         return grid;
@@ -233,6 +260,10 @@ public class MapGenerator {
             gameObject = new SignObject( world, centerX, centerY, meterWidth, meterHeight, mapChunk.getSleepStage() );
         } else if ( symbol == Constants.POWERUP_SHIELD_BLOCK ) {
             gameObject = new ShieldPowerUpObject( world, centerX, centerY, meterWidth, meterHeight );
+        } else if ( symbol == Constants.POWERUP_FLY_BLOCK ) {
+            gameObject = new FlyPowerUpObject( world, centerX, centerY, meterWidth, meterHeight );
+        } else if ( symbol == Constants.POWERUP_MASK_BLOCK ) {
+            gameObject = new MaskPowerUpObject( world, centerX, centerY, meterWidth, meterHeight );
         }
         return gameObject;
     }
@@ -253,7 +284,7 @@ public class MapGenerator {
                 int currentPos = grid[i][j];
                 if (!isInGameObjectBounds(j, i, currentPos, mapChunk )) {
                     // 'Combo' ended, make a game object of the gathered details.
-                    if (currentSymbol != currentPos || ( j == Constants.CHUNK_MAX_TILES_WIDTH - 1 ) ) {
+                    if (currentSymbol != currentPos ) {
                         if (currentSymbol > 0) {
                             mapChunk.addGameObject(generateGameObject(mapChunk, startX, startY, rowX * Constants.WORLD_TO_SCREEN, rowY * Constants.WORLD_TO_SCREEN, currentSymbol));
                         }

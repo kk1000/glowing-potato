@@ -13,10 +13,10 @@ import fi.tamk.tiko.orion.sleeprunner.data.UserData;
 /**
  * Spikes game object, its width is random.
  */
-public class ShieldPowerUpObject extends GameObject {
+public class MaskPowerUpObject extends GameObject {
 
 
-    public static final TextureRegion SHIELD_TEXTURE = new TextureRegion( new Texture( Gdx.files.internal( "graphics/powerup_shield.png" ) ) );
+    public static final TextureRegion SHIELD_TEXTURE = new TextureRegion( new Texture( Gdx.files.internal( "graphics/powerup_sleepingmask.png" ) ) );
 
     /**
      * Constructor for ShieldPowerUpObject
@@ -27,8 +27,8 @@ public class ShieldPowerUpObject extends GameObject {
      * @param width          Width of the body.
      * @param height         Height of the body.
      */
-    public ShieldPowerUpObject(World world, float x, float y, float width, float height) {
-        super(world, x, y, width, height, 0f, SHIELD_TEXTURE, BodyDef.BodyType.KinematicBody, new UserData("SHIELD"));
+    public MaskPowerUpObject(World world, float x, float y, float width, float height) {
+        super(world, x, y, width, height, 0f, SHIELD_TEXTURE, BodyDef.BodyType.KinematicBody, new UserData("MASK"));
     }
 
     @Override
