@@ -59,7 +59,7 @@ public class UIStage extends Stage {
             gameScreen.setGameState( Constants.GAME_OVER );
             gameScreen.getPauseStage().setupMenu();
         } else {
-            nightmareMeter.setValue( value + nightmareMeter.getStepSize() );
+            nightmareMeter.setValue( value + nightmareMeter.getStepSize()*15 );
         }
     }
 
@@ -102,4 +102,11 @@ public class UIStage extends Stage {
         super.draw();
     }
 
+    /**
+     * Getters
+     */
+
+    public UIText getUiText(){
+        return uiText;
+    }
 }
