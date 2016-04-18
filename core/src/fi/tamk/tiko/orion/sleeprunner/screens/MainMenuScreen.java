@@ -64,7 +64,7 @@ public class MainMenuScreen implements Screen{
 
         logo = new Texture(Gdx.files.internal(Constants.MAINMENU_LOGO_IMAGE_PATH));
 
-        gameButton = new TextButton("PLAY", skin);
+        gameButton = new TextButton(game.translate.get("play"), skin);
         gameButton.setBounds(width / 3, height / 8, width / 4, height / 7);
         gameButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
@@ -73,7 +73,7 @@ public class MainMenuScreen implements Screen{
             }
         });
 
-        muteButton = new TextButton("SOUNDS", skin);
+        muteButton = new TextButton(game.translate.get("mute"), skin);
         muteButton.setBounds(width * 0.8f, height * 0.8f, width / 9, height / 8);
         muteButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {

@@ -56,7 +56,7 @@ public class PauseStage extends Stage {
      */
     public void setupMenu(){
         if(game.getGameScreen().getGameState() == Constants.GAME_OVER) {
-            pauseMenu = new PauseMenu(Constants.APP_WIDTH / 4, Constants.APP_HEIGHT / 4, font, "Game Over!");
+            pauseMenu = new PauseMenu(Constants.APP_WIDTH / 4, Constants.APP_HEIGHT / 4, font, game.translate.get("game_over"));
             setupAnimation();
             setupNewGameButton();
             setupMainMenuButton();
@@ -65,7 +65,7 @@ public class PauseStage extends Stage {
             addActor(button2);
         }
         if(game.getGameScreen().getGameState() == Constants.GAME_PAUSED){
-            pauseMenu = new PauseMenu(Constants.APP_WIDTH / 4, Constants.APP_HEIGHT / 4, font, "Game Paused!");
+            pauseMenu = new PauseMenu(Constants.APP_WIDTH / 4, Constants.APP_HEIGHT / 4, font, game.translate.get("game_paused"));
             setupAnimation();
             setupContinueButton();
             setupMainMenuButton();
@@ -80,7 +80,7 @@ public class PauseStage extends Stage {
      */
 
     private void setupNewGameButton(){
-        button1 = new TextButton("Play Again", game.getSkin());
+        button1 = new TextButton(game.translate.get("play_again"), game.getSkin());
         button1.setBounds(Constants.APP_WIDTH / 2.5f,
                 Constants.APP_HEIGHT / 2.4f,
                 Constants.APP_WIDTH / 5f,
@@ -97,7 +97,7 @@ public class PauseStage extends Stage {
     }
 
     private void setupMainMenuButton(){
-        button2 = new TextButton("Main Menu", game.getSkin());
+        button2 = new TextButton(game.translate.get("main_menu"), game.getSkin());
         button2.setBounds(Constants.APP_WIDTH / 2.5f,
                 Constants.APP_HEIGHT / 3.42f,
                 Constants.APP_WIDTH / 5f,
@@ -114,7 +114,7 @@ public class PauseStage extends Stage {
     }
 
     private void setupContinueButton(){
-        button1 = new TextButton("Continue", game.getSkin());
+        button1 = new TextButton(game.translate.get("continue"), game.getSkin());
         button1.setBounds(Constants.APP_WIDTH / 2.5f,
                 Constants.APP_HEIGHT / 2.4f,
                 Constants.APP_WIDTH / 5f,

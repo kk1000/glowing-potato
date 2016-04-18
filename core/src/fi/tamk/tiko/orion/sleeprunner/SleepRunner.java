@@ -5,6 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.I18NBundle;
+
+import java.util.Locale;
 
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
@@ -24,6 +27,8 @@ public class SleepRunner extends Game {
 
 	private SpriteBatch batch;
 
+	public I18NBundle translate;
+
 	private MainMenuScreen mainMenuScreen;
 
 	private GameScreen gameScreen;
@@ -36,7 +41,11 @@ public class SleepRunner extends Game {
 	public void create() {
 		music = Gdx.audio.newMusic(Gdx.files.internal(Constants.GAME_MUSIC_PATH));
 
+		Locale defaultLocale = Locale.getDefault();
+
 		batch = new SpriteBatch();
+
+		translate = I18NBundle.createBundle(Gdx.files.internal("localization/languages"),defaultLocale);
 
 		skin  = new Skin(Gdx.files.internal(Constants.SKIN_PATH));
 

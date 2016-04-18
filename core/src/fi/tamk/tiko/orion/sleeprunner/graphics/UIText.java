@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.objects.PlayerObject;
 import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
@@ -21,6 +22,7 @@ public class UIText extends Actor {
     private PlayerObject player;
     private BitmapFont font;
     private World world;
+    private SleepRunner game;
 
     private int playTimes = 0;
     private float score = 0;
@@ -32,7 +34,8 @@ public class UIText extends Actor {
      * @param debugFont     Game's debug font.
      * @param font          Game's general font.
      */
-    public UIText( GameScreen gameScreen, BitmapFont debugFont, BitmapFont font) {
+    public UIText(SleepRunner g, GameScreen gameScreen, BitmapFont debugFont, BitmapFont font) {
+        this.game = g;
         this.gameScreen = gameScreen;
         this.debugFont = debugFont;
         this.font = font;
@@ -57,8 +60,8 @@ public class UIText extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         MapChunk currentMapChunk = gameScreen.getCurrentMapChunk();
-        font.draw(batch, "Score:" + (int) score, Constants.WORLD_TO_SCREEN, Constants.APP_HEIGHT - 10);
-        font.draw(batch, "Nightmare:", Constants.WORLD_TO_SCREEN, Constants.APP_HEIGHT - 40);
+        font.draw(batch, game.translate.get("score")+":" + (int) score, Constants.WORLD_TO_SCREEN, Constants.APP_HEIGHT - 10);
+        font.draw(batch, game.translate.get("nightmare")+":", Constants.WORLD_TO_SCREEN, Constants.APP_HEIGHT - 40);
         // Debug details.
         if ( Constants.DEBUG ) {
             debugFont.draw(batch, "Chunk number: " + currentMapChunk.getChunkNumber(), Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 10);

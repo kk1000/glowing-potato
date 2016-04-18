@@ -68,7 +68,7 @@ public class UIStage extends Stage {
      */
 
     public void setupUiStage(){
-        this.pauseButton = new TextButton("Pause", game.getSkin());
+        this.pauseButton = new TextButton(game.translate.get("pause"), game.getSkin());
         this.pauseButton.setBounds(Constants.APP_WIDTH * 0.8f, Constants.APP_HEIGHT * 0.8f, Constants.APP_WIDTH / 9, Constants.APP_HEIGHT / 8);
         this.pauseButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
@@ -77,7 +77,7 @@ public class UIStage extends Stage {
         });
 
         this.nightmareMeter = new NightmareMeter( game.getGameScreen(), game.getSkin() );
-        this.uiText = new UIText( game.getGameScreen(), debugFont, this.font );
+        this.uiText = new UIText(game, game.getGameScreen(), debugFont, this.font );
 
         addActor( pauseButton );
         addActor( nightmareMeter );
