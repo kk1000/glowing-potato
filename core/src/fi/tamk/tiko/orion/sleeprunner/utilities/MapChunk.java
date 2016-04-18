@@ -29,6 +29,7 @@ public class MapChunk {
 
     private String sleepStage = "REM";
     private boolean canContainPowerup;
+    private boolean canContainFlyingObstacle;
     private int chunkNumber;
     private int position;
 
@@ -46,6 +47,7 @@ public class MapChunk {
         this.position = position;
         this.chunkNumber = chunkNumber;
         this.canContainPowerup = ( this.chunkNumber % 4 == 0 );
+        this.canContainFlyingObstacle = ( this.chunkNumber % 3 == 0 );
         // Note that first MapChunk uses start values, others calculate them by method below.
         calculateValues();
         this.grid = MapGenerator.generateMapChunkGrid( this );
@@ -81,7 +83,8 @@ public class MapChunk {
     public void clearGameObject( String id ) {
         for ( GameObject gameObject : gameObjects) {
             if ( gameObject.getUserData().id.equals( id ) ) {
-                removalGameObjects.add( gameObject );
+                // This caused the game to crash?
+                //removalGameObjects.add( gameObject );
             }
         }
     }
@@ -188,6 +191,7 @@ public class MapChunk {
     public int getMaxEmptyBlocks( ) { return maxEmptyBlocks; }
     public int getMinEmptyBlocks( ) { return minEmptyBlocks; }
 
+    public boolean canContainFlyingObstacle( ) { return canContainFlyingObstacle; }
     public boolean canContainPowerup( ) { return canContainPowerup; }
     public Array<GameObject> getGameObjects( ) { return gameObjects; }
     public MapChunk getPreviousMapChunk( ) { return previousMapChunk; }

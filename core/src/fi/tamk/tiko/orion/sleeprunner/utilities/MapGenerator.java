@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Array;
 
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.objects.FlyPowerUpObject;
+import fi.tamk.tiko.orion.sleeprunner.objects.FlyingSpikesObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.GameObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.GroundObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.MaskPowerUpObject;
@@ -119,15 +120,42 @@ public class MapGenerator {
      *
      * @param grid The 2D integer map grid.
      * @param x    Current x position. (grid index)
+     * @return     True if the method NOT insert power up block.
      */
-    private static void generatePowerUpBlock( int[][] grid, int x ) {
-        // Random power up
-        int powerUp = MathUtils.random( 4, 6 );
-        // Random power ups y position.
-        int y = MathUtils.random( 5, 8 );
-        if ( isSymbolAtPosition( grid, Constants.EMPTY_BLOCK, x, y ) ) {
-            grid[ y ][ x ] = powerUp;
+    private static boolean generatePowerUpBlock( int[][] grid, int x ) {
+        int random = MathUtils.random( 0, 2 ); // Probability to get some power up.
+        if ( random == 0 ) {
+            // Random power up
+            int powerUp = MathUtils.random( 4, 6 );
+            // Random power ups y position.
+            int y = MathUtils.random( 5, 8 );
+            if ( isSymbolAtPosition( grid, Constants.EMPTY_BLOCK, x, y ) ) {
+                grid[ y ][ x ] = powerUp;
+                return false;
+            }
         }
+        return true;
+    }
+
+    /**
+     * Tries to generate flying spikes to the position.
+     *
+     * @param   grid  The 2D integer map grid.
+     * @param   x     Current x position. (grid index)
+     * @return        True if the method NOT insert flying spike block.
+     */
+    private static boolean generateFlyingSpikeBlock( int[][] grid, int x ) {
+        int random = MathUtils.random(0, 3); // Probability to get flying spikes.
+        if (random == 0) {
+            // Try to make spikes block. There must be ground block beneath.
+            if (isSymbolAtPosition(grid, Constants.GROUND_BLOCK, x, 0)) {
+                // Random the flying spikes y position.
+                int y = MathUtils.random( 3, 5 );
+                grid[y][x] = Constants.FLYING_SPIKES_BLOCK;
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -137,7 +165,7 @@ public class MapGenerator {
      * @param x     Current x position. (grid index)
      */
     private static void generateSpikeBlock( int[][] grid, int x ) {
-        int random = MathUtils.random(0, 3); // Probability to get spikes. (Keep in mind empty blocks)
+        int random = MathUtils.random(0, 2); // Probability to get spikes. (Keep in mind empty blocks)
         if (random == 0) {
             // Try to make spikes block. There must be empty block.
             if (isSymbolAtPosition(grid, Constants.EMPTY_BLOCK, x, 0)) {
@@ -161,6 +189,7 @@ public class MapGenerator {
         boolean isFirstMapChunk = ( previousMapChunk == null );
         int[][] grid = new int[ Constants.CHUNK_MAX_TILES_HEIGHT ][ Constants.CHUNK_MAX_TILES_WIDTH ];
         int[] values = new int[] { mapChunk.getMinEmptyBlocks(), mapChunk.getMaxEmptyBlocks(), mapChunk.getMinGroundBlocks(), mapChunk.getMaxGroundBlocks() };
+        boolean canContainFlyingObstacle = mapChunk.canContainFlyingObstacle();
         boolean canContainPowerup = mapChunk.canContainPowerup();
         for ( int i = 0; i < Constants.CHUNK_MAX_TILES_WIDTH; i++ ) {
             if (isFirstMapChunk || mapChunk.getChunkNumber() % Constants.DIFFICULTY_CHANGE_INTERVAL == 0) {
@@ -177,9 +206,11 @@ public class MapGenerator {
             } else {
                 generateGroundBlock(grid, i, values[0], values[1], values[2], values[3]);
                 generateSpikeBlock(grid, i);
+                if ( canContainFlyingObstacle ) {
+                    canContainFlyingObstacle = generateFlyingSpikeBlock( grid, i );
+                }
                 if ( canContainPowerup ) {
-                    generatePowerUpBlock(grid, i);
-                    canContainPowerup = false;
+                    canContainPowerup = generatePowerUpBlock(grid, i);
                 }
             }
             // If previous map chunk ended with ground force empty block to this chunk's start.
@@ -264,6 +295,8 @@ public class MapGenerator {
             gameObject = new FlyPowerUpObject( world, centerX, centerY, meterWidth, meterHeight );
         } else if ( symbol == Constants.POWERUP_MASK_BLOCK ) {
             gameObject = new MaskPowerUpObject( world, centerX, centerY, meterWidth, meterHeight );
+        } else if ( symbol == Constants.FLYING_SPIKES_BLOCK ) {
+            gameObject = new FlyingSpikesObject( world, centerX, centerY, meterWidth, meterHeight );
         }
         return gameObject;
     }
