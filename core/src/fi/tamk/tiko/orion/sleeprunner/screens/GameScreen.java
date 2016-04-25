@@ -25,6 +25,7 @@ import com.badlogic.gdx.utils.Array;
 
 import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
+import fi.tamk.tiko.orion.sleeprunner.data.Preference;
 import fi.tamk.tiko.orion.sleeprunner.graphics.NightmareMeter;
 import fi.tamk.tiko.orion.sleeprunner.objects.NightmareObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.PlayerObject;
@@ -49,6 +50,8 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     private OrthographicCamera gameCamera;
     private OrthographicCamera uiCamera;
 
+    private Preference prefs;
+
     private BackgroundStage backgroundStage;
     private PauseStage pauseStage;
     private UIStage uiStage;
@@ -70,7 +73,10 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     private BitmapFont scoreFont;
     private BitmapFont debugFont;
     private SpriteBatch batch;
+
     private boolean setupReady = false;
+
+    private boolean highscoreSaved = false;
 
     private float deathTimer = 2;
     private float accumulator = 0f;
@@ -89,6 +95,8 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         gestureDetector = new GestureDetector(new GestureListener());
 
         batch = game.getBatch();
+
+        prefs = new Preference();
 
         debugRenderer = new Box2DDebugRenderer();
 
@@ -152,6 +160,9 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
         nightmare = new NightmareObject(world);
         player = new PlayerObject(world);
+
+
+
     }
 
     @Override
@@ -229,6 +240,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         // Reset attributes.
         accumulator = 0f;
         deathTimer = 2;
+        highscoreSaved = false;
         gameState = Constants.GAME_READY;
     }
 
@@ -299,6 +311,10 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      */
     private void updateGameOver( ) {
         Gdx.input.setInputProcessor(pauseStage);
+        if(highscoreSaved == false) {
+            prefs.putHighscore(uiStage.getUiText().getScore());
+            highscoreSaved = true;
+        }
         pauseStage.act();
     }
 

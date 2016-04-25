@@ -43,6 +43,9 @@ public class UIText extends Actor {
         this.world = gameScreen.getWorld();
     }
 
+
+
+
     /**
      * Resets UI's texts for the new game.
      */
@@ -61,7 +64,7 @@ public class UIText extends Actor {
     public void draw(Batch batch, float parentAlpha) {
         MapChunk currentMapChunk = gameScreen.getCurrentMapChunk();
         font.draw(batch, game.translate.get("score")+":" + (int) score, Constants.WORLD_TO_SCREEN, Constants.APP_HEIGHT - 10);
-        font.draw(batch, game.translate.get("nightmare")+":", Constants.WORLD_TO_SCREEN, Constants.APP_HEIGHT - 40);
+        font.draw(batch, game.translate.get("nightmare") + ":", Constants.WORLD_TO_SCREEN, Constants.APP_HEIGHT - 40);
         // Debug details.
         if ( Constants.DEBUG ) {
             debugFont.draw(batch, "Chunk number: " + currentMapChunk.getChunkNumber(), Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 10);
@@ -78,4 +81,10 @@ public class UIText extends Actor {
         }
     }
 
+    /**
+     * Getters
+     */
+    public int getScore(){
+        return (int)score;
+    }
 }

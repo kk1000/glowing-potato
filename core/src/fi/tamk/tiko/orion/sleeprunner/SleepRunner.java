@@ -11,6 +11,7 @@ import java.util.Locale;
 
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
+import fi.tamk.tiko.orion.sleeprunner.screens.HighscoreScreen;
 import fi.tamk.tiko.orion.sleeprunner.screens.MainMenuScreen;
 
 /**
@@ -32,6 +33,8 @@ public class SleepRunner extends Game {
 	private MainMenuScreen mainMenuScreen;
 
 	private GameScreen gameScreen;
+
+	private HighscoreScreen highscoreScreen;
 
 	private Music music;
 
@@ -66,6 +69,8 @@ public class SleepRunner extends Game {
 		setScreen( getMainMenuScreen() );
 	}
 
+	public void setHighscoreScreen() {setScreen ( getHighscoreScreen() );}
+
 	public MainMenuScreen getMainMenuScreen() {
 		if ( mainMenuScreen == null ) {
             Gdx.app.log( "SleepRunner", "Creating new MainMenuScreen instance" );
@@ -80,6 +85,14 @@ public class SleepRunner extends Game {
             gameScreen = new GameScreen( this );
         }
 		return gameScreen;
+	}
+
+	public HighscoreScreen getHighscoreScreen (){
+		if (highscoreScreen == null) {
+			Gdx.app.log( "SleepRunner", "Creating new highscoreScreen instance" );
+			highscoreScreen = new HighscoreScreen( this );
+		}
+		return highscoreScreen;
 	}
 
 	public Music getMusic( ) { return music; }

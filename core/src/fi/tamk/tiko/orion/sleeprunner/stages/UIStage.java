@@ -102,4 +102,11 @@ public class UIStage extends Stage {
         super.draw();
     }
 
+    /**
+     * Getters
+     */
+
+    public UIText getUiText(){
+        return uiText;
+    }
 }

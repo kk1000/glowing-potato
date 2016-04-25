@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -17,11 +18,10 @@ import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.Preference;
 
-
 /**
- * Screen for main menu.
+ * Created by joni on 18/04/2016.
  */
-public class MainMenuScreen implements Screen{
+public class HighscoreScreen implements Screen {
 
     public Stage stage;
     private OrthographicCamera camera;
@@ -30,11 +30,11 @@ public class MainMenuScreen implements Screen{
     private SpriteBatch batch;
     private float height;
     private float width;
+    private BitmapFont scoreFont;
     private Texture logo;
     private float delta;
-    private TextButton gameButton;
+    private TextButton backButton;
     private TextButton muteButton;
-    private TextButton highscoreButton;
     private Skin skin;
     private Preference prefs;
 
@@ -44,7 +44,7 @@ public class MainMenuScreen implements Screen{
      *
      * @param g = Game created from SleepRunner main class
      */
-    public MainMenuScreen(SleepRunner g){
+    public HighscoreScreen(SleepRunner g){
         width = Gdx.graphics.getWidth();
         height = Gdx.graphics.getHeight();
 
@@ -64,22 +64,14 @@ public class MainMenuScreen implements Screen{
         delta = Gdx.graphics.getDeltaTime();
 
         logo = new Texture(Gdx.files.internal(Constants.MAINMENU_LOGO_IMAGE_PATH));
+        scoreFont = new BitmapFont(Gdx.files.internal(Constants.GAME_FONT_PATH));
 
-        gameButton = new TextButton(game.translate.get("play"), skin);
-        gameButton.setBounds(width / 2.9f, height / 4, width / 4, height / 7);
-        gameButton.addListener(new ClickListener() {
+        backButton = new TextButton(game.translate.get("back"), skin);
+        backButton.setBounds(width / 12, height / 11, width / 5, height / 7);
+        backButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
                 Gdx.app.log("TAG", "Clicked menu");
-                game.setGameScreen();
-            }
-        });
-
-        highscoreButton = new TextButton(game.translate.get("highscores"), skin);
-        highscoreButton.setBounds(width / 2.9f, height / 11, width / 4, height / 7);
-        highscoreButton.addListener(new ClickListener() {
-            public void clicked(InputEvent e, float x, float y) {
-                Gdx.app.log("TAG", "Clicked menu");
-                game.setHighscoreScreen();
+                game.setMainMenuScreen();
             }
         });
 
@@ -87,18 +79,18 @@ public class MainMenuScreen implements Screen{
         muteButton.setBounds(width * 0.8f, height * 0.8f, width / 9, height / 8);
         muteButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
-                    prefs.setMuted();
-                        if(prefs.getMuted()){
-                            muteButton.setColor(Color.RED);
-                        } else{
-                            muteButton.setColor(Color.WHITE);
-                        }
+                prefs.setMuted();
+                if (prefs.getMuted()) {
+                    muteButton.setColor(Color.RED);
+                } else {
+                    muteButton.setColor(Color.WHITE);
+                }
             }
         });
 
-        stage.addActor(highscoreButton);
+
+        stage.addActor(backButton);
         stage.addActor(muteButton);
-        stage.addActor(gameButton);
     }
 
     @Override
@@ -118,6 +110,12 @@ public class MainMenuScreen implements Screen{
         Gdx.input.setInputProcessor(stage);
         batch.setProjectionMatrix(camera.combined);
         batch.draw(logo, 0, 0, logo.getWidth(), logo.getHeight());
+
+        scoreFont.draw(batch, game.translate.get("top_scores"), width/2.8f, height/2f);
+        for(int i = 1; i <= 5; i++){
+            scoreFont.draw( batch, Integer.toString(prefs.getHighscore(i)), width/2.1f,
+                            height*0.4f - scoreFont.getLineHeight()*i);
+        }
 
         batch.setProjectionMatrix(camera2.combined);
         stage.act();
@@ -151,4 +149,3 @@ public class MainMenuScreen implements Screen{
     }
 
 }
-
