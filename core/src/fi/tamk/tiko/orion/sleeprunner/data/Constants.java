@@ -111,6 +111,11 @@ public class Constants {
     // UI
     public static final String MAINMENU_LOGO_IMAGE_PATH = "graphics/mainmenu.png";
     public static final String PAUSEMENU_IMAGE_PATH = "graphics/pausescreen.png";
+    // Logos
+    public static final String LAUNCH_LOGO_TAMK_IMAGE_PATH = "graphics/logos/tamk_eng_vaaka_RGB.png";
+    public static final String LAUNCH_LOGO_TIKO_IMAGE_PATH = "graphics/logos/tiko_musta_eng.png";
+    public static final String LAUNCH_LOGO_UKK_IMAGE_PATH = "graphics/logos/ukkinstitute.png";
+    public static final String LAUNCH_LOGO_PETO_IMAGE_PATH = "graphics/logos/PETO-logo.png";
 
     /**
      * SoundEffects paths

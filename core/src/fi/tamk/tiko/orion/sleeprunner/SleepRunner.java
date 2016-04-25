@@ -12,6 +12,7 @@ import java.util.Locale;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 import fi.tamk.tiko.orion.sleeprunner.screens.HighscoreScreen;
+import fi.tamk.tiko.orion.sleeprunner.screens.LaunchScreen;
 import fi.tamk.tiko.orion.sleeprunner.screens.MainMenuScreen;
 
 /**
@@ -36,6 +37,8 @@ public class SleepRunner extends Game {
 
 	private HighscoreScreen highscoreScreen;
 
+	private LaunchScreen launchScreen;
+
 	private Music music;
 
 	private Skin skin;
@@ -53,13 +56,15 @@ public class SleepRunner extends Game {
 		skin  = new Skin(Gdx.files.internal(Constants.SKIN_PATH));
 
 		music.play();
-		music.setVolume(0.1f);
-		setMainMenuScreen();
+		music.setVolume(0f);
+		setLaunchScreen();
 	}
 
 	public SpriteBatch getBatch() {
 		return batch;
 	}
+
+	public void setLaunchScreen() { setScreen( getLaunchScreen()) ; }
 
 	public void setGameScreen(){
 		setScreen( getGameScreen() );
@@ -93,6 +98,14 @@ public class SleepRunner extends Game {
 			highscoreScreen = new HighscoreScreen( this );
 		}
 		return highscoreScreen;
+	}
+
+	public LaunchScreen getLaunchScreen(){
+		if (launchScreen == null) {
+			Gdx.app.log( "SleepRunner", "Creating new launchScreen instance" );
+			launchScreen = new LaunchScreen( this );
+		}
+		return launchScreen;
 	}
 
 	public Music getMusic( ) { return music; }
