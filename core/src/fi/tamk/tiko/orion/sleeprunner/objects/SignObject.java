@@ -46,7 +46,7 @@ public class SignObject extends GameObject {
     private void setSignTexture( ) {
         if ( sleepStage.equals( "REM" ) ) {
             this.textureRegion = REMSLEEP_TEXTURE;
-        } else if ( sleepStage.equals( "DEEPSLEEP" ) ) {
+        } else if ( sleepStage.equals( "DEEP" ) ) {
             this.textureRegion = DEEPSLEEP_TEXTURE;
         } else {
             this.textureRegion = EMPTY_TEXTURE;

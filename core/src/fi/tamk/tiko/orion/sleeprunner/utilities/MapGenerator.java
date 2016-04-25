@@ -145,7 +145,7 @@ public class MapGenerator {
      * @return        True if the method NOT insert flying spike block.
      */
     private static boolean generateFlyingSpikeBlock( int[][] grid, int x ) {
-        int random = MathUtils.random(0, 3); // Probability to get flying spikes.
+        int random = MathUtils.random(0, 2); // Probability to get flying spikes.
         if (random == 0) {
             // Try to make spikes block. There must be ground block beneath.
             if (isSymbolAtPosition(grid, Constants.GROUND_BLOCK, x, 0)) {

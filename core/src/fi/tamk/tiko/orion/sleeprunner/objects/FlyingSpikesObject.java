@@ -18,7 +18,7 @@ public class FlyingSpikesObject extends GameObject {
      * Texture for flying spike obstacle.
      */
 
-    public static final TextureRegion FLYING_SPIKE_TEXTURE = Constants.TILESET_SPRITES[3][2];
+    public static final TextureRegion FLYING_SPIKE_TEXTURE = Constants.TILESET_SPRITES[0][3];
 
     /**
      * Constructor for SpikesObject.
