@@ -25,7 +25,7 @@ public class NightmareMeter extends ProgressBar {
      * @param skin       UI Skim.
      */
     public NightmareMeter( GameScreen gameScreen, Skin skin ) {
-        super( 0, 10, 1, false, skin );
+        super( 0, 3, 1, false, skin );
         this.gameScreen = gameScreen;
         this.skin = skin;
         this.nightmare = this.gameScreen.getNightmare();

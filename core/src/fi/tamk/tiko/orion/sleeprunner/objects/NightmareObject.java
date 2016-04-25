@@ -15,8 +15,6 @@ public class NightmareObject extends AnimatedGameObject {
 
     public static final Texture BASE_TEXTURE = new Texture( Gdx.files.internal( Constants.NIGHTMARE_BACKGROUND_IMAGE_PATH ) );
 
-    private float xDestination;
-
     /**
      * Constructor.
      *
@@ -29,13 +27,12 @@ public class NightmareObject extends AnimatedGameObject {
     }
 
     /**
-     * Moves nightmare forward by player's 'death'.
+     * Moves nightmare forward by player's "death".
      */
     public void moveForward( ) {
         float x = body.getPosition().x;
         float y = body.getPosition().y;
         body.setTransform( x + 0.5f, y, body.getAngle() );
-        Gdx.app.log( "NightmareObject", "X is now " + body.getPosition().x );
     }
 
 }

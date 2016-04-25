@@ -68,7 +68,7 @@ public class Constants {
      * Nightmare stuff.
      */
 
-    public static final float NIGHTMARE_START_X = -6f;
+    public static final float NIGHTMARE_START_X = -4f;
     public static final float NIGHTMARE_START_Y = 2.4f;
 
     /**
