@@ -66,7 +66,6 @@ public class UIStage extends Stage {
     /**
      * Setups the stage.
      */
-
     public void setupUiStage(){
         this.pauseButton = new TextButton(game.translate.get("pause"), game.getSkin());
         this.pauseButton.setBounds(Constants.APP_WIDTH * 0.8f, Constants.APP_HEIGHT * 0.8f, Constants.APP_WIDTH / 9, Constants.APP_HEIGHT / 8);
@@ -82,6 +81,13 @@ public class UIStage extends Stage {
         addActor( pauseButton );
         addActor( nightmareMeter );
         addActor( uiText );
+    }
+
+    /**
+     * Runs when player collects power up.
+     */
+    public void collectedPowerup( ) {
+        //uiText.setScore( uiText.getScore() + 10 );
     }
 
     /**

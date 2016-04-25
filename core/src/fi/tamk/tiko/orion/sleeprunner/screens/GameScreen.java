@@ -311,7 +311,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      */
     private void updateGameOver( ) {
         Gdx.input.setInputProcessor(pauseStage);
-        if(highscoreSaved == false) {
+        if(!highscoreSaved) {
             prefs.putHighscore(uiStage.getUiText().getScore());
             highscoreSaved = true;
         }
@@ -610,8 +610,9 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         // Shield power up collision.
         if ( (BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "SHIELD")) ||
                 (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "SHIELD")) ) {
-            contact.setEnabled( false );
+            contact.setEnabled(false);
             currentMapChunk.clearGameObject("SHIELD");
+            uiStage.collectedPowerup();
         }
 
         // Fly power up collision.
@@ -619,25 +620,16 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
                 (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "FLY")) ) {
             contact.setEnabled(false);
             currentMapChunk.clearGameObject("FLY");
+            uiStage.collectedPowerup();
         }
 
         // Mask power up collision.
         if ( (BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "MASK")) ||
                 (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "MASK")) ) {
-            contact.setEnabled( false );
-            currentMapChunk.clearGameObject( "MASK" );
+            contact.setEnabled(false);
+            currentMapChunk.clearGameObject("MASK");
+            uiStage.collectedPowerup();
         }
-
-        // Player to flying spikes collision check.
-        /* Crashed the game?
-        if ((BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "FLYING_SPIKES")) ||
-                (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "FLYING_SPIKES")) ) {
-            contact.setEnabled( false );
-            Gdx.app.log( "GameScreen", "Hit flying spikes!" );
-            nightmare.moveForward();
-            uiStage.moveNightmareMeter();
-        }
-        */
 
     }
 

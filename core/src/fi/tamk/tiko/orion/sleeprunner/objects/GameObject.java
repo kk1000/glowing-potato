@@ -41,11 +41,11 @@ public abstract class GameObject {
     protected float textureWidth;
     protected float textureHeight;
 
-
-
     protected Array<Tile> tiles = new Array<Tile>();
 
     protected Preference prefs;
+
+    protected boolean hidden = false;
 
     /**
      * Constructor for game objects with texture region.
@@ -199,17 +199,19 @@ public abstract class GameObject {
      * @param batch Spritebatch.
      */
     public void draw(Batch batch) {
-        for ( Tile tile : tiles ) {
-            batch.draw( tile.textureRegion,
-                    tile.x,
-                    tile.y,
-                    Constants.WORLD_TO_SCREEN / 2,
-                    Constants.WORLD_TO_SCREEN / 2,
-                    Constants.WORLD_TO_SCREEN / 100f,
-                    Constants.WORLD_TO_SCREEN / 100f,
-                    1.0f,
-                    1.0f,
-                    0);
+        if ( !hidden ) {
+            for (Tile tile : tiles) {
+                batch.draw(tile.textureRegion,
+                        tile.x,
+                        tile.y,
+                        Constants.WORLD_TO_SCREEN / 2,
+                        Constants.WORLD_TO_SCREEN / 2,
+                        Constants.WORLD_TO_SCREEN / 100f,
+                        Constants.WORLD_TO_SCREEN / 100f,
+                        1.0f,
+                        1.0f,
+                        0);
+            }
         }
     }
 
@@ -249,6 +251,12 @@ public abstract class GameObject {
         body.setUserData(null);
         world.destroyBody(body);
     }
+
+    /**
+     * Setters.
+     */
+
+    public void setHidden( boolean hidden ) { this.hidden = hidden; }
 
     /**
      * Getters.

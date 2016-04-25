@@ -104,15 +104,14 @@ public class MapChunk {
     }
 
     /**
-     * Clears game object from map chunk
+     * Clears game object from map chunk (hides it now)
      *
      * @param id Game object's UserData id.
      */
     public void clearGameObject( String id ) {
         for ( GameObject gameObject : gameObjects) {
             if ( gameObject.getUserData().id.equals( id ) ) {
-                // This caused the game to crash?
-                //removalGameObjects.add( gameObject );
+                gameObject.setHidden( true );
             }
         }
     }

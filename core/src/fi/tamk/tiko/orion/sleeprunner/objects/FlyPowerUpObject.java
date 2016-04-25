@@ -38,19 +38,21 @@ public class FlyPowerUpObject extends GameObject {
 
     @Override
     public void draw( Batch batch ) {
-        float half = Constants.WORLD_TO_SCREEN/100f/2;
-        float x = body.getPosition().x - half;
-        float y = body.getPosition().y - half;
-        batch.draw(textureRegion,
-                x,
-                y,
-                Constants.WORLD_TO_SCREEN / 2,
-                Constants.WORLD_TO_SCREEN / 2,
-                Constants.WORLD_TO_SCREEN / 100f,
-                Constants.WORLD_TO_SCREEN / 100f,
-                1.0f,
-                1.0f,
-                0);
+        if ( !hidden ) {
+            float half = Constants.WORLD_TO_SCREEN / 100f / 2;
+            float x = body.getPosition().x - half;
+            float y = body.getPosition().y - half;
+            batch.draw(textureRegion,
+                    x,
+                    y,
+                    Constants.WORLD_TO_SCREEN / 2,
+                    Constants.WORLD_TO_SCREEN / 2,
+                    Constants.WORLD_TO_SCREEN / 100f,
+                    Constants.WORLD_TO_SCREEN / 100f,
+                    1.0f,
+                    1.0f,
+                    0);
+        }
     }
 
 }

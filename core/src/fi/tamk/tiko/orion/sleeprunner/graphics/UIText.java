@@ -43,9 +43,6 @@ public class UIText extends Actor {
         this.world = gameScreen.getWorld();
     }
 
-
-
-
     /**
      * Resets UI's texts for the new game.
      */
@@ -82,8 +79,15 @@ public class UIText extends Actor {
     }
 
     /**
+     * Setters.
+     */
+
+    public void setScore( int score ) { this.score = score; }
+
+    /**
      * Getters
      */
+
     public int getScore(){
         return (int)score;
     }
