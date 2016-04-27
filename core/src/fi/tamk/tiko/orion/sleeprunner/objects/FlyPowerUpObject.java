@@ -2,21 +2,18 @@ package fi.tamk.tiko.orion.sleeprunner.objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 
-import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.UserData;
 
 /**
- * Spikes game object, its width is random.
+ * Fly power up.
  */
-public class FlyPowerUpObject extends GameObject {
+public class FlyPowerUpObject extends PowerUpGameObject {
 
 
-    public static final TextureRegion FLY_TEXTURE = new TextureRegion( new Texture( Gdx.files.internal( "graphics/powerup_fly.png" ) ) );
+    public static final TextureRegion POWERUP_FLY_TEXTURE = new TextureRegion( new Texture( Gdx.files.internal( "graphics/powerup_fly.png" ) ) );
 
     /**
      * Constructor for FlyPowerUpObject
@@ -28,31 +25,7 @@ public class FlyPowerUpObject extends GameObject {
      * @param height         Height of the body.
      */
     public FlyPowerUpObject(World world, float x, float y, float width, float height) {
-        super(world, x, y, width, height, 0f, FLY_TEXTURE, BodyDef.BodyType.KinematicBody, new UserData("FLY"));
-    }
-
-    @Override
-    public void update(float delta) {
-        body.setLinearVelocity(Constants.ENEMY_LINEAR_VELOCITY);
-    }
-
-    @Override
-    public void draw( Batch batch ) {
-        if ( !hidden ) {
-            float half = Constants.WORLD_TO_SCREEN / 100f / 2;
-            float x = body.getPosition().x - half;
-            float y = body.getPosition().y - half;
-            batch.draw(textureRegion,
-                    x,
-                    y,
-                    Constants.WORLD_TO_SCREEN / 2,
-                    Constants.WORLD_TO_SCREEN / 2,
-                    Constants.WORLD_TO_SCREEN / 100f,
-                    Constants.WORLD_TO_SCREEN / 100f,
-                    1.0f,
-                    1.0f,
-                    0);
-        }
+        super(world, x, y, width, height,POWERUP_FLY_TEXTURE, new UserData("POWERUP_FLY"));
     }
 
 }

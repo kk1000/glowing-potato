@@ -608,26 +608,26 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         }
 
         // Shield power up collision.
-        if ( (BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "SHIELD")) ||
-                (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "SHIELD")) ) {
+        if ( (BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "POWERUP_SHIELD")) ||
+                (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "POWERUP_SHIELD")) ) {
             contact.setEnabled(false);
-            currentMapChunk.clearGameObject("SHIELD");
+            currentMapChunk.clearGameObject("POWERUP_SHIELD");
             uiStage.collectedPowerup();
         }
 
         // Fly power up collision.
-        if ( (BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "FLY")) ||
-                (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "FLY")) ) {
+        if ( (BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "POWERUP_FLY")) ||
+                (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "POWERUP_FLY")) ) {
             contact.setEnabled(false);
-            currentMapChunk.clearGameObject("FLY");
+            currentMapChunk.clearGameObject("POWERUP_FLY");
             uiStage.collectedPowerup();
         }
 
         // Mask power up collision.
-        if ( (BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "MASK")) ||
-                (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "MASK")) ) {
+        if ( (BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "POWERUP_MASK")) ||
+                (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "POWERUP_MASK")) ) {
             contact.setEnabled(false);
-            currentMapChunk.clearGameObject("MASK");
+            currentMapChunk.clearGameObject("POWERUP_MASK");
             uiStage.collectedPowerup();
         }
 
