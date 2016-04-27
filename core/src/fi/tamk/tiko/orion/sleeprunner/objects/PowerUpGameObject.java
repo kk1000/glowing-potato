@@ -12,10 +12,10 @@ import fi.tamk.tiko.orion.sleeprunner.data.UserData;
  *  Superclass of every power up game object.
  *  Not designed to construct object from this class.
  */
-public abstract class PowerUpObject extends GameObject {
+public abstract class PowerUpGameObject extends GameObject {
 
     /**
-     * Constructor for PowerUpObject.
+     * Constructor for PowerUpGameObject.
      *
      * @param world           Box2D World
      * @param x               X-position.
@@ -25,7 +25,7 @@ public abstract class PowerUpObject extends GameObject {
      * @param powerUpTexture  Powerup's own texture.
      * @param powerUpUserData Powerup's own user data.
      */
-    public PowerUpObject(World world, float x, float y, float width, float height, TextureRegion powerUpTexture, UserData powerUpUserData) {
+    public PowerUpGameObject(World world, float x, float y, float width, float height, TextureRegion powerUpTexture, UserData powerUpUserData) {
         super(world, x, y, width, height, 0f, powerUpTexture, BodyDef.BodyType.KinematicBody, powerUpUserData );
     }
 

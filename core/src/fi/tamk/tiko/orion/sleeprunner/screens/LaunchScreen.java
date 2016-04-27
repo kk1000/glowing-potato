@@ -25,11 +25,9 @@ import fi.tamk.tiko.orion.sleeprunner.data.Preference;
  */
 public class LaunchScreen implements Screen {
 
-    public Stage stage;
     private OrthographicCamera camera;
     private SleepRunner game;
     private SpriteBatch batch;
-    private BitmapFont scoreFont;
     private Texture logo;
     private Preference prefs;
     private float height;
@@ -56,11 +54,9 @@ public class LaunchScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Constants.APP_WIDTH, Constants.APP_HEIGHT);
 
-        stage = new Stage();
         timer = Gdx.graphics.getDeltaTime();
 
         logo = new Texture(Gdx.files.internal(Constants.MAINMENU_LOGO_IMAGE_PATH));
-        scoreFont = new BitmapFont(Gdx.files.internal(Constants.GAME_FONT_PATH));
 
         game.getMusic().setVolume(prefs.getMusicVolume());
 
@@ -87,9 +83,6 @@ public class LaunchScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
         batch.draw(logo, width / 2 - (logo.getWidth()/2), height/2 - (logo.getHeight()/2), logo.getWidth(), logo.getHeight());
 
-        scoreFont.draw(batch, game.translate.get("top_scores"), width/2.8f, height/2f);
-        stage.act();
-        stage.draw();
         batch.end();
     }
 

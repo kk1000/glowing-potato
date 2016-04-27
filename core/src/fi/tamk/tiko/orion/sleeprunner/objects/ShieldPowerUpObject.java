@@ -10,7 +10,7 @@ import fi.tamk.tiko.orion.sleeprunner.data.UserData;
 /**
  * Shield power up.
  */
-public class ShieldPowerUpObject extends PowerUpObject {
+public class ShieldPowerUpObject extends PowerUpGameObject {
 
 
     public static final TextureRegion POWERUP_SHIELD_TEXTURE = new TextureRegion( new Texture( Gdx.files.internal( "graphics/powerup_shield.png" ) ) );
