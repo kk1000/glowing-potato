@@ -10,7 +10,7 @@ import fi.tamk.tiko.orion.sleeprunner.data.UserData;
 /**
  * Mask power up.
  */
-public class MaskPowerUpObject extends PowerUpGameObject {
+public class MaskPowerUpObject extends PowerUpObject {
 
     public static final TextureRegion POWERUP_MASK_TEXTURE = new TextureRegion( new Texture( Gdx.files.internal( "graphics/powerup_sleepingmask.png" ) ) );
 

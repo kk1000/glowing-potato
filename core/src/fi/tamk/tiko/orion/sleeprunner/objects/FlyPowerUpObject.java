@@ -10,7 +10,7 @@ import fi.tamk.tiko.orion.sleeprunner.data.UserData;
 /**
  * Fly power up.
  */
-public class FlyPowerUpObject extends PowerUpGameObject {
+public class FlyPowerUpObject extends PowerUpObject {
 
 
     public static final TextureRegion POWERUP_FLY_TEXTURE = new TextureRegion( new Texture( Gdx.files.internal( "graphics/powerup_fly.png" ) ) );
