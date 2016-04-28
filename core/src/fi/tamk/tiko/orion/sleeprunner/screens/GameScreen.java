@@ -179,7 +179,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
                         // Touch position is inside the sign object.
                         Gdx.app.log("GameScreen", "SignObject is touched!");
                         gameState = Constants.GAME_INFO_SCREEN;
-                        Gdx.app.log("GameScreen","GameState: "+gameState);
                         nightmare.pauseAnimation();
                         player.pauseAnimation();
                         pauseStage.setupMenu();
