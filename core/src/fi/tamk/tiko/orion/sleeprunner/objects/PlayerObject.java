@@ -171,8 +171,6 @@ public class PlayerObject extends AnimatedGameObject {
             if (body.getPosition().y < 0 || body.getPosition().x < 0) {
                 deadText = "player_death_fall";
                 dead = true;
-                // Reset the world's speed too.
-                Constants.ENEMY_LINEAR_VELOCITY = new Vector2(-3.0f, 0);
             }
         }
     }

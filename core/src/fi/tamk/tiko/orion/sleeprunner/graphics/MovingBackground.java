@@ -35,10 +35,6 @@ public class MovingBackground extends Actor {
         texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
     }
 
-
-
-
-
     public void changePhase(){
         if(layer == 1) {
             if (game.getGameScreen().getCurrentMapChunk().getSleepStage().equals("DEEP") && sleepPhase == 1 ) {

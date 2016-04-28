@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -42,6 +43,8 @@ import fi.tamk.tiko.orion.sleeprunner.utilities.MapChunk;
  * Screen for the gameplay.
  */
 public class GameScreen extends InputAdapter implements Screen, ContactListener {
+
+    public static Vector2 CURRENT_GAME_SPEED = Constants.INITIAL_GAME_SPEED;
 
     private final float TIME_STEP = 1 / 300f;
 
@@ -84,6 +87,8 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     private int gameState;
 
     public boolean signClicked;
+
+
     /**
      * Constructor for GameScreen.
      *
@@ -122,7 +127,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         im = new InputMultiplexer();
         im.addProcessor(gestureDetector);
         im.addProcessor(uiStage);
-        im.addProcessor( this );
+        im.addProcessor(this);
 
         Gdx.input.setInputProcessor(im);
 
@@ -276,6 +281,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
             nightmare.moveForward();
             uiStage.moveNightmareMeter();
             player.stopFly();
+            CURRENT_GAME_SPEED = Constants.INITIAL_GAME_SPEED;
             gameState = Constants.GAME_RUNNING;
         }
     }
@@ -320,6 +326,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
                 gameState = Constants.GAME_OVER;
                 pauseStage.setupMenu();
             } else {
+                CURRENT_GAME_SPEED = Constants.PLAYER_DEATH_GAME_SPEED;
                 gameState = Constants.GAME_PLAYER_DEATH;
                 player.fly();
             }
@@ -379,6 +386,10 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
             int nextChunkNumber = currentMapChunk.getChunkNumber() + 2;
             currentMapChunk = mapChunks.first();
             mapChunks.add(new MapChunk( this, currentMapChunk, world, mapChunks.size, nextChunkNumber));
+            // Update game speed every 3 map chunk if the game is not in player death state.
+            if ( currentMapChunk.getChunkNumber() % 3 == 0 && gameState != Constants.GAME_PLAYER_DEATH ) {
+                CURRENT_GAME_SPEED = CURRENT_GAME_SPEED.add( -0.2f, 0 );
+            }
         }
     }
 

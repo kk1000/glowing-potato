@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.UserData;
+import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 
 /**
  *  Superclass of every power up game object.
@@ -40,7 +41,7 @@ public abstract class PowerUpGameObject extends GameObject {
 
     @Override
     public void update(float delta) {
-        body.setLinearVelocity(Constants.ENEMY_LINEAR_VELOCITY);
+        body.setLinearVelocity(GameScreen.CURRENT_GAME_SPEED);
     }
 
     @Override

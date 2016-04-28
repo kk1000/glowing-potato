@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.UserData;
+import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 
 /**
  * Sign object is a sign telling player which sleep stage is next.
@@ -72,7 +73,7 @@ public class SignObject extends GameObject {
 
     @Override
     public void update(float delta) {
-        body.setLinearVelocity(Constants.ENEMY_LINEAR_VELOCITY);
+        body.setLinearVelocity(GameScreen.CURRENT_GAME_SPEED);
     }
 
 
