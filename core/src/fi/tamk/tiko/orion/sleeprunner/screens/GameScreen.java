@@ -56,9 +56,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     private PauseStage pauseStage;
     private UIStage uiStage;
 
-    private Rectangle screenRightSide;
-    private Rectangle screenLeftSide;
-
     private Vector3 touchPoint;
 
     private GestureDetector gestureDetector;
@@ -115,27 +112,18 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         pauseStage = new PauseStage(game,uiCamera,batch, scoreFont);
 
         setupWorld();
-        setupTouchControlAreas();
+        touchPoint = new Vector3();
 
         uiStage = new UIStage(game, uiCamera, debugFont, scoreFont, batch);
 
         im = new InputMultiplexer();
         im.addProcessor(gestureDetector);
         im.addProcessor(uiStage);
+        im.addProcessor( this );
 
         Gdx.input.setInputProcessor(im);
 
         gameState = Constants.GAME_READY;
-    }
-
-    /**
-     * Creates rectangles for both halves of the screen used for controls.
-     */
-    private void setupTouchControlAreas() {
-        touchPoint = new Vector3();
-        // TODO: Fix this?
-        screenRightSide = new Rectangle(Constants.APP_WIDTH / 2f, 0f, Constants.APP_WIDTH / 2f, Constants.APP_HEIGHT);
-        screenLeftSide = new Rectangle(0, 0, Constants.APP_WIDTH / 2, Constants.APP_HEIGHT);
     }
 
     /**
@@ -160,20 +148,10 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
         nightmare = new NightmareObject(world);
         player = new PlayerObject(world);
-
-
-
     }
 
     @Override
     public boolean touchDown(int x, int y, int pointer, int button) {
-        translateScreenToWorldCoordinates(x, y);
-
-        if (rightSideTouched(touchPoint.x, touchPoint.y)) {
-
-        } else if (leftSideTouched(touchPoint.x, touchPoint.y)) {
-
-        }
         return super.touchDown(x, y, pointer, button);
     }
 
@@ -184,39 +162,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         }
 
         return super.touchUp(screenX, screenY, pointer, button);
-    }
-
-    /**
-     * Checks if right side of screen is touched.
-     *
-     * @param x X-position.
-     * @param y Y-position.
-     * @return boolean
-     */
-    private boolean rightSideTouched(float x, float y) {
-        return screenRightSide.contains(x, y);
-    }
-
-    /**
-     * Checks if left side of screen is touched.
-     *
-     * @param x X-position.
-     * @param y Y-position.
-     * @return boolean
-     */
-    private boolean leftSideTouched(float x, float y) {
-        return screenLeftSide.contains(x, y);
-    }
-
-    /**
-     * Translates the x and y position of touch to world coordinates.
-     *
-     * @param x  X-position of touch
-     * @param y  Y-position of touch
-     */
-    private void translateScreenToWorldCoordinates(int x, int y) {
-        // TODO: Is this broken?
-        uiCamera.unproject(touchPoint.set(x, y, 0));
     }
 
     /**
@@ -234,8 +179,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         createMapChunks();
         nightmare.reset();
         player.reset();
-       // nightmare = new NightmareObject( world );
-       // player = new PlayerObject( world );
         uiStage.reset();
         // Reset attributes.
         accumulator = 0f;
