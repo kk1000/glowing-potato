@@ -27,6 +27,13 @@ public class Constants {
     public static final Vector2 WORLD_GRAVITY = new Vector2(0, -10);
 
     /**
+     * Game speed.
+     */
+
+    public static Vector2 INITIAL_GAME_SPEED = new Vector2( -3.0f, 0 );
+    public static Vector2 PLAYER_DEATH_GAME_SPEED = new Vector2( -2.0f, 0 );
+
+    /**
      * Game states
      */
 
@@ -147,14 +154,12 @@ public class Constants {
 
     public static final String PLAYER_RUN_SOUND_PATH = "sounds/sfx/steps.mp3";
     public static final String GAME_MUSIC_PATH = "sounds/music/main.mp3";
+    public static final String NIGHTMARE_SOUND_PATH = "sounds/sfx/nightmare.mp3";
+    public static final String POWERUP_SOUND_PATH = "sounds/sfx/powerup.mp3";
+    public static final String PLAYER_DEATH_SOUND = "sounds/sfx/death.mp3";
+
     public static float PLAYER_DENSITY = 0.5f;
     public static final float ENEMY_DENSITY = PLAYER_DENSITY;
-    /**
-     * Enemy/obstacle physics
-     */
-
-    public static Vector2 ENEMY_LINEAR_VELOCITY = new Vector2(-3.0f, 0);
-
 
 
 }

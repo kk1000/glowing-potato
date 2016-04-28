@@ -2,7 +2,6 @@ package fi.tamk.tiko.orion.sleeprunner.utilities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
@@ -60,11 +59,6 @@ public class MapChunk {
         calculateValues();
         this.grid = MapGenerator.generateMapChunkGrid( this );
         MapGenerator.generateGameObjects(this);
-        // Update game speed every 3 map chunk if the game is not in player death state.
-        if ( chunkNumber % 3 == 0 && gameScreen.getGameState() != Constants.GAME_PLAYER_DEATH ) {
-            Gdx.app.log( "MapChunk", "Add speed!" );
-            Constants.ENEMY_LINEAR_VELOCITY = Constants.ENEMY_LINEAR_VELOCITY.add( -0.3f, 0 );
-        }
     }
 
     /**

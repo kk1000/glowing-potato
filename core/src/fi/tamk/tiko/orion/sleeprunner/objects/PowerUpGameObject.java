@@ -1,5 +1,7 @@
 package fi.tamk.tiko.orion.sleeprunner.objects;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -7,12 +9,15 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.UserData;
+import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 
 /**
  *  Superclass of every power up game object.
  *  Not designed to construct object from this class.
  */
 public abstract class PowerUpGameObject extends GameObject {
+
+    public static Sound POWERUP_SOUND = Gdx.audio.newSound( Gdx.files.internal( Constants.POWERUP_SOUND_PATH ) );
 
     private boolean collected = false;
 
@@ -35,12 +40,13 @@ public abstract class PowerUpGameObject extends GameObject {
      * Collects power up, sets the collected attribute to true.
      */
     public void collect( ) {
+        POWERUP_SOUND.play( 0.8f );
         collected = true;
     }
 
     @Override
     public void update(float delta) {
-        body.setLinearVelocity(Constants.ENEMY_LINEAR_VELOCITY);
+        body.setLinearVelocity(GameScreen.CURRENT_GAME_SPEED);
     }
 
     @Override

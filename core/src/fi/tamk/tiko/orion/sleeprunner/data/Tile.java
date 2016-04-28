@@ -2,6 +2,8 @@ package fi.tamk.tiko.orion.sleeprunner.data;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
+
 /**
  * Class for holding game object's tile's properties.
  */
@@ -28,7 +30,7 @@ public class Tile {
      * Updates tile's position on every frame.
      */
     public void update( float delta ) {
-        this.x += Constants.ENEMY_LINEAR_VELOCITY.x * delta;
+        this.x += GameScreen.CURRENT_GAME_SPEED.x * delta;
     }
 
 }
