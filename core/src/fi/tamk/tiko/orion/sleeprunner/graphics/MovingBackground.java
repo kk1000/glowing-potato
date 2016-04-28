@@ -94,5 +94,15 @@ public class MovingBackground extends Actor {
 
     }
 
+    /**
+     * Setters & getters
+     */
+
+    public void setSpeed(float s){
+        speed = s;
+    }
+    public float getSpeed(){
+        return speed;
+    }
 }
 
