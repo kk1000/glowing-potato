@@ -291,8 +291,8 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
             uiStage.moveNightmareMeter();
             player.stopFly();
             CURRENT_GAME_SPEED = Constants.INITIAL_GAME_SPEED;
-            backgroundStage.resetSpeed();
             gameState = Constants.GAME_RUNNING;
+            backgroundStage.resetSpeed();
         }
     }
 
