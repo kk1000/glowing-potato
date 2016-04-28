@@ -91,6 +91,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      *
      * @param sleepRunner Reference to SleepRunner.
      */
+
     public GameScreen(SleepRunner sleepRunner) {
         game = sleepRunner;
 
@@ -172,7 +173,12 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
                     if ( ( touchPoint.x <= ( ( signX + signWidth ) * 1.2f ) && touchPoint.x >= ( signX * 0.8f ) ) &&
                             ( touchPoint.y <= ( ( signY + signHeight ) * 1.2f ) && touchPoint.y >= ( signY * 0.8f ) ) ) {
                         // Touch position is inside the sign object.
-                        Gdx.app.log( "GameScreen", "SignObject is touched!" );
+                        Gdx.app.log("GameScreen", "SignObject is touched!");
+                        gameState = Constants.GAME_INFO_SCREEN;
+                        Gdx.app.log("GameScreen","GameState: "+gameState);
+                        nightmare.pauseAnimation();
+                        player.pauseAnimation();
+                        pauseStage.setupMenu();
                     }
                 }
             }
@@ -237,6 +243,8 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
             case Constants.GAME_OVER:
                 updateGameOver();
                 break;
+            case Constants.GAME_INFO_SCREEN:
+                updateGameInfoScreen();
         }
     }
 
@@ -300,6 +308,13 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
             prefs.putHighscore(uiStage.getUiText().getScore());
             highscoreSaved = true;
         }
+        pauseStage.act();
+    }
+    /**
+     * Runs when info screen is on.
+     */
+    private void updateGameInfoScreen(){
+        Gdx.input.setInputProcessor(pauseStage);
         pauseStage.act();
     }
 
@@ -459,6 +474,9 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
             case Constants.GAME_OVER:
                 drawGameOver();
                 break;
+            case Constants.GAME_INFO_SCREEN:
+                drawGameGameInfoScreen();
+                break;
         }
 
         batch.end();
@@ -507,6 +525,14 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         batch.begin();
     }
 
+    /**
+     * Draws when info screen is on.
+     */
+    private void drawGameGameInfoScreen() {
+        batch.end();
+        pauseStage.draw();
+        batch.begin();
+    }
     /**
      * Draws map chunk's game objects.
      */
