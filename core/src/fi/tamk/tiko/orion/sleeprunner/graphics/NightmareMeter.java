@@ -31,7 +31,7 @@ public class NightmareMeter extends ProgressBar {
         this.nightmare = this.gameScreen.getNightmare();
         setWidth( getPrefWidth());
         setHeight(getPrefHeight());
-        setPosition( Constants.WORLD_TO_SCREEN, Constants.APP_HEIGHT - getHeight() - 60 );
+        setPosition( Constants.WORLD_TO_SCREEN, Constants.APP_HEIGHT - getHeight() - 80 );
     }
 
     /**

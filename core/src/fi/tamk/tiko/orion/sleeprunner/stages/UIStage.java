@@ -1,7 +1,6 @@
 package fi.tamk.tiko.orion.sleeprunner.stages;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -16,7 +15,6 @@ import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.graphics.NightmareMeter;
 import fi.tamk.tiko.orion.sleeprunner.graphics.UIText;
-import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 
 /**
  * Draws and handles game's UI.
@@ -24,8 +22,6 @@ import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 public class UIStage extends Stage {
 
     private OrthographicCamera uiCamera;
-    private BitmapFont debugFont;
-    private BitmapFont font;
     private TextButton pauseButton;
     private SleepRunner game;
 
@@ -37,16 +33,13 @@ public class UIStage extends Stage {
      *
      * @param debugFont     Game's debug font.
      * @param uiCamera      Game's UI camera.
-     * @param font          Game's general font.
      * @param batch         The spritebatch.
      * @param g             Game.
      */
-    public UIStage(SleepRunner g, OrthographicCamera uiCamera, BitmapFont debugFont, BitmapFont font, Batch batch ) {
+    public UIStage(SleepRunner g, OrthographicCamera uiCamera, BitmapFont debugFont, Batch batch ) {
         super(new ScalingViewport(Scaling.stretch, Constants.APP_WIDTH, Constants.APP_HEIGHT, uiCamera), batch);
         this.game = g;
         this.uiCamera = uiCamera;
-        this.debugFont = debugFont;
-        this.font = font;
     }
 
     /**
@@ -69,7 +62,7 @@ public class UIStage extends Stage {
         });
 
         this.nightmareMeter = new NightmareMeter( game.getGameScreen(), game.getSkin() );
-        this.uiText = new UIText(game, game.getGameScreen(), debugFont, this.font );
+        this.uiText = new UIText(game, game.getGameScreen() );
 
         addActor( pauseButton );
         addActor( nightmareMeter);

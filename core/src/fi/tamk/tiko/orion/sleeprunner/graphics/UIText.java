@@ -18,9 +18,10 @@ import fi.tamk.tiko.orion.sleeprunner.utilities.MapChunk;
 public class UIText extends Actor {
 
     private GameScreen gameScreen;
-    private BitmapFont debugFont;
     private PlayerObject player;
-    private BitmapFont font;
+    private BitmapFont titleFont;
+    private BitmapFont debugFont;
+    private BitmapFont textFont;
     private World world;
     private SleepRunner game;
 
@@ -31,16 +32,15 @@ public class UIText extends Actor {
      * Constructor for UIText
      *
      * @param gameScreen    GameScreen reference.
-     * @param debugFont     Game's debug font.
-     * @param font          Game's general font.
      */
-    public UIText(SleepRunner g, GameScreen gameScreen, BitmapFont debugFont, BitmapFont font) {
+    public UIText(SleepRunner g, GameScreen gameScreen) {
         this.game = g;
         this.gameScreen = gameScreen;
-        this.debugFont = debugFont;
-        this.font = font;
         this.player = gameScreen.getPlayer();
         this.world = gameScreen.getWorld();
+        titleFont = g.getTitleFont();
+        debugFont = g.getDebugFont();
+        textFont = g.getTextFont();
     }
 
     /**
@@ -62,8 +62,8 @@ public class UIText extends Actor {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         MapChunk currentMapChunk = gameScreen.getCurrentMapChunk();
-        font.draw(batch, game.translate.get("score")+":" + (int) score, Constants.WORLD_TO_SCREEN, Constants.APP_HEIGHT - 10);
-        font.draw(batch, game.translate.get("nightmare") + ":", Constants.WORLD_TO_SCREEN, Constants.APP_HEIGHT - 40);
+        titleFont.draw(batch, game.translate.get("score")+": " + (int) score, Constants.WORLD_TO_SCREEN, Constants.APP_HEIGHT - 10);
+        titleFont.draw(batch, game.translate.get("nightmare") + ":", Constants.WORLD_TO_SCREEN, Constants.APP_HEIGHT - 50);
         // Debug details.
         if ( Constants.DEBUG ) {
             debugFont.draw(batch, "Chunk number: " + currentMapChunk.getChunkNumber(), Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 10);

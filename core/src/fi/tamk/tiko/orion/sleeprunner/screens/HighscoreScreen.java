@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -19,7 +20,7 @@ import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.Preference;
 
 /**
- * Created by joni on 18/04/2016.
+ * Screen for displaying high scores.
  */
 public class HighscoreScreen implements Screen {
 
@@ -30,14 +31,17 @@ public class HighscoreScreen implements Screen {
     private SpriteBatch batch;
     private float height;
     private float width;
-    private BitmapFont scoreFont;
     private Texture logo;
     private float delta;
+    private String titleText;
+    private BitmapFont titleFont;
+    private BitmapFont textFont;
+    private float titleX;
+    private float titleY;
     private TextButton backButton;
     private TextButton muteButton;
     private Skin skin;
     private Preference prefs;
-
 
     /**
      * Constructor for main menu.
@@ -64,13 +68,19 @@ public class HighscoreScreen implements Screen {
         delta = Gdx.graphics.getDeltaTime();
 
         logo = new Texture(Gdx.files.internal(Constants.MAINMENU_LOGO_IMAGE_PATH));
-        scoreFont = new BitmapFont(Gdx.files.internal(Constants.GAME_FONT_PATH));
+
+        titleFont = g.getTitleFont();
+        textFont = g.getTextFont();
+
+        titleText = game.translate.get("top_scores");
+        GlyphLayout glyphLayout = new GlyphLayout( titleFont, titleText );
+        titleX = Constants.APP_WIDTH/2 - (glyphLayout.width/2);
+        titleY = Constants.APP_HEIGHT/2 + (glyphLayout.height/2);
 
         backButton = new TextButton(game.translate.get("back"), skin);
         backButton.setBounds(width / 12, height / 11, width / 5, height / 7);
         backButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
-                Gdx.app.log("TAG", "Clicked menu");
                 game.setMainMenuScreen();
             }
         });
@@ -111,10 +121,10 @@ public class HighscoreScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
         batch.draw(logo, 0, 0, logo.getWidth(), logo.getHeight());
 
-        scoreFont.draw(batch, game.translate.get("top_scores"), width/2.8f, height/2f);
+        titleFont.draw(batch, titleText, titleX, titleY );
         for(int i = 1; i <= 5; i++){
-            scoreFont.draw( batch, Integer.toString(prefs.getHighscore(i)), width/2.1f,
-                            height*0.4f - scoreFont.getLineHeight()*i);
+            textFont.draw( batch, i + ". " + Integer.toString(prefs.getHighscore(i)), titleX,
+                            titleY - 50 - textFont.getLineHeight()*i);
         }
 
         batch.setProjectionMatrix(camera2.combined);

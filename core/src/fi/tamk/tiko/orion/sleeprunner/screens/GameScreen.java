@@ -71,8 +71,10 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     private PlayerObject player;
     private World world;
 
-    private BitmapFont scoreFont;
+    private BitmapFont titleFont;
+    private BitmapFont textFont;
     private BitmapFont debugFont;
+
     private SpriteBatch batch;
 
     private boolean setupReady = false;
@@ -112,15 +114,17 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
         uiCamera = new OrthographicCamera();
         uiCamera.setToOrtho(false, Constants.APP_WIDTH, Constants.APP_HEIGHT);
-        scoreFont = new BitmapFont(Gdx.files.internal(Constants.GAME_FONT_PATH));
-        debugFont = new BitmapFont();
 
-        pauseStage = new PauseStage(game,uiCamera,batch, scoreFont);
+        titleFont = sleepRunner.getTitleFont();
+        textFont = sleepRunner.getTextFont();
+        debugFont = sleepRunner.getDebugFont();
+
+        pauseStage = new PauseStage(game,uiCamera,batch);
 
         setupWorld();
         touchPoint = new Vector3();
 
-        uiStage = new UIStage(game, uiCamera, debugFont, scoreFont, batch);
+        uiStage = new UIStage(game, uiCamera, debugFont, batch);
 
         im = new InputMultiplexer();
         im.addProcessor(gestureDetector);
@@ -489,7 +493,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      * Draws when game is ready.
      */
     private void drawGameReady( ) {
-        scoreFont.draw(batch, "Tap anywhere to start!", Constants.APP_WIDTH / 2 - 200, Constants.APP_HEIGHT / 2);
+        titleFont.draw(batch, "Tap anywhere to start!", Constants.APP_WIDTH / 2 - 200, Constants.APP_HEIGHT / 2);
     }
 
     /**
@@ -502,9 +506,9 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      * Draws when player has died and game is running.
      */
     private void drawGamePlayerDeath( ) {
-        scoreFont.draw( batch, game.translate.get( player.getDeadText() ), Constants.APP_WIDTH/2-200, Constants.APP_HEIGHT - 200 );
-        scoreFont.draw( batch, game.translate.get( "death_info" ), Constants.APP_WIDTH/2-200, Constants.APP_HEIGHT - 240 );
-        scoreFont.draw( batch, game.translate.get( "death_info2" ), Constants.APP_WIDTH/2-200, Constants.APP_HEIGHT - 280 );
+        titleFont.draw( batch, game.translate.get( player.getDeadText() ), Constants.APP_WIDTH/2-200, Constants.APP_HEIGHT - 200 );
+        titleFont.draw( batch, game.translate.get( "death_info" ), Constants.APP_WIDTH/2-200, Constants.APP_HEIGHT - 240 );
+        titleFont.draw( batch, game.translate.get( "death_info2" ), Constants.APP_WIDTH/2-200, Constants.APP_HEIGHT - 280 );
     }
 
     /**

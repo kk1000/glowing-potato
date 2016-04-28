@@ -3,7 +3,10 @@ package fi.tamk.tiko.orion.sleeprunner;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.I18NBundle;
 
@@ -46,6 +49,13 @@ public class SleepRunner extends Game {
 	private Music gameMusic;
     private Music currentMusic;
 
+    private FreeTypeFontGenerator generator;
+    private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
+
+    private BitmapFont titleFont;
+    private BitmapFont textFont;
+    private BitmapFont debugFont;
+
 	private Skin skin;
 
 	@Override
@@ -63,8 +73,23 @@ public class SleepRunner extends Game {
 		skin  = new Skin(Gdx.files.internal(Constants.SKIN_PATH));
 
         mainMenuMusic.play();
-        mainMenuMusic.setVolume( 0f );
+        mainMenuMusic.setVolume(0f);
         currentMusic = mainMenuMusic;
+
+        generator = new FreeTypeFontGenerator( Gdx.files.internal( "ui/Oswald-Bold.ttf" ) );
+        parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 30;
+        parameter.borderColor = Color.BLACK;
+        parameter.borderWidth = 2.0f;
+        titleFont = generator.generateFont( parameter );
+
+        generator = new FreeTypeFontGenerator( Gdx.files.internal( "ui/Oswald-Regular.ttf" ) );
+        parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 20;
+        textFont = generator.generateFont( parameter );
+
+        debugFont = new BitmapFont();
+
 		setLaunchScreen();
 	}
 
@@ -138,6 +163,11 @@ public class SleepRunner extends Game {
 		}
 		return launchScreen;
 	}
+
+
+    public BitmapFont getTitleFont( ) { return titleFont; }
+    public BitmapFont getTextFont( ) { return textFont; }
+    public BitmapFont getDebugFont( ) { return debugFont; }
 
     public Music getMainMenuMusic( ) { return mainMenuMusic; }
     public Music getCurrentMusic( ) { return currentMusic; }

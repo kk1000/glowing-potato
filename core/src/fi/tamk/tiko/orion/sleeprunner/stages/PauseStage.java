@@ -36,7 +36,6 @@ public class PauseStage extends Stage {
     private Actor button1;
     private Actor button2;
 
-    private BitmapFont font;
     private Batch batch;
     private boolean isTouched;
 
@@ -48,14 +47,12 @@ public class PauseStage extends Stage {
      * @param g             Reference to SleepRunner class.
      * @param worldCamera   Game's UI camera.
      * @param batch         The spritebatch.
-     * @param font          The game's general font.
      */
-    public PauseStage(SleepRunner g, OrthographicCamera worldCamera,Batch batch, BitmapFont font ){
+    public PauseStage(SleepRunner g, OrthographicCamera worldCamera,Batch batch ){
         super(new ScalingViewport(Scaling.stretch, Constants.APP_WIDTH, Constants.APP_HEIGHT, worldCamera), batch);
         this.game = g;
         this.batch = batch;
         this.camera = worldCamera;
-        this.font = font;
         this.timer = 0;
     }
 
@@ -64,7 +61,7 @@ public class PauseStage extends Stage {
      */
     public void setupMenu(){
         if(game.getGameScreen().getGameState() == Constants.GAME_OVER) {
-            pauseMenu = new PauseMenu(Constants.APP_WIDTH / 4, Constants.APP_HEIGHT / 4, font, game.translate.get("game_over"));
+            pauseMenu = new PauseMenu(Constants.APP_WIDTH / 4, Constants.APP_HEIGHT / 4, game.getTitleFont(), game.translate.get("game_over"));
             setupNewGameButton();
             setupMainMenuButton();
             addActor(pauseMenu);
@@ -72,7 +69,7 @@ public class PauseStage extends Stage {
             addActor(button2);
         }
         if(game.getGameScreen().getGameState() == Constants.GAME_PAUSED){
-            pauseMenu = new PauseMenu(Constants.APP_WIDTH / 4, Constants.APP_HEIGHT / 4, font, game.translate.get("game_paused"));
+            pauseMenu = new PauseMenu(Constants.APP_WIDTH / 4, Constants.APP_HEIGHT / 4, game.getTitleFont(), game.translate.get("game_paused"));
             setupContinueButton();
             setupMainMenuButton();
             addActor(pauseMenu);
@@ -80,7 +77,7 @@ public class PauseStage extends Stage {
             addActor(button2);
         }
         if(game.getGameScreen().getGameState() == Constants.GAME_INFO_SCREEN){
-            pauseMenu = new PauseMenu(Constants.APP_WIDTH / 4, Constants.APP_HEIGHT / 4, font,
+            pauseMenu = new PauseMenu(Constants.APP_WIDTH / 4, Constants.APP_HEIGHT / 4, game.getTextFont(),
                                     game.translate.get("random_fact"+Integer.toString( MathUtils.random(1,15))));
             addActor(pauseMenu);
         }
