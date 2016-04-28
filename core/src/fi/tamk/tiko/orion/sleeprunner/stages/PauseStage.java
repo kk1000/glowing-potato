@@ -161,7 +161,7 @@ public class PauseStage extends Stage {
         if(game.getGameScreen().getGameState()==5){
             timer += Gdx.graphics.getDeltaTime();
         }
-        if (game.getGameScreen().getGameState() == Constants.GAME_INFO_SCREEN && Gdx.input.isTouched() && timer > 2f) {
+        if (game.getGameScreen().getGameState() == Constants.GAME_INFO_SCREEN && Gdx.input.isTouched() && timer > 1.7f) {
             game.getGameScreen().setGameState(Constants.GAME_RUNNING);
             game.getGameScreen().getPlayer().resumeAnimation();
             game.getGameScreen().getNightmare().resumeAnimation();
