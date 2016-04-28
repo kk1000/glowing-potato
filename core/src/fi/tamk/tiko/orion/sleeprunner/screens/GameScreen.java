@@ -27,8 +27,10 @@ import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.Preference;
 import fi.tamk.tiko.orion.sleeprunner.graphics.NightmareMeter;
+import fi.tamk.tiko.orion.sleeprunner.objects.GameObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.NightmareObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.PlayerObject;
+import fi.tamk.tiko.orion.sleeprunner.objects.SignObject;
 import fi.tamk.tiko.orion.sleeprunner.stages.BackgroundStage;
 import fi.tamk.tiko.orion.sleeprunner.stages.PauseStage;
 import fi.tamk.tiko.orion.sleeprunner.stages.UIStage;
@@ -152,6 +154,24 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
     @Override
     public boolean touchDown(int x, int y, int pointer, int button) {
+        touchPoint.set( x/100f, Constants.WORLD_HEIGHT - y/100f, 0 );
+        // Check is the sign game object touched.
+        for ( MapChunk mapChunk : mapChunks ) {
+            Array<GameObject> mapChunkGameObjects = mapChunk.getGameObjects();
+            for ( GameObject mapChunkGameObject : mapChunkGameObjects ) {
+                if ( mapChunkGameObject instanceof SignObject ) {
+                    float signHeight = mapChunkGameObject.getHeight();
+                    float signWidth = mapChunkGameObject.getWidth();
+                    float signX = mapChunkGameObject.getBody().getPosition().x - signWidth/2;
+                    float signY = mapChunkGameObject.getBody().getPosition().y - signHeight/2;
+                    if ( ( touchPoint.x <= ( ( signX + signWidth ) * 1.2f ) && touchPoint.x >= ( signX * 0.8f ) ) &&
+                            ( touchPoint.y <= ( ( signY + signHeight ) * 1.2f ) && touchPoint.y >= ( signY * 0.8f ) ) ) {
+                        // Touch position is inside the sign object.
+                        Gdx.app.log( "GameScreen", "SignObject is touched!" );
+                    }
+                }
+            }
+        }
         return super.touchDown(x, y, pointer, button);
     }
 
