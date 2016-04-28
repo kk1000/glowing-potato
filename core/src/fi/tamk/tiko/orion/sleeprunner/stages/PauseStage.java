@@ -3,6 +3,7 @@ package fi.tamk.tiko.orion.sleeprunner.stages;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -57,7 +58,6 @@ public class PauseStage extends Stage {
     public void setupMenu(){
         if(game.getGameScreen().getGameState() == Constants.GAME_OVER) {
             pauseMenu = new PauseMenu(Constants.APP_WIDTH / 4, Constants.APP_HEIGHT / 4, font, game.translate.get("game_over"));
-            setupAnimation();
             setupNewGameButton();
             setupMainMenuButton();
             addActor(pauseMenu);
@@ -66,12 +66,21 @@ public class PauseStage extends Stage {
         }
         if(game.getGameScreen().getGameState() == Constants.GAME_PAUSED){
             pauseMenu = new PauseMenu(Constants.APP_WIDTH / 4, Constants.APP_HEIGHT / 4, font, game.translate.get("game_paused"));
-            setupAnimation();
             setupContinueButton();
             setupMainMenuButton();
             addActor(pauseMenu);
             addActor(button1);
             addActor(button2);
+        }
+        if(game.getGameScreen().signClicked){
+            pauseMenu = new PauseMenu(Constants.APP_WIDTH / 4, Constants.APP_HEIGHT / 4, font, game.translate.get("random_fact"+Integer.toString( MathUtils.random(1,10))));
+            setupContinueButton();
+            button1.setBounds(Constants.APP_WIDTH / 2.5f,
+                    Constants.APP_HEIGHT / 3.42f,
+                    Constants.APP_WIDTH / 5f,
+                    Constants.APP_HEIGHT / 9.6f);
+            addActor(pauseMenu);
+            addActor(button1);
         }
     }
 
@@ -128,17 +137,13 @@ public class PauseStage extends Stage {
                 gameScreen.setGameState(Constants.GAME_RUNNING);
                 gameScreen.getPlayer().resumeAnimation();
                 gameScreen.getNightmare().resumeAnimation();
+                if (game.getGameScreen().signClicked) {
+                    game.getGameScreen().signClicked = false;
+                }
                 gameScreen.setInputProcessor(1);
                 return true;
             }
         });
-    }
-
-    /**
-     * Setups pause menu's fade animation.
-     */
-    private void setupAnimation() {
-        this.getRoot().addAction(Actions.sequence(Actions.fadeIn(5)));
     }
 
     @Override

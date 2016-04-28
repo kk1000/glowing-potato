@@ -83,6 +83,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     private int playTimes;
     private int gameState;
 
+    public boolean signClicked;
     /**
      * Constructor for GameScreen.
      *

@@ -104,10 +104,29 @@ public class Constants {
      */
 
     // Background
+    // Deep Sleep
     public static final String BACKGROUND_IMAGE_PATH = "graphics/backgrounds/stars.png";
-    public static final String MOVING_BACKGROUND_IMAGE_PATH = "graphics/backgrounds/mountains.png";
-    public static final String MOVING_BACKGROUND2_IMAGE_PATH = "graphics/backgrounds/items.png";
+    public static final String DEEP_BACKGROUND_IMAGE_PATH = "graphics/backgrounds/texture_deep_all.png";
+    public static final String DEEP_BACKGROUND1_IMAGE_PATH = "graphics/backgrounds/mountain.png";
+    public static final String DEEP_BACKGROUND2_IMAGE_PATH = "graphics/backgrounds/mountain_deep2.png";
+    public static final String DEEP_BACKGROUND3_IMAGE_PATH = "graphics/backgrounds/mountain_deep3.png";
+    public static final String DEEP_BACKGROUND4_IMAGE_PATH = "graphics/backgrounds/mountain_deep4.png";
+
     public static final String BACKGROUND_CLOUDS_IMAGE_PATH = "graphics/backgrounds/clouds.png";
+    // REM
+    public static final String REM_SKY_IMAGE_PATH = "graphics/backgrounds/sky_green2.png";
+    public static final String REM_BACKGROUND_IMAGE_PATH = "graphics/backgrounds/texture_rem_all.png";
+    public static final String REM_BACKGROUND1_IMAGE_PATH = "graphics/backgrounds/mountain_rem1.png";
+    public static final String REM_BACKGROUND2_IMAGE_PATH = "graphics/backgrounds/mountain_rem2.png";
+    public static final String REM_BACKGROUND3_IMAGE_PATH = "graphics/backgrounds/mountain_rem3.png";
+    public static final String REM_BACKGROUND4_IMAGE_PATH = "graphics/backgrounds/mountain_rem4.png";
+    public static final String REM_BACKGROUND5_IMAGE_PATH = "graphics/backgrounds/mountain_rem5.png";
+    public static final String REM_BACKGROUND6_IMAGE_PATH = "graphics/backgrounds/mountain_rem6.png";
+    public static final String REM_BACKGROUND7_IMAGE_PATH = "graphics/backgrounds/mountain_rem7.png";
+    public static final String REM_BACKGROUND8_IMAGE_PATH = "graphics/backgrounds/mountain_rem8.png";
+    public static final String REM_BACKGROUND9_IMAGE_PATH = "graphics/backgrounds/mountain_rem9.png";
+    public static final String REM_BACKGROUND10_IMAGE_PATH = "graphics/backgrounds/mountain_rem10.png";
+    public static final String REM_BACKGROUND11_IMAGE_PATH = "graphics/backgrounds/mountain_rem11.png";
     // Player
     public static final String PLAYER_RUNNING_IMAGE_PATH = "graphics/player.png";
     // Nightmare
