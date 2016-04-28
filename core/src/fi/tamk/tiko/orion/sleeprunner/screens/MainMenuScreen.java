@@ -69,7 +69,7 @@ public class MainMenuScreen implements Screen{
         gameButton.setBounds(width / 2.9f, height / 4, width / 4, height / 7);
         gameButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
-                Gdx.app.log("TAG", "Clicked menu");
+                game.switchToGameMusic();
                 game.setGameScreen();
             }
         });
@@ -78,7 +78,6 @@ public class MainMenuScreen implements Screen{
         highscoreButton.setBounds(width / 2.9f, height / 11, width / 4, height / 7);
         highscoreButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
-                Gdx.app.log("TAG", "Clicked menu");
                 game.setHighscoreScreen();
             }
         });
@@ -114,7 +113,7 @@ public class MainMenuScreen implements Screen{
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-        game.getMusic().setVolume(prefs.getMusicVolume());
+        game.getCurrentMusic().setVolume(prefs.getMusicVolume());
         Gdx.input.setInputProcessor(stage);
         batch.setProjectionMatrix(camera.combined);
         batch.draw(logo, 0, 0, logo.getWidth(), logo.getHeight());

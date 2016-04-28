@@ -58,7 +58,7 @@ public class LaunchScreen implements Screen {
 
         logo = new Texture(Gdx.files.internal(Constants.MAINMENU_LOGO_IMAGE_PATH));
 
-        game.getMusic().setVolume(prefs.getMusicVolume());
+        game.getCurrentMusic().setVolume(prefs.getMusicVolume());
 
         // Screen starts with TAMK-logo
         logo = new Texture (Gdx.files.internal(Constants.LAUNCH_LOGO_TAMK_IMAGE_PATH));

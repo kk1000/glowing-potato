@@ -116,6 +116,7 @@ public class PauseStage extends Stage {
             @Override
             public boolean touchDown(InputEvent event, float x, float y,
                                      int pointer, int button) {
+                game.switchToMainMenuMusic();
                 game.setMainMenuScreen();
                 return true;
             }

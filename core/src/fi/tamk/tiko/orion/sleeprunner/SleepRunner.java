@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.I18NBundle;
 import java.util.Locale;
 
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
+import fi.tamk.tiko.orion.sleeprunner.data.Preference;
 import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 import fi.tamk.tiko.orion.sleeprunner.screens.HighscoreScreen;
 import fi.tamk.tiko.orion.sleeprunner.screens.LaunchScreen;
@@ -39,13 +40,19 @@ public class SleepRunner extends Game {
 
 	private LaunchScreen launchScreen;
 
-	private Music music;
+    private Preference prefs;
+
+	private Music mainMenuMusic;
+	private Music gameMusic;
+    private Music currentMusic;
 
 	private Skin skin;
 
 	@Override
 	public void create() {
-		music = Gdx.audio.newMusic(Gdx.files.internal(Constants.GAME_MUSIC_PATH));
+        mainMenuMusic = Gdx.audio.newMusic( Gdx.files.internal( "sounds/music/mainmenu.mp3" ) );
+		gameMusic = Gdx.audio.newMusic(Gdx.files.internal(Constants.GAME_MUSIC_PATH));
+        prefs = new Preference();
 
 		Locale defaultLocale = Locale.getDefault();
 
@@ -55,10 +62,34 @@ public class SleepRunner extends Game {
 
 		skin  = new Skin(Gdx.files.internal(Constants.SKIN_PATH));
 
-		music.play();
-		music.setVolume(0f);
+        mainMenuMusic.play();
+        mainMenuMusic.setVolume( 0f );
+        currentMusic = mainMenuMusic;
 		setLaunchScreen();
 	}
+
+    /**
+     * Switch music to main menu music.
+     */
+    public void switchToMainMenuMusic( ) {
+        currentMusic.stop();
+        currentMusic = mainMenuMusic;
+        currentMusic.setVolume( prefs.getMusicVolume() );
+        currentMusic.play();
+        currentMusic.setLooping(true);
+    }
+
+
+    /**
+     * Switch music to the game music.
+     */
+    public void switchToGameMusic( ) {
+        currentMusic.stop();
+        currentMusic = gameMusic;
+        currentMusic.setVolume( prefs.getMusicVolume() );
+        currentMusic.play();
+        currentMusic.setLooping(true);
+    }
 
 	public SpriteBatch getBatch() {
 		return batch;
@@ -108,7 +139,9 @@ public class SleepRunner extends Game {
 		return launchScreen;
 	}
 
-	public Music getMusic( ) { return music; }
+    public Music getMainMenuMusic( ) { return mainMenuMusic; }
+    public Music getCurrentMusic( ) { return currentMusic; }
+	public Music getGameMusic( ) { return gameMusic; }
 
 	public Skin getSkin() { return skin;}
 

@@ -106,7 +106,7 @@ public class HighscoreScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-        game.getMusic().setVolume(prefs.getMusicVolume());
+        game.getCurrentMusic().setVolume(prefs.getMusicVolume());
         Gdx.input.setInputProcessor(stage);
         batch.setProjectionMatrix(camera.combined);
         batch.draw(logo, 0, 0, logo.getWidth(), logo.getHeight());
