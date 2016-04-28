@@ -30,7 +30,7 @@ public class Tools {
         int count = 0;
         for (int i = 0; i < frameRows; i++) {
             for (int j = 0; j < frameCols; j++) {
-                if (index >= (start - 1) && count <= (length - 1)) {
+                if ( ( i + j ) >= (start - 1) && count <= (length - 1)) {
                     frames[index++] = temporary[i][j];
                     count++;
                 }

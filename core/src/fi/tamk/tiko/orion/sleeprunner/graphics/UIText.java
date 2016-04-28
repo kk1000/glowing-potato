@@ -54,7 +54,9 @@ public class UIText extends Actor {
     @Override
     public void act(float delta) {
         super.act( delta );
-        score += delta * 10;
+        if ( gameScreen.getGameState() != Constants.GAME_PLAYER_DEATH ) {
+            score += delta * 10;
+        }
     }
 
     @Override
@@ -75,6 +77,7 @@ public class UIText extends Actor {
             debugFont.draw(batch, "Player Y " + player.getBody().getPosition().y, Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 150);
 
             debugFont.draw(batch, "Play times: " + playTimes, Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 180);
+            debugFont.draw(batch, "Player fly: " + player.isFlying(), Constants.APP_WIDTH - 150, Constants.APP_HEIGHT - 200);
         }
     }
 

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
@@ -18,11 +19,16 @@ import fi.tamk.tiko.orion.sleeprunner.utilities.Tools;
  */
 public class PlayerObject extends AnimatedGameObject {
 
+    private Animation runAnimation;
+    private Animation dodgeAnimation;
+
     private boolean jumping;
     private boolean dodging;
+    private boolean flying;
     private boolean dead;
     private boolean hit;
 
+    private String deadText;
     private Sound runSound;
     private float dodgeTimer;
 
@@ -37,14 +43,47 @@ public class PlayerObject extends AnimatedGameObject {
                 Constants.PLAYER_DENSITY,
                 new Texture(Gdx.files.internal(Constants.PLAYER_RUNNING_IMAGE_PATH)),
                 BodyDef.BodyType.DynamicBody,
-                new UserData("PLAYER"),
-                8, 1, 1, 8, 1/60f, false );
+                new UserData("PLAYER"));
 
         body.setFixedRotation(true);
+
+        Gdx.app.log("PlayerObject", "Animation creation: ");
+        runAnimation = Tools.createAnimation( texture, 10, 1, 1, 8, 1/10f );
+        dodgeAnimation = Tools.createAnimation( texture, 10, 1, 9, 2, 1/10f );
+
+        this.currentAnimation = runAnimation;
+        this.currentFrame = this.currentAnimation.getKeyFrame( stateTime, true );
 
         runSound = Gdx.audio.newSound(Gdx.files.internal(Constants.PLAYER_RUN_SOUND_PATH));
         runSound.stop();
         runSound.play(prefs.getSoundVolume());
+    }
+
+    /**
+     * Make player fly in set position.
+     */
+    public void fly( ) {
+        jumping = false;
+        flying = true;
+        dodging = false;
+        dead = false;
+        hit = false;
+        changeAnimation( dodgeAnimation );
+        body.setLinearVelocity(new Vector2(0, 0));
+        body.setAngularVelocity(0);
+        body.setTransform(new Vector2(Constants.PLAYER_FLY_X, Constants.PLAYER_FLY_Y), body.getAngle());
+        body.setGravityScale(0.0f);
+        runSound.stop();
+    }
+
+    /**
+     * Stops player's flight.
+     */
+    public void stopFly() {
+        flying = false;
+        changeAnimation(runAnimation);
+        body.setGravityScale(1.0f);
+        jump(100);
     }
 
     /**
@@ -63,7 +102,6 @@ public class PlayerObject extends AnimatedGameObject {
         runSound.stop();
     }
 
-
     /**
      * Changes player jumping-state to false when player hits ground.
      */
@@ -80,8 +118,9 @@ public class PlayerObject extends AnimatedGameObject {
      */
     public void dodge(){
         if (!jumping || hit){
-            body.setTransform(x, y, (float)(-90f * (Math.PI / 180f)));
+            body.setTransform(x, y, (float) (90f * (Math.PI / 180f)));
             dodging = true;
+            changeAnimation( dodgeAnimation );
             runSound.stop();
         }
     }
@@ -94,6 +133,7 @@ public class PlayerObject extends AnimatedGameObject {
         runSound.play(prefs.getSoundVolume());
 
         dodging = false;
+        changeAnimation( runAnimation );
         body.setTransform(x, y, 0f);
 
         if (!hit){
@@ -107,8 +147,12 @@ public class PlayerObject extends AnimatedGameObject {
      */
     public void hit(){
         body.applyAngularImpulse(Constants.PLAYER_HIT_ANGULAR_IMPULSE, true);
+        pauseAnimation();
         hit = true;
-        dead = true;
+        if ( !dead ) {
+            deadText = "player_death_spikes";
+            dead = true;
+        }
         runSound.stop();
     }
 
@@ -123,8 +167,13 @@ public class PlayerObject extends AnimatedGameObject {
                 dodgeTimer = 0;
             }
         }
-        if (body.getPosition().y < 0 || body.getPosition().x < 0) {
-            dead = true;
+        if ( !dead ) {
+            if (body.getPosition().y < 0 || body.getPosition().x < 0) {
+                deadText = "player_death_fall";
+                dead = true;
+                // Reset the world's speed too.
+                Constants.ENEMY_LINEAR_VELOCITY = new Vector2(-3.0f, 0);
+            }
         }
     }
 
@@ -135,8 +184,6 @@ public class PlayerObject extends AnimatedGameObject {
         dodging = false;
         dead = false;
         hit = false;
-        // Reset the world's speed too.
-        Constants.ENEMY_LINEAR_VELOCITY = new Vector2(-3.0f, 0);
     }
 
     /**
@@ -145,6 +192,10 @@ public class PlayerObject extends AnimatedGameObject {
 
     public boolean isDodging() {
         return dodging;
+    }
+
+    public boolean isFlying( ) {
+        return flying;
     }
 
     public boolean isDead() {
@@ -156,5 +207,6 @@ public class PlayerObject extends AnimatedGameObject {
     public boolean isJumping(){
         return jumping;
     }
+    public String getDeadText() { return deadText; }
 
 }

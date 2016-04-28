@@ -88,6 +88,8 @@ public abstract class AnimatedGameObject extends GameObject {
      */
     public void changeAnimation( Animation animation ) {
         currentAnimation = animation;
+        currentFrame = currentAnimation.getKeyFrame( stateTime, true );
+        resumeAnimation();
     }
 
     /**

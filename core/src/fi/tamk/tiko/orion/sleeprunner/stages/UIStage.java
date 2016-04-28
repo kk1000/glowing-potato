@@ -1,5 +1,6 @@
 package fi.tamk.tiko.orion.sleeprunner.stages;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -52,15 +53,7 @@ public class UIStage extends Stage {
      * Moves Nightmare meter by one step.
      */
     public void moveNightmareMeter( ) {
-        float value = nightmareMeter.getValue();
-        if ( value == nightmareMeter.getMaxValue() ) {
-            // Nightmare has reached, it's game over.
-            GameScreen gameScreen = game.getGameScreen();
-            gameScreen.setGameState( Constants.GAME_OVER );
-            gameScreen.getPauseStage().setupMenu();
-        } else {
-            nightmareMeter.setValue( value + nightmareMeter.getStepSize() );
-        }
+        nightmareMeter.setValue( nightmareMeter.getValue() + nightmareMeter.getStepSize() );
     }
 
     /**
@@ -79,15 +72,15 @@ public class UIStage extends Stage {
         this.uiText = new UIText(game, game.getGameScreen(), debugFont, this.font );
 
         addActor( pauseButton );
-        addActor( nightmareMeter );
-        addActor( uiText );
+        addActor( nightmareMeter);
+        addActor(uiText);
     }
 
     /**
      * Runs when player collects power up.
      */
     public void collectPowerup( ) {
-        uiText.setScore( uiText.getScore() + 10 );
+        uiText.setScore(uiText.getScore() + 50);
     }
 
     /**
@@ -109,10 +102,21 @@ public class UIStage extends Stage {
     }
 
     /**
+     * Checks has the nightmare reached the player.
+     *
+     * @return boolean Is the nightmare meter full.
+     */
+    public boolean hasNightmareReached( ) {
+        return ( nightmareMeter.getValue() == nightmareMeter.getMaxValue() );
+    }
+
+    /**
      * Getters
      */
 
     public UIText getUiText(){
         return uiText;
     }
+    public NightmareMeter getNightmareMeter( ) { return nightmareMeter; }
+
 }

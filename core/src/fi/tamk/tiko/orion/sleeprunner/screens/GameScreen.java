@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.input.GestureDetector;
@@ -76,7 +77,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     private boolean setupReady = false;
 
     private boolean highscoreSaved = false;
-
     private float deathTimer = 2;
     private float accumulator = 0f;
 
@@ -132,11 +132,13 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      * Listener for desktop debugging.
      */
     private void desktopListener() {
-        if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
-            player.jump(5000);
+        if ( !player.isFlying() ) {
+            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+                player.jump(5000);
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN))
+                player.dodge();
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN))
-            player.dodge();
     }
 
     /**
@@ -222,6 +224,10 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
             case Constants.GAME_RUNNING:
                 updateGameRunning( delta );
                 break;
+            case Constants.GAME_PLAYER_DEATH:
+                updateGameRunning( delta );
+                updateGamePlayerDeath();
+                break;
             case Constants.GAME_PAUSED:
                 updateGamePaused();
                 break;
@@ -262,6 +268,18 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     }
 
     /**
+     * Updates when player has died but game is running.
+     */
+    private void updateGamePlayerDeath( ) {
+        if ( Gdx.input.isTouched() ) {
+            nightmare.moveForward();
+            uiStage.moveNightmareMeter();
+            player.stopFly();
+            gameState = Constants.GAME_RUNNING;
+        }
+    }
+
+    /**
      * Updates when game is paused.
      */
     private void updateGamePaused( ) {
@@ -296,9 +314,14 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
         if (deathTimer <= 0) {
             deathTimer = 2;
-            nightmare.moveForward();
-            uiStage.moveNightmareMeter();
-            player.reset();
+            // Is it TOTAL Game over or just player death?
+            if ( uiStage.hasNightmareReached() ) {
+                gameState = Constants.GAME_OVER;
+                pauseStage.setupMenu();
+            } else {
+                gameState = Constants.GAME_PLAYER_DEATH;
+                player.fly();
+            }
         }
     }
 
@@ -343,9 +366,9 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
             for (int i = 0; i < 2; i++) {
                 MapChunk mapChunk;
                 if ( i == 0 ) {
-                    mapChunk = new MapChunk( null, world, 0, ( i + 1 ) );
+                    mapChunk = new MapChunk( this, null, world, 0, ( i + 1 ) );
                 } else {
-                    mapChunk = new MapChunk( mapChunks.get( i - 1 ), world, mapChunks.size, ( i + 1 ) );
+                    mapChunk = new MapChunk( this, mapChunks.get( i - 1 ), world, mapChunks.size, ( i + 1 ) );
                 }
                 mapChunks.add( mapChunk );
             }
@@ -354,7 +377,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
             // There is need for one new map chunk.
             int nextChunkNumber = currentMapChunk.getChunkNumber() + 2;
             currentMapChunk = mapChunks.first();
-            mapChunks.add(new MapChunk( currentMapChunk, world, mapChunks.size, nextChunkNumber));
+            mapChunks.add(new MapChunk( this, currentMapChunk, world, mapChunks.size, nextChunkNumber));
         }
     }
 
@@ -416,6 +439,10 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
             case Constants.GAME_RUNNING:
                 drawGameRunning();
                 break;
+            case Constants.GAME_PLAYER_DEATH:
+                drawGameRunning();
+                drawGamePlayerDeath();
+                break;
             case Constants.GAME_PAUSED:
                 drawGamePaused();
                 break;
@@ -444,6 +471,15 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     }
 
     /**
+     * Draws when player has died and game is running.
+     */
+    private void drawGamePlayerDeath( ) {
+        scoreFont.draw( batch, game.translate.get( player.getDeadText() ), Constants.APP_WIDTH/2-200, Constants.APP_HEIGHT - 200 );
+        scoreFont.draw( batch, game.translate.get( "death_info" ), Constants.APP_WIDTH/2-200, Constants.APP_HEIGHT - 240 );
+        scoreFont.draw( batch, game.translate.get( "death_info2" ), Constants.APP_WIDTH/2-200, Constants.APP_HEIGHT - 280 );
+    }
+
+    /**
      * Draws when game is paused.
      */
     private void drawGamePaused() {
@@ -467,22 +503,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     public void drawMapChunks( ) {
         for ( MapChunk mapChunk : mapChunks ) {
             mapChunk.draw( batch );
-        }
-    }
-
-    /**
-     * Sets gamestate
-     */
-    public void setGameState(int state){
-        gameState = state;
-    }
-
-    public void setInputProcessor(int input){
-        if(input == 1){
-            Gdx.input.setInputProcessor(im);
-        }
-        if(input == 2){
-            Gdx.input.setInputProcessor(pauseStage);
         }
     }
 
@@ -534,22 +554,28 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
     @Override
     public void beginContact(Contact contact) {
-        Body a = contact.getFixtureA().getBody();
-        Body b = contact.getFixtureB().getBody();
+        if ( !player.isFlying() ) {
+            Body a = contact.getFixtureA().getBody();
+            Body b = contact.getFixtureB().getBody();
 
-        // Player to spikes collision check.
-        if ((BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "SPIKES")) ||
-                (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "SPIKES")) ) {
-            player.hit();
-            player.pauseAnimation();
+            // Player to spikes collision check.
+            if ((BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "SPIKES")) ||
+                    (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "SPIKES"))) {
+                player.hit();
+            }
+
+            // Player to flying spikes collision check.
+            if ((BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "FLYING_SPIKES")) ||
+                    (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "FLYING_SPIKES"))) {
+                player.hit();
+            }
+
+            // Player to ground collision check.
+            if ((BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "GROUND")) ||
+                    (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "GROUND"))) {
+                player.landed();
+            }
         }
-
-        // Player to ground collision check.
-        if ((BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "GROUND")) ||
-                (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "GROUND")) ) {
-            player.landed();
-        }
-
     }
 
     @Override
@@ -574,21 +600,34 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         if ( (BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "POWERUP_SHIELD")) ||
                 (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "POWERUP_SHIELD")) ) {
             contact.setEnabled(false);
-            currentMapChunk.clearGameObject( uiStage, "POWERUP_SHIELD");
+            if ( !player.isFlying() ) {
+                currentMapChunk.clearGameObject(uiStage, "POWERUP_SHIELD");
+            }
         }
 
         // Fly power up collision.
         if ( (BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "POWERUP_FLY")) ||
                 (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "POWERUP_FLY")) ) {
             contact.setEnabled(false);
-            currentMapChunk.clearGameObject( uiStage, "POWERUP_FLY");
+            if ( !player.isFlying() ) {
+                currentMapChunk.clearGameObject(uiStage, "POWERUP_FLY");
+            }
         }
 
         // Mask power up collision.
         if ( (BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "POWERUP_MASK")) ||
                 (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "POWERUP_MASK")) ) {
             contact.setEnabled(false);
-            currentMapChunk.clearGameObject( uiStage, "POWERUP_MASK");
+            if ( !player.isFlying() ) {
+                currentMapChunk.clearGameObject(uiStage, "POWERUP_MASK");
+            }
+        }
+
+        // Player to flying spikes collision check.
+        if ((BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "FLYING_SPIKES")) ||
+                (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "FLYING_SPIKES")) &&
+                player.isFlying() ) {
+            contact.setEnabled( false );
         }
 
     }
@@ -602,13 +641,35 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
         @Override
         public boolean fling(float velocityX, float velocityY, int button) {
-            if (velocityY > 1) {
-                player.dodge();
-            }
-            if (velocityY < -1) {
-                player.jump(Math.abs(velocityY));
+            if ( !player.isFlying() ) {
+                if (velocityY > 1) {
+                    player.dodge();
+                }
+                if (velocityY < -1) {
+                    player.jump(Math.abs(velocityY));
+                }
             }
             return true;
+        }
+    }
+
+    /**
+     * Setters.
+     */
+
+    /**
+     * Sets gamestate
+     */
+    public void setGameState(int state){
+        gameState = state;
+    }
+
+    public void setInputProcessor(int input){
+        if(input == 1){
+            Gdx.input.setInputProcessor(im);
+        }
+        if(input == 2){
+            Gdx.input.setInputProcessor(pauseStage);
         }
     }
 

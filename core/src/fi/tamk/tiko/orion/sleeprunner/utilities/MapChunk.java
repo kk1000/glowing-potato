@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Array;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.objects.GameObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.PowerUpGameObject;
+import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 import fi.tamk.tiko.orion.sleeprunner.stages.UIStage;
 
 /**
@@ -16,6 +17,7 @@ import fi.tamk.tiko.orion.sleeprunner.stages.UIStage;
  */
 public class MapChunk {
 
+    private GameScreen gameScreen;
     private MapChunk previousMapChunk;
 
     private Array<GameObject> removalGameObjects = new Array<GameObject>();
@@ -39,25 +41,27 @@ public class MapChunk {
     /**
      * Constructor for MapChunk.
      *
+     * @param gameScreen       Reference to GameScreen.
      * @param previousMapChunk Previous map chunk. Note that its game objects are deleted.
      * @param world            The Box2D game world.
      * @param position         Map chunk's position in the mapChunks array.
      * @param chunkNumber      Current map chunk's number.
      */
-    public MapChunk(MapChunk previousMapChunk, World world, int position, int chunkNumber ) {
+    public MapChunk(GameScreen gameScreen, MapChunk previousMapChunk, World world, int position, int chunkNumber ) {
+        this.gameScreen = gameScreen;
         this.previousMapChunk = previousMapChunk;
         this.world = world;
         this.position = position;
         this.chunkNumber = chunkNumber;
-        this.canContainPowerup = ( this.chunkNumber % 4 == 0 );
-        this.canContainFlyingObstacle = ( this.chunkNumber % 3 == 0 );
+        this.canContainPowerup = ( ( this.chunkNumber % 4 == 0 && gameScreen.getGameState() != Constants.GAME_PLAYER_DEATH ) );
+        this.canContainFlyingObstacle = ( ( this.chunkNumber % 3 == 0 && gameScreen.getGameState() != Constants.GAME_PLAYER_DEATH ) );
         setSleepStage();
         // Note that first MapChunk uses start values, others calculate them by method below.
         calculateValues();
         this.grid = MapGenerator.generateMapChunkGrid( this );
         MapGenerator.generateGameObjects(this);
-        // Update game speed every 3 map chunk.
-        if ( chunkNumber % 3 == 0 ) {
+        // Update game speed every 3 map chunk if the game is not in player death state.
+        if ( chunkNumber % 3 == 0 && gameScreen.getGameState() != Constants.GAME_PLAYER_DEATH ) {
             Gdx.app.log( "MapChunk", "Add speed!" );
             Constants.ENEMY_LINEAR_VELOCITY = Constants.ENEMY_LINEAR_VELOCITY.add( -0.3f, 0 );
         }
@@ -93,9 +97,8 @@ public class MapChunk {
         if ( previousMapChunk != null ) {
             int minGround = previousMapChunk.getMinGroundBlocks();
             int maxGround = previousMapChunk.getMaxGroundBlocks();
-            if (chunkNumber % Constants.DIFFICULTY_CHANGE_INTERVAL == 0) {
-                // How many times difficulty has changed.
-                //int changeAmount = chunkNumber / Constants.DIFFICULTY_CHANGE_INTERVAL;
+            // Change the values if the chunk is right and the game is not in player death state.
+            if (chunkNumber % Constants.DIFFICULTY_CHANGE_INTERVAL == 0 && gameScreen.getGameState() != Constants.GAME_PLAYER_DEATH ) {
                 // Decrease the minimum and maximum values to make the game little bit harder.
                 minGround -= 1;
                 maxGround -= 1;
@@ -116,7 +119,6 @@ public class MapChunk {
         for ( GameObject gameObject : gameObjects) {
             if ( gameObject.getUserData().id.equals( id ) && gameObject instanceof PowerUpGameObject ) {
                 PowerUpGameObject powerUpGameObject = (PowerUpGameObject) gameObject;
-                Gdx.app.log( "MapChunk", "Clearing PowerUpGameObject with id " + powerUpGameObject.getUserData().id );
                 if ( !powerUpGameObject.isCollected() ) {
                     Gdx.app.log( "MapChunk", "PowerUpGameObject collected." );
                     // Player collected power up.

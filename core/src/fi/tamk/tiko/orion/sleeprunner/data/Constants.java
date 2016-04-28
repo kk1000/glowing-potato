@@ -33,7 +33,8 @@ public class Constants {
     public static final int GAME_READY = 0;
     public static final int GAME_RUNNING = 1;
     public static final int GAME_PAUSED = 2;
-    public static final int GAME_OVER = 3;
+    public static final int GAME_PLAYER_DEATH = 3;
+    public static final int GAME_OVER = 4;
 
     /**
      * Map generation
@@ -81,6 +82,9 @@ public class Constants {
     public static final float PLAYER_HIT_ANGULAR_IMPULSE = 10f;
     public static final float PLAYER_START_X = Constants.WORLD_TO_SCREEN * 3 / 100f;
     public static final float PLAYER_START_Y = Constants.WORLD_TO_SCREEN * 3 / 100f;
+    public static final float PLAYER_FLY_X = Constants.WORLD_TO_SCREEN * 3 / 100f;
+    public static final float PLAYER_FLY_Y = Constants.WORLD_TO_SCREEN * 6 / 100f;
+
     //currently not used
     public static final float FLYING_ENEMY_Y = 3f;
     public static final float RUNNING_SHORT_ENEMY_Y = 1.5f;
