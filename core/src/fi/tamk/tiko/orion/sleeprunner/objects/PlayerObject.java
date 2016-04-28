@@ -19,6 +19,8 @@ import fi.tamk.tiko.orion.sleeprunner.utilities.Tools;
  */
 public class PlayerObject extends AnimatedGameObject {
 
+    public static Sound DEATH_SOUND = Gdx.audio.newSound( Gdx.files.internal( Constants.PLAYER_DEATH_SOUND ) );
+
     private Animation runAnimation;
     private Animation dodgeAnimation;
 
@@ -151,6 +153,7 @@ public class PlayerObject extends AnimatedGameObject {
         hit = true;
         if ( !dead ) {
             deadText = "player_death_spikes";
+            DEATH_SOUND.play( 0.8f );
             dead = true;
         }
         runSound.stop();
@@ -170,6 +173,7 @@ public class PlayerObject extends AnimatedGameObject {
         if ( !dead ) {
             if (body.getPosition().y < 0 || body.getPosition().x < 0) {
                 deadText = "player_death_fall";
+                DEATH_SOUND.play( 0.8f );
                 dead = true;
             }
         }
