@@ -39,9 +39,9 @@ public class BackgroundStage extends Stage {
      */
     private void setupBackgrounds(){
         // Deep layer
-        addActor(new MovingBackground(game,Constants.REM_SKY_IMAGE_PATH, 2, 1));
+        addActor(new MovingBackground(game,Constants.BACKGROUND_IMAGE_PATH, 2, 1));
         // Mid layer
-        addActor(new MovingBackground(game,Constants.REM_BACKGROUND_IMAGE_PATH, 0.2f,2));
+        addActor(new MovingBackground(game,Constants.DEEP_BACKGROUND_IMAGE_PATH, 0.2f,2));
         // Top layer 2
         addActor(new MovingBackground(game,Constants.BACKGROUND_CLOUDS_IMAGE_PATH, 0.1f,3));
         // Top layer

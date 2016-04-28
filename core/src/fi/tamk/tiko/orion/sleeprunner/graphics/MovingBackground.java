@@ -22,7 +22,7 @@ public class MovingBackground extends Actor {
     private int srcX;
     // 1 = deep 2 = mid 3 = top
     private int layer;
-    // 1 = REM 2 = deep
+    // 1 = REM 2 = deep 3 = start
     private int sleepPhase;
     private SleepRunner game;
 
@@ -31,7 +31,7 @@ public class MovingBackground extends Actor {
         this.speed = speed;
         this.layer = i;
         this.texture = new Texture(Gdx.files.internal(s));
-        this.sleepPhase = 2;
+        this.sleepPhase = 1;
         texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
     }
 
@@ -41,7 +41,7 @@ public class MovingBackground extends Actor {
 
     public void changePhase(){
         if(layer == 1) {
-            if (game.getGameScreen().getCurrentMapChunk().getSleepStage().equals("DEEP") && sleepPhase == 1) {
+            if (game.getGameScreen().getCurrentMapChunk().getSleepStage().equals("DEEP") && sleepPhase == 1 ) {
                 texture = new Texture(Gdx.files.internal(Constants.BACKGROUND_IMAGE_PATH));
                 texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
                 sleepPhase = 2;
