@@ -278,6 +278,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
             nightmare.moveForward();
             uiStage.moveNightmareMeter();
             player.stopFly();
+            CURRENT_GAME_SPEED = Constants.INITIAL_GAME_SPEED;
             gameState = Constants.GAME_RUNNING;
         }
     }
@@ -322,6 +323,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
                 gameState = Constants.GAME_OVER;
                 pauseStage.setupMenu();
             } else {
+                CURRENT_GAME_SPEED = Constants.PLAYER_DEATH_GAME_SPEED;
                 gameState = Constants.GAME_PLAYER_DEATH;
                 player.fly();
             }
@@ -381,6 +383,11 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
             int nextChunkNumber = currentMapChunk.getChunkNumber() + 2;
             currentMapChunk = mapChunks.first();
             mapChunks.add(new MapChunk( this, currentMapChunk, world, mapChunks.size, nextChunkNumber));
+            // Update game speed every 3 map chunk if the game is not in player death state.
+            if ( currentMapChunk.getChunkNumber() % 3 == 0 && gameState != Constants.GAME_PLAYER_DEATH ) {
+                CURRENT_GAME_SPEED = CURRENT_GAME_SPEED.add( -0.2f, 0 );
+                Gdx.app.log( "GameScreen", "Current speed: " + CURRENT_GAME_SPEED.x );
+            }
         }
     }
 
