@@ -42,6 +42,7 @@ public class Constants {
     public static final int GAME_PAUSED = 2;
     public static final int GAME_PLAYER_DEATH = 3;
     public static final int GAME_OVER = 4;
+    public static final int GAME_INFO_SCREEN = 5;
 
     /**
      * Map generation

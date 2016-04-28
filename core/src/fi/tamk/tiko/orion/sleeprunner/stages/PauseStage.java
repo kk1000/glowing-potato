@@ -1,5 +1,6 @@
 package fi.tamk.tiko.orion.sleeprunner.stages;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -11,8 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
+import com.sun.glass.events.TouchEvent;
 
 
 import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
@@ -35,6 +38,9 @@ public class PauseStage extends Stage {
 
     private BitmapFont font;
     private Batch batch;
+    private boolean isTouched;
+
+    private float timer;
 
     /**
      * Constructor for the pause stage.
@@ -50,6 +56,7 @@ public class PauseStage extends Stage {
         this.batch = batch;
         this.camera = worldCamera;
         this.font = font;
+        this.timer = 0;
     }
 
     /**
@@ -72,15 +79,10 @@ public class PauseStage extends Stage {
             addActor(button1);
             addActor(button2);
         }
-        if(game.getGameScreen().signClicked){
-            pauseMenu = new PauseMenu(Constants.APP_WIDTH / 4, Constants.APP_HEIGHT / 4, font, game.translate.get("random_fact"+Integer.toString( MathUtils.random(1,10))));
-            setupContinueButton();
-            button1.setBounds(Constants.APP_WIDTH / 2.5f,
-                    Constants.APP_HEIGHT / 3.42f,
-                    Constants.APP_WIDTH / 5f,
-                    Constants.APP_HEIGHT / 9.6f);
+        if(game.getGameScreen().getGameState() == Constants.GAME_INFO_SCREEN){
+            pauseMenu = new PauseMenu(Constants.APP_WIDTH / 4, Constants.APP_HEIGHT / 4, font,
+                                    game.translate.get("random_fact"+Integer.toString( MathUtils.random(1,15))));
             addActor(pauseMenu);
-            addActor(button1);
         }
     }
 
@@ -138,18 +140,25 @@ public class PauseStage extends Stage {
                 gameScreen.setGameState(Constants.GAME_RUNNING);
                 gameScreen.getPlayer().resumeAnimation();
                 gameScreen.getNightmare().resumeAnimation();
-                if (game.getGameScreen().signClicked) {
-                    game.getGameScreen().signClicked = false;
-                }
+
                 gameScreen.setInputProcessor(1);
                 return true;
             }
         });
     }
 
+
     @Override
     public void act(float delta) {
         super.act(delta);
+        timer += Gdx.graphics.getDeltaTime();
+        if (game.getGameScreen().getGameState() == Constants.GAME_INFO_SCREEN && Gdx.input.isTouched() && timer > 0.4f) {
+            game.getGameScreen().setGameState(Constants.GAME_RUNNING);
+            game.getGameScreen().getPlayer().resumeAnimation();
+            game.getGameScreen().getNightmare().resumeAnimation();
+            game.getGameScreen().setInputProcessor(1);
+            timer = 0;
+        }
     }
 
     @Override
