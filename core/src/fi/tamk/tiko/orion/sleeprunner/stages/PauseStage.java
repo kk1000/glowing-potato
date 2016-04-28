@@ -81,6 +81,7 @@ public class PauseStage extends Stage {
             pauseMenu = new PauseMenu(Constants.APP_WIDTH / 4, Constants.APP_HEIGHT / 4, game.getTextFont(),
                                     game.translate.get("random_fact"+Integer.toString( MathUtils.random(1,15))));
             addActor(pauseMenu);
+            timer = 0;
         }
     }
 
@@ -118,6 +119,8 @@ public class PauseStage extends Stage {
                                      int pointer, int button) {
                 game.switchToMainMenuMusic();
                 game.setMainMenuScreen();
+                Gdx.app.log("PauseStage","clicked mainmenu!");
+                resetPause();
                 return true;
             }
         });
@@ -138,19 +141,27 @@ public class PauseStage extends Stage {
                 gameScreen.setGameState(Constants.GAME_RUNNING);
                 gameScreen.getPlayer().resumeAnimation();
                 gameScreen.getNightmare().resumeAnimation();
-
                 gameScreen.setInputProcessor(1);
+                Gdx.app.log("PauseStage", "clicked mainmenu!");
+                resetPause();
                 return true;
             }
         });
+    }
+
+    private void resetPause(){
+        button1.remove();
+        button2.remove();
     }
 
 
     @Override
     public void act(float delta) {
         super.act(delta);
-        timer += Gdx.graphics.getDeltaTime();
-        if (game.getGameScreen().getGameState() == Constants.GAME_INFO_SCREEN && Gdx.input.isTouched() && timer > 0.4f) {
+        if(game.getGameScreen().getGameState()==5){
+            timer += Gdx.graphics.getDeltaTime();
+        }
+        if (game.getGameScreen().getGameState() == Constants.GAME_INFO_SCREEN && Gdx.input.isTouched() && timer > 2f) {
             game.getGameScreen().setGameState(Constants.GAME_RUNNING);
             game.getGameScreen().getPlayer().resumeAnimation();
             game.getGameScreen().getNightmare().resumeAnimation();
