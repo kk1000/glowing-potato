@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -83,7 +84,8 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     private int playTimes;
     private int gameState;
 
-    public boolean signClicked;
+    public static Vector2 CURRENT_GAME_SPEED = Constants.INITIAL_GAME_SPEED;
+
     /**
      * Constructor for GameScreen.
      *
