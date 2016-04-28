@@ -83,7 +83,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     private int playTimes;
     private int gameState;
 
-    public boolean signClicked;
     /**
      * Constructor for GameScreen.
      *
@@ -122,11 +121,12 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         im = new InputMultiplexer();
         im.addProcessor(gestureDetector);
         im.addProcessor(uiStage);
-        im.addProcessor( this );
+        im.addProcessor(this);
 
         Gdx.input.setInputProcessor(im);
 
         gameState = Constants.GAME_READY;
+
     }
 
     /**
@@ -170,7 +170,12 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
                     if ( ( touchPoint.x <= ( ( signX + signWidth ) * 1.2f ) && touchPoint.x >= ( signX * 0.8f ) ) &&
                             ( touchPoint.y <= ( ( signY + signHeight ) * 1.2f ) && touchPoint.y >= ( signY * 0.8f ) ) ) {
                         // Touch position is inside the sign object.
-                        Gdx.app.log( "GameScreen", "SignObject is touched!" );
+                        Gdx.app.log("GameScreen", "SignObject is touched!");
+                            gameState = Constants.GAME_INFO_SCREEN;
+                            Gdx.app.log("GameScreen","GameState: "+gameState);
+                            nightmare.pauseAnimation();
+                            player.pauseAnimation();
+                            pauseStage.setupMenu();
                     }
                 }
             }
@@ -223,7 +228,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
                 updateGameReady();
                 break;
             case Constants.GAME_RUNNING:
-                updateGameRunning( delta );
+                updateGameRunning(delta);
                 break;
             case Constants.GAME_PLAYER_DEATH:
                 updateGameRunning( delta );
@@ -235,6 +240,8 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
             case Constants.GAME_OVER:
                 updateGameOver();
                 break;
+            case Constants.GAME_INFO_SCREEN:
+                updateGameInfoScreen();
         }
     }
 
@@ -297,6 +304,10 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
             prefs.putHighscore(uiStage.getUiText().getScore());
             highscoreSaved = true;
         }
+        pauseStage.act();
+    }
+    private void updateGameInfoScreen(){
+        Gdx.input.setInputProcessor(pauseStage);
         pauseStage.act();
     }
 
@@ -450,6 +461,9 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
             case Constants.GAME_OVER:
                 drawGameOver();
                 break;
+            case Constants.GAME_INFO_SCREEN:
+                drawGameGameInfoScreen();
+                break;
         }
 
         batch.end();
@@ -475,9 +489,9 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      * Draws when player has died and game is running.
      */
     private void drawGamePlayerDeath( ) {
-        scoreFont.draw( batch, game.translate.get( player.getDeadText() ), Constants.APP_WIDTH/2-200, Constants.APP_HEIGHT - 200 );
+        scoreFont.draw(batch, game.translate.get(player.getDeadText()), Constants.APP_WIDTH / 2 - 200, Constants.APP_HEIGHT - 200);
         scoreFont.draw( batch, game.translate.get( "death_info" ), Constants.APP_WIDTH/2-200, Constants.APP_HEIGHT - 240 );
-        scoreFont.draw( batch, game.translate.get( "death_info2" ), Constants.APP_WIDTH/2-200, Constants.APP_HEIGHT - 280 );
+        scoreFont.draw(batch, game.translate.get("death_info2"), Constants.APP_WIDTH / 2 - 200, Constants.APP_HEIGHT - 280);
     }
 
     /**
@@ -493,6 +507,12 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      * Draws when game is over.
      */
     private void drawGameOver() {
+        batch.end();
+        pauseStage.draw();
+        batch.begin();
+    }
+
+    private void drawGameGameInfoScreen() {
         batch.end();
         pauseStage.draw();
         batch.begin();
