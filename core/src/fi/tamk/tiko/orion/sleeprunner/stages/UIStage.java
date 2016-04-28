@@ -86,8 +86,8 @@ public class UIStage extends Stage {
     /**
      * Runs when player collects power up.
      */
-    public void collectedPowerup( ) {
-        //uiText.setScore( uiText.getScore() + 10 );
+    public void collectPowerup( ) {
+        uiText.setScore( uiText.getScore() + 10 );
     }
 
     /**

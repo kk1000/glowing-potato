@@ -14,6 +14,8 @@ import fi.tamk.tiko.orion.sleeprunner.data.UserData;
  */
 public abstract class PowerUpGameObject extends GameObject {
 
+    private boolean collected = false;
+
     /**
      * Constructor for PowerUpGameObject.
      *
@@ -27,6 +29,13 @@ public abstract class PowerUpGameObject extends GameObject {
      */
     public PowerUpGameObject(World world, float x, float y, float width, float height, TextureRegion powerUpTexture, UserData powerUpUserData) {
         super(world, x, y, width, height, 0f, powerUpTexture, BodyDef.BodyType.KinematicBody, powerUpUserData );
+    }
+
+    /**
+     * Collects power up, sets the collected attribute to true.
+     */
+    public void collect( ) {
+        collected = true;
     }
 
     @Override
@@ -52,5 +61,14 @@ public abstract class PowerUpGameObject extends GameObject {
                     0);
         }
     }
+
+    /**
+     * Getters.
+     */
+
+    /**
+     * @return collected Is the power up collected.
+     */
+    public boolean isCollected( ) { return collected; }
 
 }

@@ -123,7 +123,7 @@ public class MapGenerator {
      * @return     True if the method NOT insert power up block.
      */
     private static boolean generatePowerUpBlock( int[][] grid, int x ) {
-        int random = MathUtils.random( 0, 2 ); // Probability to get some power up.
+        int random = MathUtils.random( 0, 5 ); // Probability to get some power up.
         if ( random == 0 ) {
             // Random power up
             int powerUp = MathUtils.random( 4, 6 );
@@ -209,7 +209,7 @@ public class MapGenerator {
                 if ( canContainFlyingObstacle ) {
                     canContainFlyingObstacle = generateFlyingSpikeBlock( grid, i );
                 }
-                if ( canContainPowerup ) {
+                if ( canContainPowerup && ( i > 5 && i < Constants.CHUNK_MAX_TILES_WIDTH - 5 ) ) {
                     canContainPowerup = generatePowerUpBlock(grid, i);
                 }
             }

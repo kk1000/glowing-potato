@@ -574,24 +574,21 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         if ( (BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "POWERUP_SHIELD")) ||
                 (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "POWERUP_SHIELD")) ) {
             contact.setEnabled(false);
-            currentMapChunk.clearGameObject("POWERUP_SHIELD");
-            uiStage.collectedPowerup();
+            currentMapChunk.clearGameObject( uiStage, "POWERUP_SHIELD");
         }
 
         // Fly power up collision.
         if ( (BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "POWERUP_FLY")) ||
                 (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "POWERUP_FLY")) ) {
             contact.setEnabled(false);
-            currentMapChunk.clearGameObject("POWERUP_FLY");
-            uiStage.collectedPowerup();
+            currentMapChunk.clearGameObject( uiStage, "POWERUP_FLY");
         }
 
         // Mask power up collision.
         if ( (BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "POWERUP_MASK")) ||
                 (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "POWERUP_MASK")) ) {
             contact.setEnabled(false);
-            currentMapChunk.clearGameObject("POWERUP_MASK");
-            uiStage.collectedPowerup();
+            currentMapChunk.clearGameObject( uiStage, "POWERUP_MASK");
         }
 
     }

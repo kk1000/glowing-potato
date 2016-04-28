@@ -2,11 +2,14 @@ package fi.tamk.tiko.orion.sleeprunner.utilities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.objects.GameObject;
+import fi.tamk.tiko.orion.sleeprunner.objects.PowerUpGameObject;
+import fi.tamk.tiko.orion.sleeprunner.stages.UIStage;
 
 /**
  * Contains one map chunks game objects and information.
@@ -104,14 +107,23 @@ public class MapChunk {
     }
 
     /**
-     * Clears game object from map chunk (hides it now)
+     * Clears power up game object from map chunk.
      *
-     * @param id Game object's UserData id.
+     * @param uiStage   Reference to UiStage.
+     * @param id        Game object's UserData id.
      */
-    public void clearGameObject( String id ) {
+    public void clearGameObject( UIStage uiStage, String id ) {
         for ( GameObject gameObject : gameObjects) {
-            if ( gameObject.getUserData().id.equals( id ) ) {
-                gameObject.setHidden( true );
+            if ( gameObject.getUserData().id.equals( id ) && gameObject instanceof PowerUpGameObject ) {
+                PowerUpGameObject powerUpGameObject = (PowerUpGameObject) gameObject;
+                Gdx.app.log( "MapChunk", "Clearing PowerUpGameObject with id " + powerUpGameObject.getUserData().id );
+                if ( !powerUpGameObject.isCollected() ) {
+                    Gdx.app.log( "MapChunk", "PowerUpGameObject collected." );
+                    // Player collected power up.
+                    powerUpGameObject.collect();
+                    uiStage.collectPowerup();
+                    removalGameObjects.add( gameObject );
+                }
             }
         }
     }
