@@ -153,6 +153,9 @@ public class Constants {
 
     public static final String PLAYER_RUN_SOUND_PATH = "sounds/sfx/steps.mp3";
     public static final String GAME_MUSIC_PATH = "sounds/music/main.mp3";
+    public static final String NIGHTMARE_SOUND_PATH = "sounds/sfx/nightmare.mp3";
+    public static final String POWERUP_SOUND_PATH = "sounds/sfx/powerup.mp3";
+
     public static float PLAYER_DENSITY = 0.5f;
     public static final float ENEMY_DENSITY = PLAYER_DENSITY;
 

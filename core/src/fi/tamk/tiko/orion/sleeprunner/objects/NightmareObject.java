@@ -1,6 +1,7 @@
 package fi.tamk.tiko.orion.sleeprunner.objects;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
@@ -14,6 +15,7 @@ import fi.tamk.tiko.orion.sleeprunner.data.UserData;
 public class NightmareObject extends AnimatedGameObject {
 
     public static final Texture BASE_TEXTURE = new Texture( Gdx.files.internal( Constants.NIGHTMARE_BACKGROUND_IMAGE_PATH ) );
+    public static final Sound NIGHTMARE_SOUND = Gdx.audio.newSound( Gdx.files.internal( Constants.NIGHTMARE_SOUND_PATH ) );
 
     /**
      * Constructor.
@@ -33,6 +35,7 @@ public class NightmareObject extends AnimatedGameObject {
         float x = body.getPosition().x;
         float y = body.getPosition().y;
         body.setTransform( x + 0.5f, y, body.getAngle() );
+        NIGHTMARE_SOUND.play( 0.8f );
     }
 
 }

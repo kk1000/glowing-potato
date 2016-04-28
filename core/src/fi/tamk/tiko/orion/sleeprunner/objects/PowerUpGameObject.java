@@ -1,5 +1,7 @@
 package fi.tamk.tiko.orion.sleeprunner.objects;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -14,6 +16,8 @@ import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
  *  Not designed to construct object from this class.
  */
 public abstract class PowerUpGameObject extends GameObject {
+
+    public static Sound POWERUP_SOUND = Gdx.audio.newSound( Gdx.files.internal( Constants.POWERUP_SOUND_PATH ) );
 
     private boolean collected = false;
 
@@ -36,6 +40,7 @@ public abstract class PowerUpGameObject extends GameObject {
      * Collects power up, sets the collected attribute to true.
      */
     public void collect( ) {
+        POWERUP_SOUND.play( 0.8f );
         collected = true;
     }
 
