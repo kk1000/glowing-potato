@@ -37,7 +37,7 @@ public class PauseMenu extends Actor {
         this.text = text;
         this.glyphLayout = new GlyphLayout(this.font, this.text);
         this.textX = ( x + this.texture.getWidth()/2 ) - this.glyphLayout.width/2;
-        this.textY = ( y + this.texture.getHeight() ) - ( this.glyphLayout.height * 1.5f );
+        this.textY = ( y + this.texture.getHeight() ) - this.glyphLayout.height;
     }
 
     @Override
