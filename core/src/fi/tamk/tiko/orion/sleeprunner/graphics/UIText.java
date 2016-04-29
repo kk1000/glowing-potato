@@ -85,7 +85,12 @@ public class UIText extends Actor {
      * Setters.
      */
 
-    public void setScore( int score ) { this.score = score; }
+    public void setScore( int score ) {
+        this.score = score;
+        if ( this.score < 0 ) {
+            this.score = 0;
+        }
+    }
 
     /**
      * Getters

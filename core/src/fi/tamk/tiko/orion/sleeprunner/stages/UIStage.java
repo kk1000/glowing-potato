@@ -84,16 +84,6 @@ public class UIStage extends Stage {
         uiText.reset();
     }
 
-    @Override
-    public void act(float delta) {
-        super.act(delta);
-    }
-
-    @Override
-    public void draw() {
-        super.draw();
-    }
-
     /**
      * Checks has the nightmare reached the player.
      *

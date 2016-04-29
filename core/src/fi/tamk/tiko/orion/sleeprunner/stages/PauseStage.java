@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.graphics.PauseDialog;
+import fi.tamk.tiko.orion.sleeprunner.graphics.UIText;
 import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 
 /**
@@ -59,7 +60,7 @@ public class PauseStage extends Stage {
     private void setDialogs( ) {
         questionDialog = new PauseDialog( game, "", game.translate.get( "random_fact1" ), trueTextButton, falseTextButton );
         gameOverDialog = new PauseDialog( game, game.translate.get( "game_over" ), "", newGameTextButton, mainMenuTextButton );
-        pauseDialog = new PauseDialog( game, game.translate.get( "game_paused" ), "", newGameTextButton, mainMenuTextButton );
+        pauseDialog = new PauseDialog( game, game.translate.get( "game_paused" ), "", continueTextButton, mainMenuTextButton );
     }
 
     /**
@@ -109,10 +110,13 @@ public class PauseStage extends Stage {
                 // False button is one of the answers for dialog.
                 if ( rightQuestionAnswer != null ) {
                     if (rightQuestionAnswer.equalsIgnoreCase("FALSE")) {
-                        // Player answered right.
-                        Gdx.app.log("PauseStage", "That is a correct answer!");
+                        answeredQuestionRight();
+                    } else {
+                        answeredQuestionWrong();
                     }
                 }
+                // Return to the previous game state.
+                gameScreen.setGameState( gameScreen.getPreviousGameState() );
                 return true;
             }
         });
@@ -125,14 +129,37 @@ public class PauseStage extends Stage {
                 // True button is one of the answers for dialog.
                 if ( rightQuestionAnswer != null ) {
                     if (rightQuestionAnswer.equalsIgnoreCase("TRUE")) {
-                        // Player answered right.
-                        Gdx.app.log("PauseStage", "That is a correct answer!");
+                        answeredQuestionRight();
+                    } else {
+                        answeredQuestionWrong();
                     }
+                } else {
+                    Gdx.app.log( "PauseStage", "Question not found answer, ignored." );
                 }
+                // Return to the previous game state.
+                gameScreen.setGameState( gameScreen.getPreviousGameState() );
                 return true;
             }
         });
 
+    }
+
+    /**
+     * Player answered question dialog's question right.
+     */
+    public void answeredQuestionRight( )  {
+        Gdx.app.log("PauseStage", "That is a correct answer!");
+        UIText uiText = gameScreen.getUiStage().getUiText();
+        uiText.setScore( uiText.getScore() + 50 );
+    }
+
+    /**
+     * Player answered question dialog's question wrong.
+     */
+    public void answeredQuestionWrong( )  {
+        Gdx.app.log("PauseStage", "That is a wrong answer!");
+        UIText uiText = gameScreen.getUiStage().getUiText();
+        uiText.setScore( uiText.getScore() + 50 );
     }
 
     /**

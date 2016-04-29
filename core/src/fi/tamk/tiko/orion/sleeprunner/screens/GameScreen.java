@@ -735,6 +735,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
     public int getPreviousGameState( ) { return previousGameState; }
     public MapChunk getCurrentMapChunk( ) { return currentMapChunk; }
+    public UIStage getUiStage( ) { return uiStage; }
     public PauseStage getPauseStage( ) { return pauseStage; }
     public NightmareObject getNightmare( ) { return nightmare; }
     public PlayerObject getPlayer( ) { return player; }
