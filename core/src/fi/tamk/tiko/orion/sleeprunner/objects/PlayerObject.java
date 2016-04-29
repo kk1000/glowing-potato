@@ -23,6 +23,7 @@ public class PlayerObject extends AnimatedGameObject {
 
     private Animation runAnimation;
     private Animation dodgeAnimation;
+    private Animation flyAnimation;
 
     private boolean jumping;
     private boolean dodging;
@@ -49,8 +50,9 @@ public class PlayerObject extends AnimatedGameObject {
 
         body.setFixedRotation(true);
 
-        runAnimation = Tools.createAnimation( texture, 10, 1, 1, 8, 1/10f );
-        dodgeAnimation = Tools.createAnimation( texture, 10, 1, 9, 2, 1/10f );
+        runAnimation = Tools.createAnimation( texture, 11, 1, 1, 8, 1/10f );
+        dodgeAnimation = Tools.createAnimation( texture, 11, 1, 9, 2, 1/10f );
+        flyAnimation = Tools.createAnimation( texture, 11, 1,11, 1, 1/10f );
 
         this.currentAnimation = runAnimation;
         this.currentFrame = this.currentAnimation.getKeyFrame( stateTime, true );
@@ -69,7 +71,7 @@ public class PlayerObject extends AnimatedGameObject {
         dodging = false;
         dead = false;
         hit = false;
-        changeAnimation( dodgeAnimation );
+        changeAnimation( flyAnimation );
         body.setLinearVelocity(new Vector2(0, 0));
         body.setAngularVelocity(0);
         body.setTransform(new Vector2(Constants.PLAYER_FLY_X, Constants.PLAYER_FLY_Y), body.getAngle());

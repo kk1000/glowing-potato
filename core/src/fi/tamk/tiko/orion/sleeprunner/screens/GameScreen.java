@@ -115,8 +115,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         textFont = sleepRunner.getTextFont();
         debugFont = sleepRunner.getDebugFont();
 
-        pauseStage = new PauseStage(game,uiCamera,batch);
-
         setupWorld();
         touchPoint = new Vector3();
 
@@ -259,6 +257,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
             setupReady = true;
         }
         if ( Gdx.input.isTouched() ) {
+            pauseStage = new PauseStage(game,uiCamera,batch);
             setGameState(Constants.GAME_RUNNING);
         }
     }
@@ -326,7 +325,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
             // Is it TOTAL Game over or just player death?
             if ( uiStage.hasNightmareReached() ) {
                 setGameState( Constants.GAME_OVER );
-                pauseStage.setupMenu();
+                pauseStage.showDialog( "GAMEOVER" );
             } else {
                 setGameState(Constants.GAME_PLAYER_DEATH);
             }
@@ -705,16 +704,16 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
                 player.resumeAnimation();
                 break;
             case Constants.GAME_PAUSED:
+                pauseStage.showDialog( "PAUSE" );
                 nightmare.pauseAnimation();
                 player.pauseAnimation();
-                pauseStage.setupMenu();
                 break;
             case Constants.GAME_PLAYER_DEATH:
                 CURRENT_GAME_SPEED = Constants.PLAYER_DEATH_GAME_SPEED;
                 player.fly();
                 break;
             case Constants.GAME_INFO_SCREEN:
-                pauseStage.setupMenu();
+                pauseStage.showDialog( "QUESTION" );
                 nightmare.pauseAnimation();
                 player.pauseAnimation();
                 break;

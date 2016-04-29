@@ -81,6 +81,12 @@ public class Constants {
     public static final float NIGHTMARE_START_Y = 2.4f;
 
     /**
+     * Question stuff.
+     */
+
+    public static final int QUESTION_AMOUNT = 15;
+
+    /**
      * Player physics
      */
 
