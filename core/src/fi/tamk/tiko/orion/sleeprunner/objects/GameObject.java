@@ -144,24 +144,23 @@ public abstract class GameObject {
         TextureRegion[] gameObjectsTextureRegions;
         if (userData.id.equals("GROUND")) {
             gameObjectsTextureRegions = new TextureRegion[]{GroundObject.LEFT_TEXTURE, GroundObject.MIDDLETOP_TEXTURE, GroundObject.MIDDLE_TEXTURE, GroundObject.RIGHT_TEXTURE};
-        } else if (userData.id.equals("SPIKES")) {
-            gameObjectsTextureRegions = new TextureRegion[]{SpikesObject.LEFT_TEXTURE, SpikesObject.MIDDLE_TEXTURE, SpikesObject.MIDDLE_TEXTURE, SpikesObject.RIGHT_TEXTURE};
         } else {
-            // Fallback.
+            // All others.
             gameObjectsTextureRegions = new TextureRegion[]{textureRegion, textureRegion, textureRegion, textureRegion};
         }
+        float tileSize = Constants.WORLD_TO_SCREEN / 100f;
         int pixelHeight = (int) (height * 100f);
         int pixelWidth = (int) (width * 100f);
-        float tileSize = Constants.WORLD_TO_SCREEN / 100f;
         float x;
         float y;
         for (int i = 0; i < pixelHeight; i += 32) {
             for ( int j = 0; j < pixelWidth; j += 32 ) {
                 TextureRegion textureRegion;
-                if ( i < pixelHeight - 32 ) {
+                if ( i >= pixelHeight - 32 ) {
+                    // One of the game object's top tile.
                     if (j == 0 && pixelWidth == 32) {
                         // Body is just one tile length.
-                        textureRegion = gameObjectsTextureRegions[2];
+                        textureRegion = gameObjectsTextureRegions[1];
                     } else if (j == 0 && pixelWidth > 32) {
                         // Body's first tile and it's larger than one tile length.
                         textureRegion = gameObjectsTextureRegions[0];
@@ -173,8 +172,11 @@ public abstract class GameObject {
                         textureRegion = gameObjectsTextureRegions[1];
                     }
                 } else {
-                    // Not top tile.
-                    if (j == 0 && pixelWidth > 32) {
+                    // Not one of the game object's top tile.
+                    if ( j == 0 && pixelWidth == 32 ) {
+                        // Body is just one tile length.
+                        textureRegion = gameObjectsTextureRegions[2];
+                    } else if (j == 0 && pixelWidth > 32) {
                         // Body's first tile and it's larger than one tile length.
                         textureRegion = gameObjectsTextureRegions[0];
                     } else if (j == pixelWidth - 32) {
@@ -185,9 +187,8 @@ public abstract class GameObject {
                         textureRegion = gameObjectsTextureRegions[2];
                     }
                 }
-                x = (body.getPosition().x - tileSize / 2) - (width / 2 - tileSize / 2) + ( j/100f );
-                y = body.getPosition().y - (i/100f);
-                if ( y == 0.16f ) { y = 0; } // Purkka tile position fix.
+                x = (body.getPosition().x - tileSize/2) - (width/2 - tileSize/2) + ( j/100f );
+                y = (body.getPosition().y - tileSize/2 ) - (height/2 - tileSize/2) + ( i/100f );
                 tiles.add( new Tile( x, y, textureRegion ) );
             }
         }

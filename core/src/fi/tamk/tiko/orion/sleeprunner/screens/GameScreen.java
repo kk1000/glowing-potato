@@ -5,15 +5,11 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -28,7 +24,6 @@ import com.badlogic.gdx.utils.Array;
 import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.Preference;
-import fi.tamk.tiko.orion.sleeprunner.graphics.NightmareMeter;
 import fi.tamk.tiko.orion.sleeprunner.objects.GameObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.NightmareObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.PlayerObject;
@@ -43,6 +38,8 @@ import fi.tamk.tiko.orion.sleeprunner.utilities.MapChunk;
  * Screen for the gameplay.
  */
 public class GameScreen extends InputAdapter implements Screen, ContactListener {
+
+    public static Vector2 CURRENT_GAME_SPEED = Constants.INITIAL_GAME_SPEED;
 
     private final float TIME_STEP = 1 / 300f;
 
@@ -80,13 +77,12 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     private boolean setupReady = false;
 
     private boolean highscoreSaved = false;
-    private float deathTimer = 2;
+    private float deathTimer = 0;
     private float accumulator = 0f;
 
     private int playTimes;
+    private int previousGameState;
     private int gameState;
-
-    public static Vector2 CURRENT_GAME_SPEED = Constants.INITIAL_GAME_SPEED;
 
     /**
      * Constructor for GameScreen.
@@ -129,18 +125,17 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         im = new InputMultiplexer();
         im.addProcessor(gestureDetector);
         im.addProcessor(uiStage);
-        im.addProcessor( this );
+        im.addProcessor(this);
 
         Gdx.input.setInputProcessor(im);
-
-        gameState = Constants.GAME_READY;
+        setGameState(Constants.GAME_READY );
     }
 
     /**
      * Listener for desktop debugging.
      */
     private void desktopListener() {
-        if ( !player.isFlying() ) {
+        if ( !player.isFlying() && gameState == Constants.GAME_RUNNING ) {
             if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
                 player.jump(5000);
             }
@@ -164,24 +159,26 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
     @Override
     public boolean touchDown(int x, int y, int pointer, int button) {
-        touchPoint.set( x/100f, Constants.WORLD_HEIGHT - y/100f, 0 );
-        // Check is the sign game object touched.
-        for ( MapChunk mapChunk : mapChunks ) {
-            Array<GameObject> mapChunkGameObjects = mapChunk.getGameObjects();
-            for ( GameObject mapChunkGameObject : mapChunkGameObjects ) {
-                if ( mapChunkGameObject instanceof SignObject ) {
-                    float signHeight = mapChunkGameObject.getHeight();
-                    float signWidth = mapChunkGameObject.getWidth();
-                    float signX = mapChunkGameObject.getBody().getPosition().x - signWidth/2;
-                    float signY = mapChunkGameObject.getBody().getPosition().y - signHeight/2;
-                    if ( ( touchPoint.x <= ( ( signX + signWidth ) * 1.2f ) && touchPoint.x >= ( signX * 0.8f ) ) &&
-                            ( touchPoint.y <= ( ( signY + signHeight ) * 1.2f ) && touchPoint.y >= ( signY * 0.8f ) ) ) {
-                        // Touch position is inside the sign object.
-                        Gdx.app.log("GameScreen", "SignObject is touched!");
-                        gameState = Constants.GAME_INFO_SCREEN;
-                        nightmare.pauseAnimation();
-                        player.pauseAnimation();
-                        pauseStage.setupMenu();
+        if ( gameState == Constants.GAME_RUNNING ) {
+            touchPoint.set(x / 100f, Constants.WORLD_HEIGHT - y / 100f, 0);
+            // Check is the sign game object touched.
+            for (MapChunk mapChunk : mapChunks) {
+                Array<GameObject> mapChunkGameObjects = mapChunk.getGameObjects();
+                for (GameObject mapChunkGameObject : mapChunkGameObjects) {
+                    if (mapChunkGameObject instanceof SignObject) {
+                        SignObject signObject = (SignObject) mapChunkGameObject;
+                        if (!signObject.isClicked()) {
+                            float signHeight = mapChunkGameObject.getHeight();
+                            float signWidth = mapChunkGameObject.getWidth();
+                            float signX = mapChunkGameObject.getBody().getPosition().x - signWidth / 2;
+                            float signY = mapChunkGameObject.getBody().getPosition().y - signHeight / 2;
+                            if ((touchPoint.x <= ((signX + signWidth) * 1.3f) && touchPoint.x >= (signX * 0.7f)) &&
+                                    (touchPoint.y <= ((signY + signHeight) * 1.3f) && touchPoint.y >= (signY * 0.7f))) {
+                                // Touch position is inside the sign object.
+                                setGameState(Constants.GAME_INFO_SCREEN);
+                                signObject.click();
+                            }
+                        }
                     }
                 }
             }
@@ -191,10 +188,11 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if (player.isDodging()) {
-            player.stopDodge();
+        if ( gameState == Constants.GAME_RUNNING ) {
+            if (player.isDodging()) {
+                player.stopDodge();
+            }
         }
-
         return super.touchUp(screenX, screenY, pointer, button);
     }
 
@@ -218,7 +216,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         accumulator = 0f;
         deathTimer = 2;
         highscoreSaved = false;
-        gameState = Constants.GAME_READY;
+        setGameState( Constants.GAME_READY );
     }
 
     /**
@@ -248,6 +246,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
                 break;
             case Constants.GAME_INFO_SCREEN:
                 updateGameInfoScreen();
+                break;
         }
     }
 
@@ -260,9 +259,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
             setupReady = true;
         }
         if ( Gdx.input.isTouched() ) {
-            gameState = Constants.GAME_RUNNING;
-            player.resumeAnimation();
-            nightmare.resumeAnimation();
+            setGameState(Constants.GAME_RUNNING);
         }
     }
 
@@ -286,12 +283,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      */
     private void updateGamePlayerDeath( ) {
         if ( Gdx.input.isTouched() ) {
-            nightmare.moveForward();
-            uiStage.moveNightmareMeter();
-            player.stopFly();
-            CURRENT_GAME_SPEED = Constants.INITIAL_GAME_SPEED;
-            gameState = Constants.GAME_RUNNING;
-            backgroundStage.resetSpeed();
+            setGameState(Constants.GAME_RUNNING);
         }
     }
 
@@ -329,22 +321,14 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      */
     private void updatePlayer(float delta) {
         player.update(delta);
-
         // Check for death.
         if (player.isDead()) {
-            deathTimer -= delta;
-        }
-
-        if (deathTimer <= 0) {
-            deathTimer = 2;
             // Is it TOTAL Game over or just player death?
             if ( uiStage.hasNightmareReached() ) {
-                gameState = Constants.GAME_OVER;
+                setGameState( Constants.GAME_OVER );
                 pauseStage.setupMenu();
             } else {
-                CURRENT_GAME_SPEED = Constants.PLAYER_DEATH_GAME_SPEED;
-                gameState = Constants.GAME_PLAYER_DEATH;
-                player.fly();
+                setGameState(Constants.GAME_PLAYER_DEATH);
             }
         }
     }
@@ -486,7 +470,9 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
         batch.end();
 
-        debugRenderer.render(world, gameCamera.combined);
+        if ( Constants.DEBUG ) {
+            debugRenderer.render(world, gameCamera.combined);
+        }
 
     }
 
@@ -507,7 +493,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      * Draws when player has died and game is running.
      */
     private void drawGamePlayerDeath( ) {
-        titleFont.draw( batch, game.translate.get( player.getDeadText() ), Constants.APP_WIDTH/2-200, Constants.APP_HEIGHT - 200 );
+        titleFont.draw(batch, game.translate.get(player.getDeadText()), Constants.APP_WIDTH / 2 - 200, Constants.APP_HEIGHT - 200);
         titleFont.draw( batch, game.translate.get( "death_info" ), Constants.APP_WIDTH/2-200, Constants.APP_HEIGHT - 240 );
         titleFont.draw( batch, game.translate.get( "death_info2" ), Constants.APP_WIDTH/2-200, Constants.APP_HEIGHT - 280 );
     }
@@ -569,13 +555,8 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
     @Override
     public void pause() {
-        Gdx.app.log("GameScreen", "Game paused");
-        if ( gameState == Constants.GAME_RUNNING ) {
-            nightmare.pauseAnimation();
-            player.pauseAnimation();
-            gameState = Constants.GAME_PAUSED;
-            pauseStage.setupMenu();
-        }
+        setGameState(Constants.GAME_PAUSED);
+
     }
 
     @Override
@@ -590,7 +571,13 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
     @Override
     public void dispose() {
-
+        debugRenderer.dispose();
+        backgroundStage.dispose();
+        pauseStage.dispose();
+        uiStage.dispose();
+        world.dispose();
+        nightmare.dispose();
+        player.dispose();
     }
 
     @Override
@@ -682,7 +669,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
         @Override
         public boolean fling(float velocityX, float velocityY, int button) {
-            if ( !player.isFlying() ) {
+            if ( !player.isFlying() && gameState == Constants.GAME_RUNNING ) {
                 if (velocityY > 1) {
                     player.dodge();
                 }
@@ -699,10 +686,39 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      */
 
     /**
-     * Sets gamestate
+     * Sets gamestate, and setup its logic.
      */
-    public void setGameState(int state){
+    public void setGameState(int state) {
+        previousGameState = gameState;
         gameState = state;
+        switch ( gameState ) {
+            case Constants.GAME_RUNNING:
+                if ( previousGameState == Constants.GAME_PLAYER_DEATH ) {
+                    // Changing to GAME_RUNNING state from GAME_PLAYER_DEATH state.
+                    player.stopFly();
+                    CURRENT_GAME_SPEED = Constants.INITIAL_GAME_SPEED;
+                    backgroundStage.resetSpeed();
+                    nightmare.moveForward();
+                    uiStage.moveNightmareMeter();
+                }
+                nightmare.resumeAnimation();
+                player.resumeAnimation();
+                break;
+            case Constants.GAME_PAUSED:
+                nightmare.pauseAnimation();
+                player.pauseAnimation();
+                pauseStage.setupMenu();
+                break;
+            case Constants.GAME_PLAYER_DEATH:
+                CURRENT_GAME_SPEED = Constants.PLAYER_DEATH_GAME_SPEED;
+                player.fly();
+                break;
+            case Constants.GAME_INFO_SCREEN:
+                pauseStage.setupMenu();
+                nightmare.pauseAnimation();
+                player.pauseAnimation();
+                break;
+        }
     }
 
     public void setInputProcessor(int input){
@@ -718,6 +734,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      * Getters.
      */
 
+    public int getPreviousGameState( ) { return previousGameState; }
     public MapChunk getCurrentMapChunk( ) { return currentMapChunk; }
     public PauseStage getPauseStage( ) { return pauseStage; }
     public NightmareObject getNightmare( ) { return nightmare; }

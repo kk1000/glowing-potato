@@ -138,11 +138,12 @@ public class PauseStage extends Stage {
             public boolean touchDown(InputEvent event, float x, float y,
                                      int pointer, int button) {
                 GameScreen gameScreen = game.getGameScreen();
-                gameScreen.setGameState(Constants.GAME_RUNNING);
+                int previousGameState = gameScreen.getPreviousGameState();
+                Gdx.app.log( "PauseStage", "Prev game state was " + previousGameState + ", changing to that!" );
+                gameScreen.setGameState(previousGameState);
                 gameScreen.getPlayer().resumeAnimation();
                 gameScreen.getNightmare().resumeAnimation();
                 gameScreen.setInputProcessor(1);
-                Gdx.app.log("PauseStage", "clicked mainmenu!");
                 resetPause();
                 return true;
             }

@@ -35,7 +35,7 @@ public class NightmareObject extends AnimatedGameObject {
         float x = body.getPosition().x;
         float y = body.getPosition().y;
         body.setTransform( x + 0.5f, y, body.getAngle() );
-        NIGHTMARE_SOUND.play( 0.9f );
+        NIGHTMARE_SOUND.play( 1.0f );
     }
 
 }

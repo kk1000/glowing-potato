@@ -49,7 +49,6 @@ public class PlayerObject extends AnimatedGameObject {
 
         body.setFixedRotation(true);
 
-        Gdx.app.log("PlayerObject", "Animation creation: ");
         runAnimation = Tools.createAnimation( texture, 10, 1, 1, 8, 1/10f );
         dodgeAnimation = Tools.createAnimation( texture, 10, 1, 9, 2, 1/10f );
 
@@ -93,7 +92,7 @@ public class PlayerObject extends AnimatedGameObject {
      * Changes jumping state to true.
      */
     public void jump(float velY){
-        if(!jumping || dodging || hit){
+        if(!jumping || dodging || hit && !dead){
             if(dodging) stopDodge();
             velY *= 0.0002f;
             Constants.PLAYER_JUMPING_LINEAR_IMPULSE.set(0, 0.1f + velY > 0.50f ? 0.50f : 0.1f + velY);
@@ -119,7 +118,7 @@ public class PlayerObject extends AnimatedGameObject {
      * PlayerObject can't dodge while jumping.
      */
     public void dodge(){
-        if (!jumping || hit){
+        if (!jumping || hit && !dead){
             body.setTransform(x, y, (float) (90f * (Math.PI / 180f)));
             dodging = true;
             changeAnimation( dodgeAnimation );
@@ -128,7 +127,7 @@ public class PlayerObject extends AnimatedGameObject {
     }
 
     /**
-     * Stops dodging if player isn't hit by enemy or environment.
+     * Stops dodging if player isn't hit by spikes.
      */
     public void stopDodge(){
         runSound.stop();
@@ -136,7 +135,7 @@ public class PlayerObject extends AnimatedGameObject {
 
         dodging = false;
         changeAnimation( runAnimation );
-        body.setTransform(x, y, 0f);
+        //body.setTransform(x, y, 0f);
 
         if (!hit){
             body.setTransform(x, y, 0f);
@@ -148,7 +147,7 @@ public class PlayerObject extends AnimatedGameObject {
      * Applies angular impulse to the player's body when called.
      */
     public void hit(){
-        body.applyAngularImpulse(Constants.PLAYER_HIT_ANGULAR_IMPULSE, true);
+        //body.applyAngularImpulse(Constants.PLAYER_HIT_ANGULAR_IMPULSE, true);
         pauseAnimation();
         hit = true;
         if ( !dead ) {
@@ -182,8 +181,9 @@ public class PlayerObject extends AnimatedGameObject {
     @Override
     public void reset( ) {
         super.reset();
-        jumping = false;
-        dodging = false;
+        stopDodge();
+        stopFly();
+        landed();
         dead = false;
         hit = false;
     }

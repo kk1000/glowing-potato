@@ -125,7 +125,7 @@ public abstract class AnimatedGameObject extends GameObject {
     public void draw( Batch batch) {
         batch.draw(currentFrame,
                 body.getPosition().x - currentFrame.getRegionWidth() / 100f / 2,
-                body.getPosition().y - currentFrame.getRegionHeight() / 100f / 2,
+                body.getPosition().y -currentFrame.getRegionHeight() / 100f / 2,
                 currentFrame.getRegionWidth() / 2 / 100f,
                 currentFrame.getRegionHeight() / 2 / 100f,
                 currentFrame.getRegionWidth() / 100f,

@@ -227,7 +227,7 @@ public class MapChunk {
     public int getMinEmptyBlocks( ) { return minEmptyBlocks; }
 
     public boolean canContainFlyingObstacle( ) { return canContainFlyingObstacle; }
-    public boolean canContainPowerup( ) { return canContainPowerup; }
+    public boolean canContainPowerUp( ) { return canContainPowerup; }
     public Array<GameObject> getGameObjects( ) { return gameObjects; }
     public MapChunk getPreviousMapChunk( ) { return previousMapChunk; }
     public String getSleepStage( ) { return sleepStage; }

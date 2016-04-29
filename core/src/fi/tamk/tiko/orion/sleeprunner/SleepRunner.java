@@ -3,10 +3,8 @@ package fi.tamk.tiko.orion.sleeprunner;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.I18NBundle;
 
@@ -49,11 +47,10 @@ public class SleepRunner extends Game {
 	private Music gameMusic;
     private Music currentMusic;
 
-    private FreeTypeFontGenerator generator;
-    private FreeTypeFontGenerator.FreeTypeFontParameter parameter;
-
+    private BitmapFont buttonFont;
     private BitmapFont titleFont;
     private BitmapFont textFont;
+    private BitmapFont tinyFont;
     private BitmapFont debugFont;
 
 	private Skin skin;
@@ -68,30 +65,41 @@ public class SleepRunner extends Game {
 
 		batch = new SpriteBatch();
 
-		translate = I18NBundle.createBundle(Gdx.files.internal("localization/languages"),defaultLocale);
+		translate = I18NBundle.createBundle(Gdx.files.internal("localization/languages"), defaultLocale, "UTF-8" );
 
-		skin  = new Skin(Gdx.files.internal(Constants.SKIN_PATH));
+		skin = new Skin(Gdx.files.internal(Constants.SKIN_PATH));
 
         mainMenuMusic.play();
         mainMenuMusic.setVolume(0f);
         currentMusic = mainMenuMusic;
 
-        generator = new FreeTypeFontGenerator( Gdx.files.internal( "ui/Oswald-Bold.ttf" ) );
-        parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 30;
-        parameter.borderColor = Color.BLACK;
-        parameter.borderWidth = 2.0f;
-        titleFont = generator.generateFont( parameter );
-
-        generator = new FreeTypeFontGenerator( Gdx.files.internal( "ui/Oswald-Regular.ttf" ) );
-        parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 20;
-        textFont = generator.generateFont( parameter );
-
+        buttonFont = skin.getFont( "button-font" );
+        titleFont = skin.getFont( "title-font" );
+        textFont = skin.getFont( "default-font" );
+        tinyFont = skin.getFont( "tiny-font" );
         debugFont = new BitmapFont();
 
 		setLaunchScreen();
 	}
+
+    @Override
+    public void dispose( ) {
+        if ( gameScreen != null ) { gameScreen.dispose(); }
+        if ( mainMenuScreen != null ) { mainMenuScreen.dispose(); }
+        if ( launchScreen != null ) { launchScreen.dispose(); }
+        if ( highscoreScreen != null ) { highscoreScreen.dispose(); }
+        buttonFont.dispose();
+        titleFont.dispose();
+        textFont.dispose();
+        tinyFont.dispose();
+        debugFont.dispose();
+
+        currentMusic.dispose();
+        mainMenuMusic.dispose();
+        gameMusic.dispose();
+
+        batch.dispose();
+    }
 
     /**
      * Switch music to main menu music.
