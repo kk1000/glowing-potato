@@ -2,6 +2,7 @@ package fi.tamk.tiko.orion.sleeprunner;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,6 +17,7 @@ import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 import fi.tamk.tiko.orion.sleeprunner.screens.HighscoreScreen;
 import fi.tamk.tiko.orion.sleeprunner.screens.LaunchScreen;
 import fi.tamk.tiko.orion.sleeprunner.screens.MainMenuScreen;
+import fi.tamk.tiko.orion.sleeprunner.utilities.Tools;
 
 /**
  * SleepRunner is an upcoming sidescroller android game.
@@ -55,10 +57,16 @@ public class SleepRunner extends Game {
 
 	private Skin skin;
 
+    public AssetManager manager;
+
 	@Override
 	public void create() {
-        mainMenuMusic = Gdx.audio.newMusic( Gdx.files.internal( "sounds/music/mainmenu.mp3" ) );
-		gameMusic = Gdx.audio.newMusic(Gdx.files.internal(Constants.GAME_MUSIC_PATH));
+
+        manager = new AssetManager();
+        Tools.loadAssets(manager);
+
+        mainMenuMusic = manager.get("sounds/music/mainmenu.mp3",Music.class);
+		gameMusic = manager.get("sounds/music/main.mp3", Music.class);
         prefs = new Preference();
 
 		Locale defaultLocale = Locale.getDefault();
@@ -68,7 +76,6 @@ public class SleepRunner extends Game {
 		translate = I18NBundle.createBundle(Gdx.files.internal("localization/languages"), defaultLocale, "UTF-8" );
 
 		skin = new Skin(Gdx.files.internal(Constants.SKIN_PATH));
-
         mainMenuMusic.play();
         mainMenuMusic.setVolume(0f);
         currentMusic = mainMenuMusic;

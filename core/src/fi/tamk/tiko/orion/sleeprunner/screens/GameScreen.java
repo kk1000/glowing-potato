@@ -605,6 +605,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
                     player.setShielded( false );
                 } else {
                     CURRENT_GAME_SPEED = Constants.STOP_GAME_SPEED;
+                    backgroundStage.setSpikeSpeed();
                     player.hit();
                 }
             }

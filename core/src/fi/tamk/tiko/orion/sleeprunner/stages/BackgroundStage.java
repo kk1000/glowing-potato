@@ -1,6 +1,7 @@
 package fi.tamk.tiko.orion.sleeprunner.stages;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -42,11 +43,11 @@ public class BackgroundStage extends Stage {
      * Setups all background-layers.
      */
     private void setupBackgrounds(){
-        deepLayer = new MovingBackground(game, Constants.BACKGROUND_IMAGE_PATH, 2.5f, 1);
+        deepLayer = new MovingBackground(game, game.manager.get("graphics/backgrounds/stars.png",Texture.class), 2.5f, 1);
         addActor(deepLayer);
-        midLayer = new MovingBackground(game,Constants.DEEP_BACKGROUND_IMAGE_PATH, 1f,2);
+        midLayer = new MovingBackground(game,game.manager.get("graphics/backgrounds/texture_deep_all.png",Texture.class), 1f,2);
         addActor(midLayer);
-        topLayer = new MovingBackground(game, Constants.BACKGROUND_CLOUDS_IMAGE_PATH, 0.5f, 3);
+        topLayer = new MovingBackground(game, game.manager.get("graphics/backgrounds/clouds.png",Texture.class), 0.5f, 3);
         addActor(topLayer);
         // additional top layer
        //addActor(new MovingBackground(game,Constants.BACKGROUND_CLOUDS_IMAGE_PATH,0.05f,3));
@@ -69,6 +70,21 @@ public class BackgroundStage extends Stage {
         topLayer.setSpeed(0.5f);
     }
 
+    public void setSpikeSpeed(){
+        deepLayer.setSpeed(6f);
+        midLayer.setSpeed(6f);
+        topLayer.setSpeed(2f);
+    }
+
+    public void reset(){
+        deepLayer.setSleepPhase(1);
+        midLayer.setSleepPhase(1);
+        topLayer.setSleepPhase(1);
+        deepLayer = new MovingBackground(game, game.manager.get("graphics/backgrounds/stars.png",Texture.class), 2.5f, 1);
+        midLayer = new MovingBackground(game,game.manager.get("graphics/backgrounds/texture_deep_all.png",Texture.class), 1f,2);
+        topLayer = new MovingBackground(game, game.manager.get("graphics/backgrounds/clouds.png",Texture.class), 0.5f, 3);
+
+    }
     @Override
     public void act(float delta) {
         super.act(delta);

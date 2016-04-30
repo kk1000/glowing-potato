@@ -95,6 +95,8 @@ public class MainMenuScreen implements Screen{
             }
         });
 
+        game.getCurrentMusic().setVolume(prefs.getMusicVolume());
+
         stage.addActor(highscoreButton);
         stage.addActor(muteButton);
         stage.addActor(gameButton);

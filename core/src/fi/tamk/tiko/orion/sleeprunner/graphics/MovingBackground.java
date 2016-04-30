@@ -26,11 +26,11 @@ public class MovingBackground extends Actor {
     private int sleepPhase;
     private SleepRunner game;
 
-    public MovingBackground(SleepRunner g,String s, float speed, int i){
+    public MovingBackground(SleepRunner g,Texture t, float speed, int i){
         this.game = g;
         this.speed = speed;
         this.layer = i;
-        this.texture = new Texture(Gdx.files.internal(s));
+        this.texture = t;
         this.sleepPhase = 1;
         texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
     }
@@ -38,12 +38,12 @@ public class MovingBackground extends Actor {
     public void changePhase(){
         if(layer == 1) {
             if (game.getGameScreen().getCurrentMapChunk().getSleepStage().equals("DEEP") && sleepPhase == 1 ) {
-                texture = new Texture(Gdx.files.internal(Constants.BACKGROUND_IMAGE_PATH));
+                texture = game.manager.get("graphics/backgrounds/stars.png", Texture.class);
                 texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
                 sleepPhase = 2;
             }
             if (game.getGameScreen().getCurrentMapChunk().getSleepStage().equals("REM") && sleepPhase == 2) {
-                texture = new Texture(Gdx.files.internal(Constants.REM_SKY_IMAGE_PATH));
+                texture = game.manager.get("graphics/backgrounds/sky_green2.png", Texture.class);
                 texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
                 sleepPhase = 1;
             }
@@ -51,17 +51,21 @@ public class MovingBackground extends Actor {
 
         if(layer == 2) {
             if (game.getGameScreen().getCurrentMapChunk().getSleepStage().equals("DEEP") && sleepPhase == 1) {
-                texture = new Texture(Gdx.files.internal(Constants.DEEP_BACKGROUND_IMAGE_PATH));
+                texture = game.manager.get("graphics/backgrounds/texture_deep_all.png", Texture.class);
                 texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
                 sleepPhase = 2;
             }
             if (game.getGameScreen().getCurrentMapChunk().getSleepStage().equals("REM") && sleepPhase == 2) {
-                texture = new Texture(Gdx.files.internal(Constants.REM_BACKGROUND_IMAGE_PATH));
+                texture = game.manager.get("graphics/backgrounds/texture_rem_all.png", Texture.class);
                 texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
                 sleepPhase = 1;
             }
         }
 
+    }
+
+    public void setSleepPhase(int i){
+        i = sleepPhase;
     }
 
     @Override
@@ -85,9 +89,12 @@ public class MovingBackground extends Actor {
             else if(speed < 0.5f){
                 srcX += 2;
             }
-            else{srcX += 1;}
+            else if (speed < 5){
+                srcX += 1;
+            }
+            else {srcX += 0;}
             updateTimer = 0;
-        }
+              }
             changePhase();
 
         updateTimer += delta;
