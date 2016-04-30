@@ -4,8 +4,10 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.I18NBundle;
 
@@ -13,6 +15,7 @@ import java.util.Locale;
 
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.Preference;
+import fi.tamk.tiko.orion.sleeprunner.graphics.Tilesets;
 import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 import fi.tamk.tiko.orion.sleeprunner.screens.HighscoreScreen;
 import fi.tamk.tiko.orion.sleeprunner.screens.LaunchScreen;
@@ -59,6 +62,9 @@ public class SleepRunner extends Game {
 
     public AssetManager manager;
 
+    public Tilesets tilesets;
+
+
 	@Override
 	public void create() {
 
@@ -85,6 +91,9 @@ public class SleepRunner extends Game {
         textFont = skin.getFont( "default-font" );
         tinyFont = skin.getFont( "tiny-font" );
         debugFont = new BitmapFont();
+
+        tilesets = new Tilesets(this,manager.get("graphics/tileset_new.png", Texture.class),manager.get("graphics/tileset_sign.png",Texture.class));
+
 
 		setLaunchScreen();
 	}
@@ -114,7 +123,7 @@ public class SleepRunner extends Game {
     public void switchToMainMenuMusic( ) {
         currentMusic.stop();
         currentMusic = mainMenuMusic;
-        currentMusic.setVolume( prefs.getMusicVolume() );
+        currentMusic.setVolume(prefs.getMusicVolume());
         currentMusic.play();
         currentMusic.setLooping(true);
     }
@@ -126,7 +135,7 @@ public class SleepRunner extends Game {
     public void switchToGameMusic( ) {
         currentMusic.stop();
         currentMusic = gameMusic;
-        currentMusic.setVolume( prefs.getMusicVolume() );
+        currentMusic.setVolume(prefs.getMusicVolume());
         currentMusic.play();
         currentMusic.setLooping(true);
     }
@@ -187,6 +196,8 @@ public class SleepRunner extends Game {
     public Music getMainMenuMusic( ) { return mainMenuMusic; }
     public Music getCurrentMusic( ) { return currentMusic; }
 	public Music getGameMusic( ) { return gameMusic; }
+
+    public Tilesets getTilesets(){ return tilesets; }
 
 	public Skin getSkin() { return skin;}
 

@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import fi.tamk.tiko.orion.sleeprunner.data.Constants;
+
 /**
  * Helper methods for animating a textureregion.
  */
@@ -52,6 +54,22 @@ public class Tools {
         for (TextureRegion r : regions) {
             r.flip(true, false);
         }
+    }
+
+    /**
+     * Split Tileset-texture to textureregion.
+     */
+    public static TextureRegion[][] splitTileset(Texture t){
+        TextureRegion[][]tileset = TextureRegion.split(t, Constants.WORLD_TO_SCREEN, Constants.WORLD_TO_SCREEN);
+        return tileset;
+    }
+
+    /**
+     * Split Signs-Texture to textureregion.
+     */
+    public static TextureRegion[][] splitSignTileset(Texture t){
+        TextureRegion[][]tileset = TextureRegion.split(t, Constants.SIGN_WIDTH, Constants.SIGN_HEIGHT);
+        return tileset;
     }
 
     /**
@@ -111,7 +129,8 @@ public class Tools {
         manager.load("graphics/logos/ukkinstitute.png", Texture.class);
         manager.load("graphics/logos/PETO-logo.png", Texture.class);
         // tileset
-        manager.load("graphics/tileset.png", Texture.class);
+        manager.load("graphics/tileset_new.png", Texture.class);
+        manager.load("graphics/tileset_sign.png",Texture.class);
         manager.finishLoading();
         Gdx.app.log("LaunchScreen", "manager loaded!");
 
