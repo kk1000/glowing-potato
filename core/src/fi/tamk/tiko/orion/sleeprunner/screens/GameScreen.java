@@ -214,6 +214,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         accumulator = 0f;
         deathTimer = 2;
         highscoreSaved = false;
+        CURRENT_GAME_SPEED = Constants.INITIAL_GAME_SPEED;
         setGameState( Constants.GAME_READY );
     }
 
