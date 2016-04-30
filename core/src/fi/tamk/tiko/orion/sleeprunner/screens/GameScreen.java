@@ -210,6 +210,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         nightmare.reset();
         player.reset();
         uiStage.reset();
+        backgroundStage.reset();
         // Reset attributes.
         accumulator = 0f;
         deathTimer = 2;
