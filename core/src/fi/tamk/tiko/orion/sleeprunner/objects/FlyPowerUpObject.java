@@ -28,4 +28,9 @@ public class FlyPowerUpObject extends PowerUpGameObject {
         super(world, x, y, width, height,POWERUP_FLY_TEXTURE, new UserData("POWERUP_FLY"));
     }
 
+    @Override
+    public void action( PlayerObject playerObject ) {
+        used = true;
+    }
+
 }

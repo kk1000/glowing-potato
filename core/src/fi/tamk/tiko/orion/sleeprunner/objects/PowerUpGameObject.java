@@ -20,6 +20,7 @@ public abstract class PowerUpGameObject extends GameObject {
     public static Sound POWERUP_SOUND = Gdx.audio.newSound( Gdx.files.internal( Constants.POWERUP_SOUND_PATH ) );
 
     private boolean collected = false;
+    protected boolean used = false;
 
     /**
      * Constructor for PowerUpGameObject.
@@ -69,6 +70,11 @@ public abstract class PowerUpGameObject extends GameObject {
     }
 
     /**
+     * Power ups own action.
+     */
+    public abstract void action( PlayerObject playerObject );
+
+    /**
      * Getters.
      */
 
@@ -76,5 +82,10 @@ public abstract class PowerUpGameObject extends GameObject {
      * @return collected Is the power up collected.
      */
     public boolean isCollected( ) { return collected; }
+
+    /**
+     * @return used Is the power up used.
+     */
+    public boolean isUsed( ) { return used; }
 
 }

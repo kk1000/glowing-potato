@@ -26,8 +26,6 @@ public class PowerUpBox extends Actor {
 
     private Texture powerUpBoxBackground;
 
-    private float powerUpBoxX;
-    private float powerUpBoxY;
     private float powerUpX;
     private float powerUpY;
 
@@ -43,10 +41,12 @@ public class PowerUpBox extends Actor {
         this.player = gameScreen.getPlayer();
 
         powerUpBoxBackground = new Texture( Gdx.files.internal( "graphics/powerupboxbackground.png" ) );
-        powerUpBoxX = Constants.APP_WIDTH - powerUpBoxBackground.getWidth() - 200f;
-        powerUpBoxY = Constants.APP_HEIGHT - powerUpBoxBackground.getHeight();
-        powerUpX = powerUpBoxX + 32;
-        powerUpY = powerUpBoxY + 25;
+        setWidth(powerUpBoxBackground.getWidth());
+        setHeight(powerUpBoxBackground.getHeight());
+        setX( Constants.APP_WIDTH - powerUpBoxBackground.getWidth() - 200f );
+        setY( Constants.APP_HEIGHT - powerUpBoxBackground.getHeight() );
+        powerUpX = getX() + 32;
+        powerUpY = getY() + 25;
     }
 
 
@@ -58,9 +58,21 @@ public class PowerUpBox extends Actor {
         powerUpGameObject = null;
     }
 
+    /**
+     * Uses collected power up.
+     */
+    public void usePowerUp( ) {
+        if ( powerUpPicked ) {
+            if ( !powerUpGameObject.isUsed() ) {
+                player.usePowerUp( powerUpGameObject );
+                reset();
+            }
+        }
+    }
+
     @Override
     public void draw(Batch batch, float parentAlpha) {
-        batch.draw( powerUpBoxBackground, powerUpBoxX, powerUpBoxY );
+        batch.draw( powerUpBoxBackground, getX(), getY() );
         if ( powerUpPicked ) {
             TextureRegion textureRegion = powerUpGameObject.getTextureRegion();
             batch.draw( textureRegion,
@@ -90,5 +102,15 @@ public class PowerUpBox extends Actor {
         powerUpPicked = true;
     }
 
+    /**
+     * Getters.
+     */
+
+    /**
+     * @return boolean Has the player collected power up to the power up box.
+     */
+    public boolean hasPowerUp( ) {
+        return powerUpPicked;
+    }
 
 }

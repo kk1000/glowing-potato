@@ -495,7 +495,9 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      */
     private void drawGamePlayerDeath( ) {
         titleFont.draw(batch, game.translate.get(player.getDeadText()), Constants.APP_WIDTH / 2 - 200, Constants.APP_HEIGHT - 200);
-        titleFont.draw( batch, game.translate.get( "death_info" ), Constants.APP_WIDTH/2-200, Constants.APP_HEIGHT - 240 );
+        if ( !player.isShielded() ) {
+            titleFont.draw(batch, game.translate.get("death_info"), Constants.APP_WIDTH / 2 - 200, Constants.APP_HEIGHT - 240);
+        }
         titleFont.draw( batch, game.translate.get( "death_info2" ), Constants.APP_WIDTH/2-200, Constants.APP_HEIGHT - 280 );
     }
 
@@ -589,16 +591,15 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
             // Player to spikes collision check.
             if ((BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "SPIKES")) ||
-                    (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "SPIKES"))) {
-                CURRENT_GAME_SPEED = Constants.STOP_GAME_SPEED;
-                player.hit();
-            }
-
-            // Player to flying spikes collision check.
-            if ((BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "FLYING_SPIKES")) ||
-                    (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "FLYING_SPIKES"))) {
-                CURRENT_GAME_SPEED = Constants.STOP_GAME_SPEED;
-                player.hit();
+                    (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "SPIKES")) ||
+                    (BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "FLYING_SPIKES")) ||
+                    (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "FLYING_SPIKES")) ) {
+                if ( player.isShielded() ) {
+                    player.setShielded( false );
+                } else {
+                    CURRENT_GAME_SPEED = Constants.STOP_GAME_SPEED;
+                    player.hit();
+                }
             }
 
             // Player to ground collision check.
@@ -654,10 +655,12 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
             }
         }
 
-        // Player to flying spikes collision check.
+        // Player to spikes pre collision check.
         if ((BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "FLYING_SPIKES")) ||
-                (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "FLYING_SPIKES")) &&
-                player.isFlying() ) {
+                (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "FLYING_SPIKES")) ||
+                (BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "SPIKES")) ||
+                (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "SPIKES")) &&
+                 ( player.isFlying() && player.isShielded() ) ) {
             contact.setEnabled( false );
         }
 
@@ -690,6 +693,8 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
     /**
      * Sets gamestate, and setup its logic.
+     *
+     * @param state Game's new state.
      */
     public void setGameState(int state) {
         previousGameState = gameState;
@@ -701,8 +706,12 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
                     player.stopFly();
                     CURRENT_GAME_SPEED = Constants.INITIAL_GAME_SPEED;
                     backgroundStage.resetSpeed();
-                    nightmare.moveForward();
-                    uiStage.moveNightmareMeter();
+                    if ( !player.isShielded() ) {
+                        nightmare.moveForward();
+                        uiStage.moveNightmareMeter();
+                    } else {
+                        player.setShielded( false );
+                    }
                 } else if ( previousGameState == Constants.GAME_PAUSED ||
                         previousGameState == Constants.GAME_INFO_SCREEN ||
                         previousGameState == Constants.GAME_OVER ) {
@@ -720,6 +729,9 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
                 player.pauseAnimation();
                 break;
             case Constants.GAME_PLAYER_DEATH:
+                if ( previousGameState == Constants.GAME_PAUSED ) {
+                    Gdx.input.setInputProcessor( im );
+                }
                 CURRENT_GAME_SPEED = Constants.PLAYER_DEATH_GAME_SPEED;
                 player.fly();
                 break;

@@ -2,9 +2,12 @@ package fi.tamk.tiko.orion.sleeprunner.objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
@@ -25,6 +28,7 @@ public class PlayerObject extends AnimatedGameObject {
     private Animation dodgeAnimation;
     private Animation flyAnimation;
 
+    private boolean shielded;
     private boolean jumping;
     private boolean dodging;
     private boolean flying;
@@ -60,6 +64,15 @@ public class PlayerObject extends AnimatedGameObject {
         runSound = Gdx.audio.newSound(Gdx.files.internal(Constants.PLAYER_RUN_SOUND_PATH));
         runSound.stop();
         runSound.play(prefs.getSoundVolume());
+    }
+
+    /**
+     * Does the power up functionality.
+     *
+     * @param powerUpGameObject PowerUpGameObject instance to use.
+     */
+    public void usePowerUp( PowerUpGameObject powerUpGameObject ) {
+        powerUpGameObject.action(this);
     }
 
     /**
@@ -110,7 +123,7 @@ public class PlayerObject extends AnimatedGameObject {
      */
     public void landed(){
         jumping = false;
-        changeFPS( 1/10f );
+        changeFPS(1 / 10f);
         runSound.stop();
         runSound.play(prefs.getSoundVolume());
     }
@@ -123,7 +136,7 @@ public class PlayerObject extends AnimatedGameObject {
         if (!jumping || hit && !dead){
             body.setTransform(x, y, (float) (90f * (Math.PI / 180f)));
             dodging = true;
-            changeAnimation( dodgeAnimation );
+            changeAnimation(dodgeAnimation);
             runSound.stop();
         }
     }
@@ -135,7 +148,7 @@ public class PlayerObject extends AnimatedGameObject {
         runSound.stop();
         runSound.play(prefs.getSoundVolume());
         dodging = false;
-        changeAnimation( runAnimation );
+        changeAnimation(runAnimation);
         body.setTransform(x, y, 0f);
     }
 
@@ -143,16 +156,18 @@ public class PlayerObject extends AnimatedGameObject {
      * Hit method.
      * Applies angular impulse to the player's body when called.
      */
-    public void hit(){
-        body.applyAngularImpulse( 10f, true);
-        pauseAnimation();
-        hit = true;
-        if ( !dead ) {
-            deadText = "player_death_spikes";
-            DEATH_SOUND.play( 0.8f );
-            dead = true;
+    public void hit() {
+        if ( !shielded ) {
+            body.applyAngularImpulse(10f, true);
+            pauseAnimation();
+            hit = true;
+            if (!dead) {
+                deadText = "player_death_spikes";
+                DEATH_SOUND.play(0.8f);
+                dead = true;
+            }
+            runSound.stop();
         }
-        runSound.stop();
     }
 
     @Override
@@ -168,11 +183,32 @@ public class PlayerObject extends AnimatedGameObject {
         }
         if ( !dead ) {
             if (body.getPosition().y < 0 || body.getPosition().x < 0) {
-                deadText = "player_death_fall";
+                if ( shielded ) {
+                    deadText = "player_death_shielded";
+                } else {
+                    deadText = "player_death_fall";
+                }
                 DEATH_SOUND.play( 0.8f );
                 dead = true;
             }
         }
+    }
+
+    @Override
+    public void draw( Batch batch ) {
+        if (shielded) {
+            batch.setColor( Color.BLUE );
+        }
+        batch.draw(currentFrame,
+                body.getPosition().x - currentFrame.getRegionWidth() / 100f / 2,
+                body.getPosition().y -currentFrame.getRegionHeight() / 100f / 2,
+                currentFrame.getRegionWidth() / 2 / 100f,
+                currentFrame.getRegionHeight() / 2 / 100f,
+                currentFrame.getRegionWidth() / 100f,
+                currentFrame.getRegionHeight() / 100f,
+                1.0f,
+                1.0f,
+                body.getTransform().getRotation() * MathUtils.radiansToDegrees);
     }
 
     @Override
@@ -186,13 +222,19 @@ public class PlayerObject extends AnimatedGameObject {
     }
 
     /**
+     * Setters.
+     */
+
+    public void setShielded( boolean shielded ) { this.shielded = shielded; }
+
+    /**
      * Getters.
      */
 
+    public boolean isShielded( ) { return shielded; }
     public boolean isDodging() {
         return dodging;
     }
-
     public boolean isFlying( ) {
         return flying;
     }

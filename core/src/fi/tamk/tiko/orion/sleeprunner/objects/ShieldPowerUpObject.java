@@ -28,4 +28,10 @@ public class ShieldPowerUpObject extends PowerUpGameObject {
         super(world, x, y, width, height, POWERUP_SHIELD_TEXTURE, new UserData("POWERUP_SHIELD"));
     }
 
+    @Override
+    public void action( PlayerObject playerObject ) {
+        playerObject.setShielded( true );
+        used = true;
+    }
+
 }

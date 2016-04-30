@@ -27,4 +27,9 @@ public class MaskPowerUpObject extends PowerUpGameObject {
         super(world, x, y, width, height, POWERUP_MASK_TEXTURE, new UserData("POWERUP_MASK"));
     }
 
+    @Override
+    public void action( PlayerObject playerObject ) {
+        used = true;
+    }
+
 }

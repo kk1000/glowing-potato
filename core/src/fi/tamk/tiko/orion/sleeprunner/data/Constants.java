@@ -104,9 +104,6 @@ public class Constants {
     // Skins
     public static final String SKIN_PATH = "ui/uiskin.json";
 
-    // Fonts
-    public static final String GAME_FONT_PATH = "ui/score.txt";
-
     /**
      * Texture image paths
      */

@@ -74,10 +74,19 @@ public class UIStage extends Stage {
 
         nightmareMeter = new NightmareMeter( game.getGameScreen(), game.getSkin() );
         powerUpBox = new PowerUpBox( game, game.getGameScreen() );
+        powerUpBox.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                // Clicking power up box uses collected power up.
+                powerUpBox.usePowerUp();
+                return true;
+            }
+        });
+
         uiText = new UIText(game, game.getGameScreen() );
 
         addActor( pauseButton );
-        addActor( powerUpBox );
+        addActor(powerUpBox);
         addActor(nightmareMeter);
         addActor(uiText);
     }
