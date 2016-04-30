@@ -77,7 +77,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     private boolean setupReady = false;
 
     private boolean highscoreSaved = false;
-    private float deathTimer = 0;
+    private float deathTimer = 1.5f;
     private float accumulator = 0f;
 
     private int playTimes;
@@ -290,7 +290,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      * Updates when game is paused.
      */
     private void updateGamePaused( ) {
-        Gdx.input.setInputProcessor(pauseStage);
         pauseStage.act();
     }
 
@@ -298,7 +297,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      *  Runs when game is over.
      */
     private void updateGameOver( ) {
-        Gdx.input.setInputProcessor(pauseStage);
         if(!highscoreSaved) {
             prefs.putHighscore(uiStage.getUiText().getScore());
             highscoreSaved = true;
@@ -309,7 +307,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      * Runs when info screen is on.
      */
     private void updateGameInfoScreen(){
-        Gdx.input.setInputProcessor(pauseStage);
         pauseStage.act();
     }
 
@@ -322,10 +319,14 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         player.update(delta);
         // Check for death.
         if (player.isDead()) {
+            deathTimer -= delta;
+        }
+
+        if ( deathTimer <= 0 ) {
+            deathTimer = 1.5f;
             // Is it TOTAL Game over or just player death?
             if ( uiStage.hasNightmareReached() ) {
-                setGameState( Constants.GAME_OVER );
-                pauseStage.showDialog( "GAMEOVER" );
+                setGameState(Constants.GAME_OVER);
             } else {
                 setGameState(Constants.GAME_PLAYER_DEATH);
             }
@@ -534,6 +535,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
     @Override
     public void show() {
+        Gdx.app.log( "GameScreen", "SHOW" );
         Gdx.input.setInputProcessor(im);
         if ( playTimes > 0 ) {
             restartGame();
@@ -555,7 +557,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     @Override
     public void pause() {
         setGameState(Constants.GAME_PAUSED);
-
     }
 
     @Override
@@ -588,12 +589,14 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
             // Player to spikes collision check.
             if ((BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "SPIKES")) ||
                     (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "SPIKES"))) {
+                CURRENT_GAME_SPEED = Constants.STOP_GAME_SPEED;
                 player.hit();
             }
 
             // Player to flying spikes collision check.
             if ((BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "FLYING_SPIKES")) ||
                     (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "FLYING_SPIKES"))) {
+                CURRENT_GAME_SPEED = Constants.STOP_GAME_SPEED;
                 player.hit();
             }
 
@@ -699,11 +702,18 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
                     backgroundStage.resetSpeed();
                     nightmare.moveForward();
                     uiStage.moveNightmareMeter();
+                } else if ( previousGameState == Constants.GAME_PAUSED ||
+                        previousGameState == Constants.GAME_INFO_SCREEN ||
+                        previousGameState == Constants.GAME_OVER ) {
+                    // From PauseDialog back to RUNNING state.
+                    // Set the input processors to the game.
+                    Gdx.input.setInputProcessor(im);
                 }
                 nightmare.resumeAnimation();
                 player.resumeAnimation();
                 break;
             case Constants.GAME_PAUSED:
+                Gdx.input.setInputProcessor(pauseStage);
                 pauseStage.showDialog( "PAUSE" );
                 nightmare.pauseAnimation();
                 player.pauseAnimation();
@@ -713,9 +723,14 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
                 player.fly();
                 break;
             case Constants.GAME_INFO_SCREEN:
+                Gdx.input.setInputProcessor(pauseStage);
                 pauseStage.showDialog( "QUESTION" );
                 nightmare.pauseAnimation();
                 player.pauseAnimation();
+                break;
+            case Constants.GAME_OVER:
+                Gdx.input.setInputProcessor(pauseStage);
+                pauseStage.showDialog("GAMEOVER");
                 break;
         }
     }

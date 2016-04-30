@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
 
 import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
+import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 
 /**
  * Dialog for pause screen.
@@ -80,6 +81,7 @@ public class PauseDialog extends Dialog {
         setModal(true);
         setMovable(false);
         setResizable(false);
+        setPosition((Constants.APP_WIDTH/2) - (getWidth()/2),(Constants.APP_HEIGHT/2) - (getHeight()/2));
     }
 
     /**

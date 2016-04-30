@@ -46,7 +46,7 @@ public class UIStage extends Stage {
      * Moves Nightmare meter by one step.
      */
     public void moveNightmareMeter( ) {
-        nightmareMeter.setValue( nightmareMeter.getValue() + nightmareMeter.getStepSize() );
+        nightmareMeter.setValue(nightmareMeter.getValue() + nightmareMeter.getStepSize());
     }
 
     /**
@@ -57,7 +57,7 @@ public class UIStage extends Stage {
         this.pauseButton.setBounds(Constants.APP_WIDTH * 0.8f, Constants.APP_HEIGHT * 0.8f, Constants.APP_WIDTH / 9, Constants.APP_HEIGHT / 8);
         this.pauseButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
-                game.getGameScreen().pause();
+                game.getGameScreen().setGameState( Constants.GAME_PAUSED );
             }
         });
 
@@ -65,7 +65,7 @@ public class UIStage extends Stage {
         this.uiText = new UIText(game, game.getGameScreen() );
 
         addActor( pauseButton );
-        addActor( nightmareMeter);
+        addActor(nightmareMeter);
         addActor(uiText);
     }
 

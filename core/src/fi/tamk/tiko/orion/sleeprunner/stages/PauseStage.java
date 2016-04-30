@@ -29,6 +29,7 @@ public class PauseStage extends Stage {
 
     private PauseDialog questionDialog;
     private PauseDialog gameOverDialog;
+    private PauseDialog currentDialog;
     private PauseDialog pauseDialog;
 
     private TextButton continueTextButton;
@@ -74,6 +75,7 @@ public class PauseStage extends Stage {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 // Continue button changes the game state back to the previous one.
+                currentDialog.remove();
                 gameScreen.setGameState(gameScreen.getPreviousGameState());
                 return true;
             }
@@ -85,6 +87,7 @@ public class PauseStage extends Stage {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 // New game button restarts the game and starts new one.
+                currentDialog.remove();
                 gameScreen.restartGame();
                 return true;
             }
@@ -96,6 +99,7 @@ public class PauseStage extends Stage {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 // Main menu button changes game screen back to the main menu.
+                currentDialog.remove();
                 game.switchToMainMenuMusic();
                 game.setMainMenuScreen();
                 return true;
@@ -115,8 +119,9 @@ public class PauseStage extends Stage {
                         answeredQuestionWrong();
                     }
                 }
-                // Return to the previous game state.
-                gameScreen.setGameState( gameScreen.getPreviousGameState() );
+                // Return to RUNNING state.
+                currentDialog.remove();
+                gameScreen.setGameState( Constants.GAME_RUNNING );
                 return true;
             }
         });
@@ -136,8 +141,9 @@ public class PauseStage extends Stage {
                 } else {
                     Gdx.app.log( "PauseStage", "Question not found answer, ignored." );
                 }
-                // Return to the previous game state.
-                gameScreen.setGameState( gameScreen.getPreviousGameState() );
+                // Return to the RUNNING state.
+                currentDialog.remove();
+                gameScreen.setGameState( Constants.GAME_RUNNING );
                 return true;
             }
         });
@@ -150,7 +156,7 @@ public class PauseStage extends Stage {
     public void answeredQuestionRight( )  {
         Gdx.app.log("PauseStage", "That is a correct answer!");
         UIText uiText = gameScreen.getUiStage().getUiText();
-        uiText.setScore( uiText.getScore() + 50 );
+        uiText.setScore(uiText.getScore() + 50);
     }
 
     /**
@@ -169,15 +175,18 @@ public class PauseStage extends Stage {
      */
     public void showDialog( String dialogType ) {
         if ( dialogType.equals( "PAUSE" ) ) {
-            pauseDialog.show(this);
-        } else if ( dialogType.equals( "GAMEOVER" ) ) {
-            gameOverDialog.show(this);
+            addActor(pauseDialog);
+            currentDialog = pauseDialog;
+        } else if ( dialogType.equals("GAMEOVER")) {
+            addActor(gameOverDialog);
+            currentDialog = gameOverDialog;
         } else if ( dialogType.equals( "QUESTION" ) ) {
             // Random new question to the question dialog.
             String[] questionData = game.translate.get( "random_fact" + MathUtils.random( 1, Constants.QUESTION_AMOUNT ) ).split( ";" );
-            if ( questionData.length == 2 ) { rightQuestionAnswer = questionData[ 1 ]; }
-            questionDialog.setText( questionData[ 0 ] );
-            questionDialog.show( this );
+            if ( questionData.length == 2 ) { rightQuestionAnswer = questionData[1]; }
+            questionDialog.setText(questionData[0]);
+            addActor(questionDialog);
+            currentDialog = questionDialog;
         }
     }
 

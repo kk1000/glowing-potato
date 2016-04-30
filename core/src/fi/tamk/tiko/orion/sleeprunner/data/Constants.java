@@ -32,6 +32,7 @@ public class Constants {
 
     public static Vector2 INITIAL_GAME_SPEED = new Vector2( -3.0f, 0 );
     public static Vector2 PLAYER_DEATH_GAME_SPEED = new Vector2( -2.0f, 0 );
+    public static Vector2 STOP_GAME_SPEED = new Vector2( 0, 0 );
 
     /**
      * Game states
@@ -90,20 +91,11 @@ public class Constants {
      * Player physics
      */
 
-    public static final float PLAYER_GRAVITY_SCALE = 3f;
-
     public static final Vector2 PLAYER_JUMPING_LINEAR_IMPULSE = new Vector2(0, 0.20f);
-    public static final float PLAYER_HIT_ANGULAR_IMPULSE = 10f;
     public static final float PLAYER_START_X = Constants.WORLD_TO_SCREEN * 3 / 100f;
     public static final float PLAYER_START_Y = Constants.WORLD_TO_SCREEN * 3 / 100f;
     public static final float PLAYER_FLY_X = Constants.WORLD_TO_SCREEN * 3 / 100f;
     public static final float PLAYER_FLY_Y = Constants.WORLD_TO_SCREEN * 6 / 100f;
-
-    //currently not used
-    public static final float FLYING_ENEMY_Y = 3f;
-    public static final float RUNNING_SHORT_ENEMY_Y = 1.5f;
-    public static final float RUNNING_LONG_ENEMY_Y = 2f;
-    public static final float ENEMY_X = 25f;
 
     /**
      * UI
@@ -111,13 +103,16 @@ public class Constants {
 
     // Skins
     public static final String SKIN_PATH = "ui/uiskin.json";
+
     // Fonts
     public static final String GAME_FONT_PATH = "ui/score.txt";
+
     /**
      * Texture image paths
      */
 
     // Background
+
     // Deep Sleep
     public static final String BACKGROUND_IMAGE_PATH = "graphics/backgrounds/stars.png";
     public static final String DEEP_BACKGROUND_IMAGE_PATH = "graphics/backgrounds/texture_deep_all.png";
@@ -127,6 +122,7 @@ public class Constants {
     public static final String DEEP_BACKGROUND4_IMAGE_PATH = "graphics/backgrounds/mountain_deep4.png";
 
     public static final String BACKGROUND_CLOUDS_IMAGE_PATH = "graphics/backgrounds/clouds.png";
+
     // REM
     public static final String REM_SKY_IMAGE_PATH = "graphics/backgrounds/sky_green2.png";
     public static final String REM_BACKGROUND_IMAGE_PATH = "graphics/backgrounds/texture_rem_all.png";
@@ -141,13 +137,17 @@ public class Constants {
     public static final String REM_BACKGROUND9_IMAGE_PATH = "graphics/backgrounds/mountain_rem9.png";
     public static final String REM_BACKGROUND10_IMAGE_PATH = "graphics/backgrounds/mountain_rem10.png";
     public static final String REM_BACKGROUND11_IMAGE_PATH = "graphics/backgrounds/mountain_rem11.png";
+
     // Player
     public static final String PLAYER_RUNNING_IMAGE_PATH = "graphics/player.png";
+
     // Nightmare
     public static final String NIGHTMARE_BACKGROUND_IMAGE_PATH = "graphics/nightmare.png";
+
     // UI
     public static final String MAINMENU_LOGO_IMAGE_PATH = "graphics/mainmenu.png";
     public static final String PAUSEMENU_IMAGE_PATH = "graphics/pausescreen.png";
+
     // Logos
     public static final String LAUNCH_LOGO_TAMK_IMAGE_PATH = "graphics/logos/tamk_eng_vaaka_RGB.png";
     public static final String LAUNCH_LOGO_TIKO_IMAGE_PATH = "graphics/logos/tiko_musta_eng.png";
@@ -155,7 +155,7 @@ public class Constants {
     public static final String LAUNCH_LOGO_PETO_IMAGE_PATH = "graphics/logos/PETO-logo.png";
 
     /**
-     * SoundEffects paths
+     * Sound paths
      */
 
     public static final String PLAYER_RUN_SOUND_PATH = "sounds/sfx/steps.mp3";
@@ -165,7 +165,5 @@ public class Constants {
     public static final String PLAYER_DEATH_SOUND = "sounds/sfx/death.mp3";
 
     public static float PLAYER_DENSITY = 0.5f;
-    public static final float ENEMY_DENSITY = PLAYER_DENSITY;
-
 
 }

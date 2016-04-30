@@ -149,7 +149,7 @@ public class PlayerObject extends AnimatedGameObject {
      * Applies angular impulse to the player's body when called.
      */
     public void hit(){
-        //body.applyAngularImpulse(Constants.PLAYER_HIT_ANGULAR_IMPULSE, true);
+        body.applyAngularImpulse( 10f, true);
         pauseAnimation();
         hit = true;
         if ( !dead ) {

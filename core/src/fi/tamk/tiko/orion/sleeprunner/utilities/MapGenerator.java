@@ -153,7 +153,6 @@ public class MapGenerator {
             if (isSymbolAtPosition(Constants.EMPTY_BLOCK, x, 2) &&
                     isSymbolAtPosition(Constants.GROUND_BLOCK, x, 1 ) ) {
                 int randomAmount = MathUtils.random( 1, 3 );
-                Gdx.app.log( "MapGenerator", "Creating " + randomAmount + " spikes!" );
                 int ii = x;
                 for ( int i = 0; i < randomAmount; i++ ) {
                     if ( isSymbolAtPosition(Constants.EMPTY_BLOCK, ii, 2) &&
