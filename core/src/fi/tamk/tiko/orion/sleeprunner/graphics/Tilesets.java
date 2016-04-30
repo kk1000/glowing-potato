@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
+import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.utilities.Tools;
 
 /**
@@ -42,7 +43,7 @@ public class Tilesets {
 
     public Tilesets(SleepRunner g,Texture tileset, Texture signTileset){
         this.game = g;
-        this.tileSet = Tools.splitTileset(tileset);
-        this.signTileSet = Tools.splitSignTileset(signTileset);
+        this.tileSet = Tools.splitTileset(tileset, Constants.WORLD_TO_SCREEN, Constants.WORLD_TO_SCREEN);
+        this.signTileSet = Tools.splitTileset(signTileset, Constants.SIGN_WIDTH, Constants.SIGN_HEIGHT);
     }
 }

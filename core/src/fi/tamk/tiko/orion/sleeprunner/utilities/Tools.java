@@ -59,19 +59,11 @@ public class Tools {
     /**
      * Split Tileset-texture to textureregion.
      */
-    public static TextureRegion[][] splitTileset(Texture t){
-        TextureRegion[][]tileset = TextureRegion.split(t, Constants.WORLD_TO_SCREEN, Constants.WORLD_TO_SCREEN);
+    public static TextureRegion[][] splitTileset(Texture t,int width,int height){
+        TextureRegion[][]tileset = TextureRegion.split(t, width, height);
         return tileset;
     }
-
-    /**
-     * Split Signs-Texture to textureregion.
-     */
-    public static TextureRegion[][] splitSignTileset(Texture t){
-        TextureRegion[][]tileset = TextureRegion.split(t, Constants.SIGN_WIDTH, Constants.SIGN_HEIGHT);
-        return tileset;
-    }
-
+    
     /**
      * Creates preferences-file when launching first time.
      * <p/>
