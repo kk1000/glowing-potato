@@ -77,13 +77,11 @@ public class BackgroundStage extends Stage {
     }
 
     public void reset(){
+        setupBackgrounds();
         deepLayer.setSleepPhase(1);
         midLayer.setSleepPhase(1);
         topLayer.setSleepPhase(1);
-        deepLayer = new MovingBackground(game, game.manager.get("graphics/backgrounds/stars.png",Texture.class), 2.5f, 1);
-        midLayer = new MovingBackground(game,game.manager.get("graphics/backgrounds/texture_deep_all.png",Texture.class), 1f,2);
-        topLayer = new MovingBackground(game, game.manager.get("graphics/backgrounds/clouds.png",Texture.class), 0.5f, 3);
-
+        resetSpeed();
     }
     @Override
     public void act(float delta) {
