@@ -118,7 +118,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         setupWorld();
         touchPoint = new Vector3();
 
-        uiStage = new UIStage(game, uiCamera, debugFont, batch);
+        uiStage = new UIStage(game, uiCamera, batch);
 
         im = new InputMultiplexer();
         im.addProcessor(gestureDetector);

@@ -134,14 +134,9 @@ public class PlayerObject extends AnimatedGameObject {
     public void stopDodge(){
         runSound.stop();
         runSound.play(prefs.getSoundVolume());
-
         dodging = false;
         changeAnimation( runAnimation );
-        //body.setTransform(x, y, 0f);
-
-        if (!hit){
-            body.setTransform(x, y, 0f);
-        }
+        body.setTransform(x, y, 0f);
     }
 
     /**

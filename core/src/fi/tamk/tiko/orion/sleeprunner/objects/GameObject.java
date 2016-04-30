@@ -266,6 +266,7 @@ public abstract class GameObject {
     public UserData getUserData() {
         return userData;
     }
+    public TextureRegion getTextureRegion( ) { return  textureRegion; }
 
     public float getHeight( ) { return height; }
     public float getWidth() {

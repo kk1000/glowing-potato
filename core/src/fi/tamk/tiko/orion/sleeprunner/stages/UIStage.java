@@ -2,10 +2,13 @@ package fi.tamk.tiko.orion.sleeprunner.stages;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Scaling;
@@ -14,7 +17,9 @@ import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.graphics.NightmareMeter;
+import fi.tamk.tiko.orion.sleeprunner.graphics.PowerUpBox;
 import fi.tamk.tiko.orion.sleeprunner.graphics.UIText;
+import fi.tamk.tiko.orion.sleeprunner.objects.PowerUpGameObject;
 
 /**
  * Draws and handles game's UI.
@@ -22,6 +27,7 @@ import fi.tamk.tiko.orion.sleeprunner.graphics.UIText;
 public class UIStage extends Stage {
 
     private OrthographicCamera uiCamera;
+    private PowerUpBox powerUpBox;
     private TextButton pauseButton;
     private SleepRunner game;
 
@@ -31,12 +37,11 @@ public class UIStage extends Stage {
     /**
      * Constructor for the UIStage.
      *
-     * @param debugFont     Game's debug font.
      * @param uiCamera      Game's UI camera.
      * @param batch         The spritebatch.
      * @param g             Game.
      */
-    public UIStage(SleepRunner g, OrthographicCamera uiCamera, BitmapFont debugFont, Batch batch ) {
+    public UIStage(SleepRunner g, OrthographicCamera uiCamera, Batch batch ) {
         super(new ScalingViewport(Scaling.stretch, Constants.APP_WIDTH, Constants.APP_HEIGHT, uiCamera), batch);
         this.game = g;
         this.uiCamera = uiCamera;
@@ -53,26 +58,37 @@ public class UIStage extends Stage {
      * Setups the stage.
      */
     public void setupUiStage(){
-        this.pauseButton = new TextButton(game.translate.get("pause"), game.getSkin());
-        this.pauseButton.setBounds(Constants.APP_WIDTH * 0.8f, Constants.APP_HEIGHT * 0.8f, Constants.APP_WIDTH / 9, Constants.APP_HEIGHT / 8);
-        this.pauseButton.addListener(new ClickListener() {
-            public void clicked(InputEvent e, float x, float y) {
-                game.getGameScreen().setGameState( Constants.GAME_PAUSED );
+        // Pause button.
+        pauseButton = new TextButton(game.translate.get("pause"), game.getSkin());
+        pauseButton.setWidth(100f);
+        pauseButton.setHeight(75f);
+        pauseButton.setPosition(Constants.APP_WIDTH - pauseButton.getWidth(), Constants.APP_HEIGHT - pauseButton.getHeight());
+        pauseButton.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                // Pause button sets game to pause state.
+                game.getGameScreen().setGameState(Constants.GAME_PAUSED);
+                return true;
             }
         });
 
-        this.nightmareMeter = new NightmareMeter( game.getGameScreen(), game.getSkin() );
-        this.uiText = new UIText(game, game.getGameScreen() );
+        nightmareMeter = new NightmareMeter( game.getGameScreen(), game.getSkin() );
+        powerUpBox = new PowerUpBox( game, game.getGameScreen() );
+        uiText = new UIText(game, game.getGameScreen() );
 
         addActor( pauseButton );
+        addActor( powerUpBox );
         addActor(nightmareMeter);
         addActor(uiText);
     }
 
     /**
      * Runs when player collects power up.
+     *
+     * @param  powerUpGameObject PowerUpGameObject player collected.
      */
-    public void collectPowerup( ) {
+    public void collectPowerup( PowerUpGameObject powerUpGameObject ) {
+        powerUpBox.setPowerUpPicked( powerUpGameObject );
         uiText.setScore(uiText.getScore() + 50);
     }
 
@@ -81,6 +97,7 @@ public class UIStage extends Stage {
      */
     public void reset( ) {
         nightmareMeter.reset();
+        powerUpBox.reset();
         uiText.reset();
     }
 
@@ -97,9 +114,10 @@ public class UIStage extends Stage {
      * Getters
      */
 
+    public NightmareMeter getNightmareMeter( ) { return nightmareMeter; }
+    public PowerUpBox getPowerUpBox( ) { return powerUpBox; }
     public UIText getUiText(){
         return uiText;
     }
-    public NightmareMeter getNightmareMeter( ) { return nightmareMeter; }
 
 }

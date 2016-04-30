@@ -117,7 +117,7 @@ public class MapChunk {
                     Gdx.app.log( "MapChunk", "PowerUpGameObject collected." );
                     // Player collected power up.
                     powerUpGameObject.collect();
-                    uiStage.collectPowerup();
+                    uiStage.collectPowerup( powerUpGameObject );
                     removalGameObjects.add( gameObject );
                 }
             }
