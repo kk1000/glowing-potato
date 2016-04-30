@@ -358,7 +358,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
         // Check for sleep changing chunk.
         if ( currentMapChunk.getChunkNumber() % Constants.DIFFICULTY_CHANGE_INTERVAL == 0 ) {
-            if ( player.isFlying() && !player.isDead() ) {
+            if ( player.isFlying() && gameState == Constants.GAME_RUNNING ) {
                 player.stopFly();
             }
         }
