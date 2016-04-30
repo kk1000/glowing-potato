@@ -39,9 +39,9 @@ public class PauseDialog extends Dialog {
      */
     public PauseDialog(SleepRunner sleepRunner, String header, String text,
                        TextButton buttonOne, TextButton buttonTwo ) {
-        super( "", sleepRunner.getSkin(), "dialog" );
+        super( "", sleepRunner.resources.skin, "dialog" );
         this.sleepRunner = sleepRunner;
-        this.skin = sleepRunner.getSkin();
+        this.skin = sleepRunner.resources.skin;
         this.header = header;
         this.text = text;
         this.buttonOne = buttonOne;

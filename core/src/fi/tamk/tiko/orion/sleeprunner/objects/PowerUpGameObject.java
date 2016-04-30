@@ -1,7 +1,5 @@
 package fi.tamk.tiko.orion.sleeprunner.objects;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -17,14 +15,13 @@ import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
  */
 public abstract class PowerUpGameObject extends GameObject {
 
-    public static Sound POWERUP_SOUND = Gdx.audio.newSound( Gdx.files.internal( Constants.POWERUP_SOUND_PATH ) );
-
     private boolean collected = false;
     protected boolean used = false;
 
     /**
      * Constructor for PowerUpGameObject.
      *
+     * @param gameScreen     GameScreen reference.
      * @param world           Box2D World
      * @param x               X-position.
      * @param y               Y-position.
@@ -33,21 +30,16 @@ public abstract class PowerUpGameObject extends GameObject {
      * @param powerUpTexture  Powerup's own texture.
      * @param powerUpUserData Powerup's own user data.
      */
-    public PowerUpGameObject(World world, float x, float y, float width, float height, TextureRegion powerUpTexture, UserData powerUpUserData) {
-        super(world, x, y, width, height, 0f, powerUpTexture, BodyDef.BodyType.KinematicBody, powerUpUserData );
+    public PowerUpGameObject( GameScreen gameScreen, World world, float x, float y, float width, float height, TextureRegion powerUpTexture, UserData powerUpUserData) {
+        super( gameScreen, world, x, y, width, height, 0f, powerUpTexture, BodyDef.BodyType.KinematicBody, powerUpUserData );
     }
 
     /**
      * Collects power up, sets the collected attribute to true.
      */
     public void collect( ) {
-        POWERUP_SOUND.play( 0.9f );
+        //POWERUP_SOUND.play( 0.9f );
         collected = true;
-    }
-
-    @Override
-    public void update(float delta) {
-        body.setLinearVelocity(GameScreen.CURRENT_GAME_SPEED);
     }
 
     @Override

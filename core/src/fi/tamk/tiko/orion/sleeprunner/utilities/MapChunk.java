@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
+import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.objects.GameObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.PowerUpGameObject;
@@ -40,7 +41,7 @@ public class MapChunk {
     /**
      * Constructor for MapChunk.
      *
-     * @param gameScreen       Reference to GameScreen.
+     * @param gameScreen       GameScreen reference.
      * @param previousMapChunk Previous map chunk. Note that its game objects are deleted.
      * @param world            The Box2D game world.
      * @param position         Map chunk's position in the mapChunks array.
@@ -235,5 +236,6 @@ public class MapChunk {
     public int getPosition( ) { return position; }
     public int[][] getGrid( ) { return grid; }
     public World getWorld( ) { return world; }
+    public GameScreen getGameScreen( ) { return gameScreen; }
 
 }

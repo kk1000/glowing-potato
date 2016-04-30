@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
+import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.objects.FlyPowerUpObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.FlyingSpikesObject;
@@ -14,6 +15,7 @@ import fi.tamk.tiko.orion.sleeprunner.objects.MaskPowerUpObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.ShieldPowerUpObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.SignObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.SpikesObject;
+import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 
 /**
  * Methods for generating map chunks.
@@ -289,6 +291,7 @@ public class MapGenerator {
      */
     public static GameObject generateGameObject( MapChunk mapChunk, int x, int y, int width, int height, int symbol ) {
         GameObject gameObject = null;
+        GameScreen gameScreen = mapChunk.getGameScreen();
         World world = mapChunk.getWorld();
         float offset = mapChunk.getPosition();
         float meterHeight = height/100f;
@@ -298,19 +301,19 @@ public class MapGenerator {
         float centerX = meterWidth/2 + meterX;
         float centerY = meterHeight/2 + meterY;
         if ( symbol == Constants.GROUND_BLOCK ) {
-            gameObject = new GroundObject( world, centerX, centerY, meterWidth, meterHeight );
+            gameObject = new GroundObject( gameScreen, world, centerX, centerY, meterWidth, meterHeight );
         } else if ( symbol == Constants.SPIKES_BLOCK ) {
-            gameObject = new SpikesObject(world, centerX, centerY, meterWidth, meterHeight);
+            gameObject = new SpikesObject( gameScreen, world, centerX, centerY, meterWidth, meterHeight);
         } else if ( symbol == Constants.SIGN_BLOCK ) {
-            gameObject = new SignObject( world, centerX, centerY, meterWidth, meterHeight, mapChunk.getSleepStage() );
+            gameObject = new SignObject( gameScreen, world, centerX, centerY, meterWidth, meterHeight, mapChunk.getSleepStage() );
         } else if ( symbol == Constants.POWERUP_SHIELD_BLOCK ) {
-            gameObject = new ShieldPowerUpObject( world, centerX, centerY, meterWidth, meterHeight );
+            gameObject = new ShieldPowerUpObject( gameScreen, world, centerX, centerY, meterWidth, meterHeight );
         } else if ( symbol == Constants.POWERUP_FLY_BLOCK ) {
-            gameObject = new FlyPowerUpObject( world, centerX, centerY, meterWidth, meterHeight );
+            gameObject = new FlyPowerUpObject( gameScreen, world, centerX, centerY, meterWidth, meterHeight );
         } else if ( symbol == Constants.POWERUP_MASK_BLOCK ) {
-            gameObject = new MaskPowerUpObject( world, centerX, centerY, meterWidth, meterHeight );
+            gameObject = new MaskPowerUpObject( gameScreen, world, centerX, centerY, meterWidth, meterHeight );
         } else if ( symbol == Constants.FLYING_SPIKES_BLOCK ) {
-            gameObject = new FlyingSpikesObject( world, centerX, centerY, meterWidth, meterHeight );
+            gameObject = new FlyingSpikesObject( gameScreen, world, centerX, centerY, meterWidth, meterHeight );
         }
         return gameObject;
     }

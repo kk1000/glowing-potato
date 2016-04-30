@@ -10,8 +10,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-import fi.tamk.tiko.orion.sleeprunner.data.Constants;
-
 /**
  * Helper methods for animating a textureregion.
  */
@@ -57,16 +55,7 @@ public class Tools {
     }
 
     /**
-     * Split Tileset-texture to textureregion.
-     */
-    public static TextureRegion[][] splitTileset(Texture t,int width,int height){
-        TextureRegion[][]tileset = TextureRegion.split(t, width, height);
-        return tileset;
-    }
-    
-    /**
      * Creates preferences-file when launching first time.
-     * <p/>
      * TODO: Overrides earlier preference-file at the moment
      */
     public static void createPreferences(Preferences prefs) {
@@ -84,48 +73,53 @@ public class Tools {
     }
 
     /**
-     * Loads everything to our games assetmanager.
-     * @param manager game Assetmanager
-     * @return loaded Assetmanager
+     * Loads everything to our game's asset manager.
+     *
+     * @param  manager Game's AssetManager.
+     * @return         Loaded AssetManager.
      */
-
     public static AssetManager loadAssets(AssetManager manager) {
-
-        //sounds
+        //Sounds
         manager.load("sounds/sfx/steps.mp3", Sound.class);
         manager.load("sounds/sfx/nightmare.mp3", Sound.class);
         manager.load("sounds/sfx/powerup.mp3", Sound.class);
         manager.load("sounds/sfx/death.mp3", Sound.class);
         manager.load("sounds/music/main.mp3", Music.class);
         manager.load("sounds/music/mainmenu.mp3", Music.class);
-        // graphics
+
+        // Graphics
         // backgrounds
         // backgrounds-deep
         manager.load("graphics/backgrounds/texture_deep_all.png", Texture.class);
         manager.load("graphics/backgrounds/stars.png", Texture.class);
         manager.load("graphics/backgrounds/clouds.png", Texture.class);
-        // backgrounds-rem
+
+        // Backgrounds-rem
         manager.load("graphics/backgrounds/texture_rem_all.png", Texture.class);
         manager.load("graphics/backgrounds/sky_green2.png", Texture.class);
 
-        // player
+        // Player
         manager.load("graphics/player.png", Texture.class);
-        // nightmare
+
+        // Nightmare
         manager.load("graphics/nightmare.png", Texture.class);
-        // ui
+
+        // UI
         manager.load("graphics/mainmenu.png", Texture.class);
         manager.load("graphics/pausescreen.png", Texture.class);
-        // logos
+
+        // Logos
         manager.load("graphics/logos/tamk_eng_vaaka_RGB.png", Texture.class);
         manager.load("graphics/logos/tiko_musta_eng.png", Texture.class);
         manager.load("graphics/logos/ukkinstitute.png", Texture.class);
         manager.load("graphics/logos/PETO-logo.png", Texture.class);
-        // tileset
-        manager.load("graphics/tileset_new.png", Texture.class);
-        manager.load("graphics/tileset_sign.png",Texture.class);
-        manager.finishLoading();
-        Gdx.app.log("LaunchScreen", "manager loaded!");
 
+        // Tileset.
+        manager.load("graphics/tileset_new.png", Texture.class);
+        manager.load("graphics/tileset_signs.png",Texture.class);
+        manager.finishLoading();
+
+        Gdx.app.log("LaunchScreen", "manager loaded!");
         return manager;
     }
 }

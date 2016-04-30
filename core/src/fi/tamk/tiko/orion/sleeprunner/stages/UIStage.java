@@ -20,6 +20,7 @@ import fi.tamk.tiko.orion.sleeprunner.graphics.NightmareMeter;
 import fi.tamk.tiko.orion.sleeprunner.graphics.PowerUpBox;
 import fi.tamk.tiko.orion.sleeprunner.graphics.UIText;
 import fi.tamk.tiko.orion.sleeprunner.objects.PowerUpGameObject;
+import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 
 /**
  * Draws and handles game's UI.
@@ -29,6 +30,7 @@ public class UIStage extends Stage {
     private OrthographicCamera uiCamera;
     private PowerUpBox powerUpBox;
     private TextButton pauseButton;
+    private GameScreen gameScreen;
     private SleepRunner game;
 
     private NightmareMeter nightmareMeter;
@@ -37,13 +39,14 @@ public class UIStage extends Stage {
     /**
      * Constructor for the UIStage.
      *
+     * @param gameScreen    GameScreen reference.
      * @param uiCamera      Game's UI camera.
      * @param batch         The spritebatch.
-     * @param g             Game.
      */
-    public UIStage(SleepRunner g, OrthographicCamera uiCamera, Batch batch ) {
+    public UIStage(GameScreen gameScreen, OrthographicCamera uiCamera, Batch batch ) {
         super(new ScalingViewport(Scaling.stretch, Constants.APP_WIDTH, Constants.APP_HEIGHT, uiCamera), batch);
-        this.game = g;
+        this.gameScreen = gameScreen;
+        this.game = gameScreen.getGame();
         this.uiCamera = uiCamera;
     }
 
@@ -59,7 +62,7 @@ public class UIStage extends Stage {
      */
     public void setupUiStage(){
         // Pause button.
-        pauseButton = new TextButton(game.translate.get("pause"), game.getSkin());
+        pauseButton = new TextButton(game.translate.get("pause"), game.resources.skin);
         pauseButton.setWidth(100f);
         pauseButton.setHeight(75f);
         pauseButton.setPosition(Constants.APP_WIDTH - pauseButton.getWidth(), Constants.APP_HEIGHT - pauseButton.getHeight());
@@ -72,7 +75,7 @@ public class UIStage extends Stage {
             }
         });
 
-        nightmareMeter = new NightmareMeter( game.getGameScreen(), game.getSkin() );
+        nightmareMeter = new NightmareMeter( game.getGameScreen(), game.resources.skin );
         powerUpBox = new PowerUpBox( game, game.getGameScreen() );
         powerUpBox.addListener(new InputListener() {
             @Override

@@ -63,7 +63,7 @@ public class PowerUpBox extends Actor {
      */
     public void usePowerUp( ) {
         if ( powerUpPicked ) {
-            if ( !powerUpGameObject.isUsed() ) {
+            if ( !powerUpGameObject.isUsed() && !player.isDead() ) {
                 player.usePowerUp( powerUpGameObject );
                 reset();
             }

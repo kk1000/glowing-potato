@@ -38,9 +38,9 @@ public class UIText extends Actor {
         this.gameScreen = gameScreen;
         this.player = gameScreen.getPlayer();
         this.world = gameScreen.getWorld();
-        titleFont = g.getTitleFont();
-        debugFont = g.getDebugFont();
-        textFont = g.getTextFont();
+        titleFont = g.resources.titleFont;
+        debugFont = g.resources.debugFont;
+        textFont = g.resources.textFont;
     }
 
     /**

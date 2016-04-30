@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
@@ -12,6 +11,7 @@ import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.graphics.MovingBackground;
+import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 
 /**
  * Class for backgrounds.
@@ -19,35 +19,38 @@ import fi.tamk.tiko.orion.sleeprunner.graphics.MovingBackground;
  */
 public class BackgroundStage extends Stage {
 
+    private GameScreen gameScreen;
     private SleepRunner game;
-    private OrthographicCamera camera;
     private MovingBackground deepLayer;
     private MovingBackground midLayer;
     private MovingBackground topLayer;
 
     /**
      * Constructor.
-     * Uses background camera from GameScreen.
+     *
+     * @param gameScreen  GameScreen reference.
+     * @param worldCamera GameScreen's uiCamera.
+     * @param batch       Batch.
      */
-    public BackgroundStage(SleepRunner g, OrthographicCamera worldCamera, Batch batch) {
+    public BackgroundStage(GameScreen gameScreen, OrthographicCamera worldCamera, Batch batch) {
         super(new ScalingViewport(Scaling.stretch,
                 Constants.APP_WIDTH,
                 Constants.APP_HEIGHT,
                 worldCamera), batch);
-        game = g;
+        this.gameScreen = gameScreen;
+        this.game = gameScreen.getGame();
         setupBackgrounds();
-        camera = worldCamera;
     }
 
     /**
      * Setups all background-layers.
      */
     private void setupBackgrounds(){
-        deepLayer = new MovingBackground(game, game.manager.get("graphics/backgrounds/stars.png",Texture.class), 2.5f, 1);
+        deepLayer = new MovingBackground(game, game.resources.assetManager.get("graphics/backgrounds/stars.png",Texture.class), 2.5f, 1);
         addActor(deepLayer);
-        midLayer = new MovingBackground(game,game.manager.get("graphics/backgrounds/texture_deep_all.png",Texture.class), 1f,2);
+        midLayer = new MovingBackground(game,game.resources.assetManager.get("graphics/backgrounds/texture_deep_all.png",Texture.class), 1f,2);
         addActor(midLayer);
-        topLayer = new MovingBackground(game, game.manager.get("graphics/backgrounds/clouds.png",Texture.class), 0.5f, 3);
+        topLayer = new MovingBackground(game, game.resources.assetManager.get("graphics/backgrounds/clouds.png",Texture.class), 0.5f, 3);
         addActor(topLayer);
         // additional top layer
        //addActor(new MovingBackground(game,Constants.BACKGROUND_CLOUDS_IMAGE_PATH,0.05f,3));

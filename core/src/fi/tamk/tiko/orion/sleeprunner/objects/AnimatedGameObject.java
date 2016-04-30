@@ -8,7 +8,9 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 
+import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.UserData;
+import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 import fi.tamk.tiko.orion.sleeprunner.utilities.Tools;
 
 /**
@@ -26,6 +28,7 @@ public abstract class AnimatedGameObject extends GameObject {
      * Constructor for animated game objects.
      * Creates animation in the construct.
      *
+     * @param gameScreen        GameScreen reference.
      * @param world             Box2D World
      * @param x                 X-position.
      * @param y                 Y-position.
@@ -42,9 +45,37 @@ public abstract class AnimatedGameObject extends GameObject {
      * @param fps               Used for making the animation: Frames per second, how fast animation runs.
      * @param animationPaused   Is the animation paused immediatly or not.
      */
-    public AnimatedGameObject( World world, float x, float y, float width, float height, float density, Texture texture, BodyDef.BodyType bodyType, UserData userData, int frameCols, int frameRows, int start, int length, float fps, boolean animationPaused  ) {
-        super( world, x, y, width, height, density, texture, bodyType, userData );
+    public AnimatedGameObject( GameScreen gameScreen, World world, float x, float y, float width, float height, float density, Texture texture, BodyDef.BodyType bodyType, UserData userData, int frameCols, int frameRows, int start, int length, float fps, boolean animationPaused  ) {
+        super( gameScreen, world, x, y, width, height, density, texture, bodyType, userData );
         this.currentAnimation = Tools.createAnimation( texture, frameCols, frameRows, start, length, fps );
+        this.currentFrame = this.currentAnimation.getKeyFrame( stateTime, true );
+        if ( animationPaused ) {
+            this.pauseAnimation();
+        } else {
+            this.resumeAnimation();
+        }
+    }
+
+    /**
+     * Constructor for animated game objects.
+     * Start animation is already done and given in the constructor.
+     *
+     * @param gameScreen        GameScreen reference.
+     * @param world             Box2D World
+     * @param x                 X-position.
+     * @param y                 Y-position.
+     * @param width             Width of the body.
+     * @param height            Height of the body.
+     * @param density           Body's density.
+     * @param texture           The texture.
+     * @param bodyType          Box2D body's type.
+     * @param userData          Box2D body's userdata.
+     * @param animation         Game object's start animation.
+     * @param animationPaused   Is the animation paused immediatly or not.
+     */
+    public AnimatedGameObject( GameScreen gameScreen, World world, float x, float y, float width, float height, float density, Texture texture, BodyDef.BodyType bodyType, UserData userData, Animation animation, boolean animationPaused ) {
+        super( gameScreen, world, x, y, width, height, density, texture, bodyType, userData );
+        this.currentAnimation = animation;
         this.currentFrame = this.currentAnimation.getKeyFrame( stateTime, true );
         if ( animationPaused ) {
             this.pauseAnimation();
@@ -57,6 +88,7 @@ public abstract class AnimatedGameObject extends GameObject {
      * Constructor for animated game objects.
      * Does not create animation immediatly.
      *
+     * @param gameScreen        GameScreen reference.
      * @param world             Box2D World
      * @param x                 X-position.
      * @param y                 Y-position.
@@ -67,8 +99,8 @@ public abstract class AnimatedGameObject extends GameObject {
      * @param bodyType          Box2D body's type.
      * @param userData          Box2D body's userdata.
      */
-    public AnimatedGameObject( World world, float x, float y, float width, float height, float density, Texture texture, BodyDef.BodyType bodyType, UserData userData ) {
-        super( world, x, y, width, height, density, texture, bodyType, userData );
+    public AnimatedGameObject( GameScreen gameScreen, World world, float x, float y, float width, float height, float density, Texture texture, BodyDef.BodyType bodyType, UserData userData ) {
+        super( gameScreen, world, x, y, width, height, density, texture, bodyType, userData );
         this.animationPaused = true;
     }
 

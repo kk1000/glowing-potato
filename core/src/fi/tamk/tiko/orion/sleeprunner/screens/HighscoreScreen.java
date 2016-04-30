@@ -69,8 +69,8 @@ public class HighscoreScreen implements Screen {
 
         logo = new Texture(Gdx.files.internal(Constants.MAINMENU_LOGO_IMAGE_PATH));
 
-        titleFont = g.getTitleFont();
-        textFont = g.getTextFont();
+        titleFont = game.resources.titleFont;
+        textFont = game.resources.textFont;
 
         titleText = game.translate.get("top_scores");
         GlyphLayout glyphLayout = new GlyphLayout( titleFont, titleText );

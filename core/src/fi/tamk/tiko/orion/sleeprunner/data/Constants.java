@@ -30,9 +30,9 @@ public class Constants {
      * Game speed.
      */
 
-    public static Vector2 INITIAL_GAME_SPEED = new Vector2( -3.0f, 0 );
-    public static Vector2 PLAYER_DEATH_GAME_SPEED = new Vector2( -2.0f, 0 );
-    public static Vector2 STOP_GAME_SPEED = new Vector2( 0, 0 );
+    public static final float INITIAL_GAME_SPEED = -3.0f;
+    public static final float PLAYER_DEATH_GAME_SPEED = -2.0f;
+    public static final float STOP_GAME_SPEED = 0f;
 
     /**
      * Game states

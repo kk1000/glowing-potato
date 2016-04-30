@@ -1,12 +1,9 @@
 package fi.tamk.tiko.orion.sleeprunner.objects;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -14,19 +11,12 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.UserData;
-import fi.tamk.tiko.orion.sleeprunner.utilities.Tools;
+import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 
 /**
- * PlayerObject actor class.
- * Extended from GameObject.
+ * PlayerObject
  */
 public class PlayerObject extends AnimatedGameObject {
-
-    public static Sound DEATH_SOUND = Gdx.audio.newSound( Gdx.files.internal( Constants.PLAYER_DEATH_SOUND ) );
-
-    private Animation runAnimation;
-    private Animation dodgeAnimation;
-    private Animation flyAnimation;
 
     private boolean shielded;
     private boolean jumping;
@@ -36,16 +26,16 @@ public class PlayerObject extends AnimatedGameObject {
     private boolean hit;
 
     private String deadText;
-    private Sound runSound;
     private float dodgeTimer;
 
     /**
      * Constructor for player object.
      *
-     * @param world     Box2D World
+     * @param gameScreen     GameScreen reference.
+     * @param world          Box2D World
      */
-    public PlayerObject(World world) {
-        super(world, Constants.PLAYER_START_X, Constants.PLAYER_START_Y,
+    public PlayerObject( GameScreen gameScreen, World world) {
+        super( gameScreen, world, Constants.PLAYER_START_X, Constants.PLAYER_START_Y,
                 Constants.WORLD_TO_SCREEN * 0.85f / 100f, Constants.WORLD_TO_SCREEN * 2 / 100f,
                 Constants.PLAYER_DENSITY,
                 new Texture(Gdx.files.internal(Constants.PLAYER_RUNNING_IMAGE_PATH)),
@@ -54,16 +44,14 @@ public class PlayerObject extends AnimatedGameObject {
 
         body.setFixedRotation(true);
 
-        runAnimation = Tools.createAnimation( texture, 11, 1, 1, 8, 1/10f );
-        dodgeAnimation = Tools.createAnimation( texture, 11, 1, 9, 2, 1/10f );
-        flyAnimation = Tools.createAnimation( texture, 11, 1,11, 1, 1/10f );
-
-        this.currentAnimation = runAnimation;
+        this.currentAnimation = game.resources.playerRunAnimation;
         this.currentFrame = this.currentAnimation.getKeyFrame( stateTime, true );
 
+        /*
         runSound = Gdx.audio.newSound(Gdx.files.internal(Constants.PLAYER_RUN_SOUND_PATH));
         runSound.stop();
         runSound.play(prefs.getSoundVolume());
+        */
     }
 
     /**
@@ -84,12 +72,12 @@ public class PlayerObject extends AnimatedGameObject {
         dodging = false;
         dead = false;
         hit = false;
-        changeAnimation( flyAnimation );
+        changeAnimation( game.resources.playerFlyAnimation );
         body.setLinearVelocity(new Vector2(0, 0));
         body.setAngularVelocity(0);
         body.setTransform(new Vector2(Constants.PLAYER_FLY_X, Constants.PLAYER_FLY_Y), body.getAngle());
         body.setGravityScale(0.0f);
-        runSound.stop();
+        //runSound.stop();
     }
 
     /**
@@ -97,7 +85,7 @@ public class PlayerObject extends AnimatedGameObject {
      */
     public void stopFly() {
         flying = false;
-        changeAnimation(runAnimation);
+        changeAnimation(game.resources.playerRunAnimation);
         body.setGravityScale(1.0f);
         jump(100);
     }
@@ -115,7 +103,7 @@ public class PlayerObject extends AnimatedGameObject {
             changeFPS( 1/3f );
             jumping = true;
         }
-        runSound.stop();
+        //runSound.stop();
     }
 
     /**
@@ -124,8 +112,8 @@ public class PlayerObject extends AnimatedGameObject {
     public void landed(){
         jumping = false;
         changeFPS(1 / 10f);
-        runSound.stop();
-        runSound.play(prefs.getSoundVolume());
+        //runSound.stop();
+        //runSound.play(prefs.getSoundVolume());
     }
 
     /**
@@ -136,8 +124,8 @@ public class PlayerObject extends AnimatedGameObject {
         if (!jumping || hit && !dead){
             body.setTransform(x, y, (float) (90f * (Math.PI / 180f)));
             dodging = true;
-            changeAnimation(dodgeAnimation);
-            runSound.stop();
+            changeAnimation(game.resources.playerDodgeAnimation);
+            //runSound.stop();
         }
     }
 
@@ -145,10 +133,10 @@ public class PlayerObject extends AnimatedGameObject {
      * Stops dodging if player isn't hit by spikes.
      */
     public void stopDodge(){
-        runSound.stop();
-        runSound.play(prefs.getSoundVolume());
+        //runSound.stop();
+        //runSound.play(prefs.getSoundVolume());
         dodging = false;
-        changeAnimation(runAnimation);
+        changeAnimation(game.resources.playerRunAnimation);
         body.setTransform(x, y, 0f);
     }
 
@@ -163,17 +151,17 @@ public class PlayerObject extends AnimatedGameObject {
             hit = true;
             if (!dead) {
                 deadText = "player_death_spikes";
-                DEATH_SOUND.play(0.8f);
+                //DEATH_SOUND.play(0.8f);
                 dead = true;
             }
-            runSound.stop();
+            //runSound.stop();
         }
     }
 
     @Override
     public void update(float delta) {
         super.update(delta);
-        runSound.setVolume(1, prefs.getSoundVolume());
+        //runSound.setVolume(1, prefs.getSoundVolume());
         if (dodging) {
             dodgeTimer += delta;
             if (dodgeTimer > 1) {
@@ -188,7 +176,7 @@ public class PlayerObject extends AnimatedGameObject {
                 } else {
                     deadText = "player_death_fall";
                 }
-                DEATH_SOUND.play( 0.8f );
+                //DEATH_SOUND.play( 0.8f );
                 dead = true;
             }
         }
@@ -196,9 +184,7 @@ public class PlayerObject extends AnimatedGameObject {
 
     @Override
     public void draw( Batch batch ) {
-        if (shielded) {
-            batch.setColor( Color.BLUE );
-        }
+        if (shielded) { batch.setColor( Color.BLUE ); }
         batch.draw(currentFrame,
                 body.getPosition().x - currentFrame.getRegionWidth() / 100f / 2,
                 body.getPosition().y -currentFrame.getRegionHeight() / 100f / 2,

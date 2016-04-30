@@ -38,12 +38,12 @@ public class MovingBackground extends Actor {
     public void changePhase(){
         if(layer == 1) {
             if (game.getGameScreen().getCurrentMapChunk().getSleepStage().equals("DEEP") && sleepPhase == 1 ) {
-                texture = game.manager.get("graphics/backgrounds/stars.png", Texture.class);
+                texture = game.resources.assetManager.get("graphics/backgrounds/stars.png", Texture.class);
                 texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
                 sleepPhase = 2;
             }
             if (game.getGameScreen().getCurrentMapChunk().getSleepStage().equals("REM") && sleepPhase == 2) {
-                texture = game.manager.get("graphics/backgrounds/sky_green2.png", Texture.class);
+                texture = game.resources.assetManager.get("graphics/backgrounds/sky_green2.png", Texture.class);
                 texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
                 sleepPhase = 1;
             }
@@ -51,12 +51,12 @@ public class MovingBackground extends Actor {
 
         if(layer == 2) {
             if (game.getGameScreen().getCurrentMapChunk().getSleepStage().equals("DEEP") && sleepPhase == 1) {
-                texture = game.manager.get("graphics/backgrounds/texture_deep_all.png", Texture.class);
+                texture = game.resources.assetManager.get("graphics/backgrounds/texture_deep_all.png", Texture.class);
                 texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
                 sleepPhase = 2;
             }
             if (game.getGameScreen().getCurrentMapChunk().getSleepStage().equals("REM") && sleepPhase == 2) {
-                texture = game.manager.get("graphics/backgrounds/texture_rem_all.png", Texture.class);
+                texture = game.resources.assetManager.get("graphics/backgrounds/texture_rem_all.png", Texture.class);
                 texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
                 sleepPhase = 1;
             }

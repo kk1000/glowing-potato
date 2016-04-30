@@ -14,10 +14,12 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
+import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.Preference;
 import fi.tamk.tiko.orion.sleeprunner.data.Tile;
 import fi.tamk.tiko.orion.sleeprunner.data.UserData;
+import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 
 /**
  * Superclass of every game object.
@@ -25,6 +27,8 @@ import fi.tamk.tiko.orion.sleeprunner.data.UserData;
  */
 public abstract class GameObject {
 
+    protected SleepRunner game;
+    protected GameScreen gameScreen;
     protected World world;
 
     protected float x;
@@ -50,6 +54,7 @@ public abstract class GameObject {
     /**
      * Constructor for game objects with texture region.
      *
+     * @param gameScreen    GameScreen reference.
      * @param world         Box2D World
      * @param x             X-position.
      * @param y             Y-position.
@@ -60,7 +65,9 @@ public abstract class GameObject {
      * @param bodyType      Box2D body's type.
      * @param userData      Box2D body's userdata.
      */
-    public GameObject(World world, float x, float y, float width, float height, float density, TextureRegion textureRegion, BodyDef.BodyType bodyType, UserData userData) {
+    public GameObject( GameScreen gameScreen, World world, float x, float y, float width, float height, float density, TextureRegion textureRegion, BodyDef.BodyType bodyType, UserData userData) {
+        this.gameScreen = gameScreen;
+        this.game = gameScreen.getGame();
         this.world = world;
         this.x = x;
         this.y = y;
@@ -79,6 +86,7 @@ public abstract class GameObject {
     /**
      * Constructor for game objects with texture.
      *
+     * @param gameScreen        GameScreen reference.
      * @param world             Box2D World
      * @param x                 X-position.
      * @param y                 Y-position.
@@ -89,7 +97,9 @@ public abstract class GameObject {
      * @param bodyType          Box2D body's type.
      * @param userData          Box2D body's userdata.
      */
-    public GameObject(World world, float x, float y, float width, float height, float density, Texture texture, BodyDef.BodyType bodyType, UserData userData) {
+    public GameObject( GameScreen gameScreen, World world, float x, float y, float width, float height, float density, Texture texture, BodyDef.BodyType bodyType, UserData userData) {
+        this.gameScreen = gameScreen;
+        this.game = gameScreen.getGame();
         this.world = world;
         this.x = x;
         this.y = y;
@@ -143,10 +153,19 @@ public abstract class GameObject {
     public void createTiles() {
         TextureRegion[] gameObjectsTextureRegions;
         if (userData.id.equals("GROUND")) {
-            gameObjectsTextureRegions = new TextureRegion[]{GroundObject.LEFT_TEXTURE, GroundObject.MIDDLETOP_TEXTURE, GroundObject.MIDDLE_TEXTURE, GroundObject.RIGHT_TEXTURE};
+            gameObjectsTextureRegions = new TextureRegion[]{
+                    game.resources.cloudLeft,
+                    game.resources.cloudMiddle,
+                    game.resources.cloudCenter,
+                    game.resources.cloudRight};
         } else {
             // All others.
-            gameObjectsTextureRegions = new TextureRegion[]{textureRegion, textureRegion, textureRegion, textureRegion};
+            gameObjectsTextureRegions = new TextureRegion[]{
+                    textureRegion,
+                    textureRegion,
+                    textureRegion,
+                    textureRegion
+            };
         }
         float tileSize = Constants.WORLD_TO_SCREEN / 100f;
         int pixelHeight = (int) (height * 100f);
@@ -189,7 +208,7 @@ public abstract class GameObject {
                 }
                 x = (body.getPosition().x - tileSize/2) - (width/2 - tileSize/2) + ( j/100f );
                 y = (body.getPosition().y - tileSize/2 ) - (height/2 - tileSize/2) + ( i/100f );
-                tiles.add( new Tile( x, y, textureRegion ) );
+                tiles.add( new Tile( gameScreen, x, y, textureRegion ) );
             }
         }
     }
@@ -217,11 +236,13 @@ public abstract class GameObject {
     }
 
     /**
-     * Called in every frame, every game object needs to own one.
+     * Called in every frame.
      *
      * @param delta Delta time.
      */
-    public abstract void update(float delta);
+    public void update(float delta) {
+        body.setLinearVelocity(gameScreen.getCurrentGameSpeed(), 0);
+    }
 
     /**
      * Updates game object's tile positions.

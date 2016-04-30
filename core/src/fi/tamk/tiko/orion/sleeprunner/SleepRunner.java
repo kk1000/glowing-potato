@@ -2,29 +2,24 @@ package fi.tamk.tiko.orion.sleeprunner;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.I18NBundle;
 
 import java.util.Locale;
 
-import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.Preference;
-import fi.tamk.tiko.orion.sleeprunner.graphics.Tilesets;
+import fi.tamk.tiko.orion.sleeprunner.graphics.Resources;
 import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 import fi.tamk.tiko.orion.sleeprunner.screens.HighscoreScreen;
 import fi.tamk.tiko.orion.sleeprunner.screens.LaunchScreen;
 import fi.tamk.tiko.orion.sleeprunner.screens.MainMenuScreen;
-import fi.tamk.tiko.orion.sleeprunner.utilities.Tools;
 
 /**
  * SleepRunner is an upcoming sidescroller android game.
  * Learn more about our team from our website.
+ *
+ * http://privaservu.com/Orion/index_en.html
  *
  * @author   Eetu "mehxit" Järvinen
  * @author   Joni "steiner3k" Korpisalo
@@ -34,45 +29,20 @@ import fi.tamk.tiko.orion.sleeprunner.utilities.Tools;
  */
 public class SleepRunner extends Game {
 
-	private SpriteBatch batch;
+    public I18NBundle translate;
+    public Resources resources;
 
-	public I18NBundle translate;
-
+    private HighscoreScreen highscoreScreen;
 	private MainMenuScreen mainMenuScreen;
-
-	private GameScreen gameScreen;
-
-	private HighscoreScreen highscoreScreen;
-
-	private LaunchScreen launchScreen;
+    private LaunchScreen launchScreen;
+    private GameScreen gameScreen;
 
     private Preference prefs;
-
-	private Music mainMenuMusic;
-	private Music gameMusic;
+    private SpriteBatch batch;
     private Music currentMusic;
-
-    private BitmapFont buttonFont;
-    private BitmapFont titleFont;
-    private BitmapFont textFont;
-    private BitmapFont tinyFont;
-    private BitmapFont debugFont;
-
-	private Skin skin;
-
-    public AssetManager manager;
-
-    public Tilesets tilesets;
-
 
 	@Override
 	public void create() {
-
-        manager = new AssetManager();
-        Tools.loadAssets(manager);
-
-        mainMenuMusic = manager.get("sounds/music/mainmenu.mp3",Music.class);
-		gameMusic = manager.get("sounds/music/main.mp3", Music.class);
         prefs = new Preference();
 
 		Locale defaultLocale = Locale.getDefault();
@@ -80,20 +50,11 @@ public class SleepRunner extends Game {
 		batch = new SpriteBatch();
 
 		translate = I18NBundle.createBundle(Gdx.files.internal("localization/languages"), defaultLocale, "UTF-8" );
+        resources = new Resources();
 
-		skin = new Skin(Gdx.files.internal(Constants.SKIN_PATH));
-        mainMenuMusic.play();
-        mainMenuMusic.setVolume(0f);
-        currentMusic = mainMenuMusic;
-
-        buttonFont = skin.getFont( "button-font" );
-        titleFont = skin.getFont( "title-font" );
-        textFont = skin.getFont( "default-font" );
-        tinyFont = skin.getFont( "tiny-font" );
-        debugFont = new BitmapFont();
-
-        tilesets = new Tilesets(this,manager.get("graphics/tileset_new.png", Texture.class),manager.get("graphics/tileset_sign.png",Texture.class));
-
+        resources.mainMenuMusic.play();
+        resources.mainMenuMusic.setVolume(0f);
+        currentMusic = resources.mainMenuMusic;
 
 		setLaunchScreen();
 	}
@@ -104,16 +65,7 @@ public class SleepRunner extends Game {
         if ( mainMenuScreen != null ) { mainMenuScreen.dispose(); }
         if ( launchScreen != null ) { launchScreen.dispose(); }
         if ( highscoreScreen != null ) { highscoreScreen.dispose(); }
-        buttonFont.dispose();
-        titleFont.dispose();
-        textFont.dispose();
-        tinyFont.dispose();
-        debugFont.dispose();
-
-        currentMusic.dispose();
-        mainMenuMusic.dispose();
-        gameMusic.dispose();
-
+        resources.assetManager.dispose();
         batch.dispose();
     }
 
@@ -122,19 +74,18 @@ public class SleepRunner extends Game {
      */
     public void switchToMainMenuMusic( ) {
         currentMusic.stop();
-        currentMusic = mainMenuMusic;
+        currentMusic = resources.mainMenuMusic;
         currentMusic.setVolume(prefs.getMusicVolume());
         currentMusic.play();
         currentMusic.setLooping(true);
     }
-
 
     /**
      * Switch music to the game music.
      */
     public void switchToGameMusic( ) {
         currentMusic.stop();
-        currentMusic = gameMusic;
+        currentMusic = resources.gameMusic;
         currentMusic.setVolume(prefs.getMusicVolume());
         currentMusic.play();
         currentMusic.setLooping(true);
@@ -188,17 +139,6 @@ public class SleepRunner extends Game {
 		return launchScreen;
 	}
 
-
-    public BitmapFont getTitleFont( ) { return titleFont; }
-    public BitmapFont getTextFont( ) { return textFont; }
-    public BitmapFont getDebugFont( ) { return debugFont; }
-
-    public Music getMainMenuMusic( ) { return mainMenuMusic; }
     public Music getCurrentMusic( ) { return currentMusic; }
-	public Music getGameMusic( ) { return gameMusic; }
-
-    public Tilesets getTilesets(){ return tilesets; }
-
-	public Skin getSkin() { return skin;}
 
 }

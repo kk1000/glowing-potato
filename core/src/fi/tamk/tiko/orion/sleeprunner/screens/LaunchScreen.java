@@ -50,7 +50,7 @@ public class LaunchScreen implements Screen {
         timer = Gdx.graphics.getDeltaTime();
 
         // Screen starts with TAMK-logo
-        logo = game.manager.get("graphics/logos/tamk_eng_vaaka_RGB.png", Texture.class);
+        logo = game.resources.assetManager.get("graphics/logos/tamk_eng_vaaka_RGB.png", Texture.class);
         currentLogo = 1;
         timer = 0;
     }
@@ -80,31 +80,31 @@ public class LaunchScreen implements Screen {
         timer += Gdx.graphics.getDeltaTime();
         // TIKO Logo
         if((timer > 0.8  && currentLogo == 1) ||  (Gdx.input.justTouched() && currentLogo == 1 &&  timer > 0.1)){
-            logo = game.manager.get("graphics/logos/tiko_musta_eng.png", Texture.class);
+            logo = game.resources.assetManager.get("graphics/logos/tiko_musta_eng.png", Texture.class);
             timer = 0;
             currentLogo = 2;
 
         }
         // UKK Logo
         if((timer > 0.8 && currentLogo == 2)  || (Gdx.input.justTouched() && currentLogo == 2 && timer > 0.1)){
-            logo = game.manager.get("graphics/logos/ukkinstitute.png", Texture.class);
+            logo = game.resources.assetManager.get("graphics/logos/ukkinstitute.png", Texture.class);
             timer = 0;
             currentLogo = 3;
 
         }
         // PETO Logo
         if((timer > 0.8 && currentLogo ==3)  ||  (Gdx.input.justTouched() && currentLogo == 3 && timer > 0.1)){
-            logo = game.manager.get("graphics/logos/PETO-logo.png", Texture.class);
+            logo = game.resources.assetManager.get("graphics/logos/PETO-logo.png", Texture.class);
             timer = 0;
             currentLogo = 4;
 
         }
         if((timer > 0.8 && currentLogo == 4) || (Gdx.input.justTouched() && currentLogo == 4 && timer > 0.1)){
             game.setMainMenuScreen();
-            game.manager.unload("graphics/logos/tamk_eng_vaaka_RGB.png");
-            game.manager.unload("graphics/logos/tiko_musta_eng.png");
-            game.manager.unload("graphics/logos/ukkinstitute.png");
-            game.manager.unload("graphics/logos/PETO-logo.png");
+            game.resources.assetManager.unload("graphics/logos/tamk_eng_vaaka_RGB.png");
+            game.resources.assetManager.unload("graphics/logos/tiko_musta_eng.png");
+            game.resources.assetManager.unload("graphics/logos/ukkinstitute.png");
+            game.resources.assetManager.unload("graphics/logos/PETO-logo.png");
         }
     }
 

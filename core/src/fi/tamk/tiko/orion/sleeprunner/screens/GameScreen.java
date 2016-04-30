@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -39,7 +38,7 @@ import fi.tamk.tiko.orion.sleeprunner.utilities.MapChunk;
  */
 public class GameScreen extends InputAdapter implements Screen, ContactListener {
 
-    public static Vector2 CURRENT_GAME_SPEED = Constants.INITIAL_GAME_SPEED;
+    private float currentGameSpeed = Constants.INITIAL_GAME_SPEED;
 
     private final float TIME_STEP = 1 / 300f;
 
@@ -75,7 +74,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     private SpriteBatch batch;
 
     private boolean setupReady = false;
-
     private boolean highscoreSaved = false;
     private float deathTimer = 1.5f;
     private float accumulator = 0f;
@@ -103,7 +101,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
         backgroundCamera = new OrthographicCamera();
         backgroundCamera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        backgroundStage = new BackgroundStage(game,backgroundCamera,batch);
+        backgroundStage = new BackgroundStage(this,backgroundCamera,batch);
 
         gameCamera = new OrthographicCamera();
         gameCamera.setToOrtho(false, Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
@@ -111,14 +109,15 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         uiCamera = new OrthographicCamera();
         uiCamera.setToOrtho(false, Constants.APP_WIDTH, Constants.APP_HEIGHT);
 
-        titleFont = sleepRunner.getTitleFont();
-        textFont = sleepRunner.getTextFont();
-        debugFont = sleepRunner.getDebugFont();
+        titleFont = sleepRunner.resources.titleFont;
+        textFont = sleepRunner.resources.textFont;
+        debugFont = sleepRunner.resources.debugFont;
 
         setupWorld();
         touchPoint = new Vector3();
 
-        uiStage = new UIStage(game, uiCamera, batch);
+        pauseStage = new PauseStage(this,uiCamera,batch);
+        uiStage = new UIStage(this, uiCamera, batch);
 
         im = new InputMultiplexer();
         im.addProcessor(gestureDetector);
@@ -151,12 +150,13 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
         createMapChunks();
 
-        nightmare = new NightmareObject(world);
-        player = new PlayerObject(world);
+        nightmare = new NightmareObject(this, world);
+        player = new PlayerObject(this, world);
     }
 
     @Override
     public boolean touchDown(int x, int y, int pointer, int button) {
+        /*
         if ( gameState == Constants.GAME_RUNNING ) {
             touchPoint.set(x / 100f, Constants.WORLD_HEIGHT - y / 100f, 0);
             // Check is the sign game object touched.
@@ -181,6 +181,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
                 }
             }
         }
+        */
         return super.touchDown(x, y, pointer, button);
     }
 
@@ -215,8 +216,8 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         accumulator = 0f;
         deathTimer = 2;
         highscoreSaved = false;
-        CURRENT_GAME_SPEED = Constants.INITIAL_GAME_SPEED;
-        setGameState( Constants.GAME_READY );
+        currentGameSpeed = Constants.INITIAL_GAME_SPEED;
+        setGameState(Constants.GAME_READY);
     }
 
     /**
@@ -259,7 +260,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
             setupReady = true;
         }
         if ( Gdx.input.isTouched() ) {
-            pauseStage = new PauseStage(game,uiCamera,batch);
             setGameState(Constants.GAME_RUNNING);
         }
     }
@@ -397,9 +397,9 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
             mapChunks.add(new MapChunk( this, currentMapChunk, world, mapChunks.size, nextChunkNumber));
             // Update game speed every 3 map chunk if the game is not in player death state.
             if ( currentMapChunk.getChunkNumber() % 3 == 0 && gameState != Constants.GAME_PLAYER_DEATH ) {
-                CURRENT_GAME_SPEED = CURRENT_GAME_SPEED.add( -0.2f, 0 );
+                currentGameSpeed -= 0.2f;
                 backgroundStage.increaseSpeed();
-                Gdx.app.log( "GameScreen", "Current speed: " + CURRENT_GAME_SPEED.x );
+                Gdx.app.log( "GameScreen", "Current speed: " + currentGameSpeed );
             }
         }
     }
@@ -605,7 +605,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
                 if ( player.isShielded() ) {
                     player.setShielded( false );
                 } else {
-                    CURRENT_GAME_SPEED = Constants.STOP_GAME_SPEED;
+                    currentGameSpeed = Constants.STOP_GAME_SPEED;
                     backgroundStage.setSpikeSpeed();
                     player.hit();
                 }
@@ -629,12 +629,27 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         Body a = contact.getFixtureA().getBody();
         Body b = contact.getFixtureB().getBody();
 
-        // If the collision is sign or nightmare, ignore it!
-        if ( (BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "SIGN")) ||
-                (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "SIGN")) ||
-                (BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "NIGHTMARE")) ||
+        // If the collision is nightmare ignore it.
+        if ((BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "NIGHTMARE")) ||
                 (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "NIGHTMARE")) ) {
             contact.setEnabled(false);
+        }
+
+        // Player to sign collision.
+        if ( (BodyUtils.bodyHasID(a, "PLAYER") && BodyUtils.bodyHasID(b, "SIGN")) ||
+                (BodyUtils.bodyHasID(b, "PLAYER") && BodyUtils.bodyHasID(a, "SIGN")) ) {
+            contact.setEnabled(false);
+            // Find the SignObject instance.
+            for ( GameObject gameObject : currentMapChunk.getGameObjects() ) {
+                if ( gameObject instanceof SignObject ) {
+                    SignObject signObject = (SignObject) gameObject;
+                    if ( !signObject.isClicked() ) {
+                        // Touch position is inside the sign object.
+                        setGameState(Constants.GAME_INFO_SCREEN);
+                        signObject.click();
+                    }
+                }
+            }
         }
 
         // Shield power up collision.
@@ -713,7 +728,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
                 if ( previousGameState == Constants.GAME_PLAYER_DEATH ) {
                     // Changing to GAME_RUNNING state from GAME_PLAYER_DEATH state.
                     player.stopFly();
-                    CURRENT_GAME_SPEED = Constants.INITIAL_GAME_SPEED;
+                    currentGameSpeed = Constants.INITIAL_GAME_SPEED;
                     backgroundStage.resetSpeed();
                     if ( !player.isShielded() ) {
                         nightmare.moveForward();
@@ -741,7 +756,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
                 if ( previousGameState == Constants.GAME_PAUSED ) {
                     Gdx.input.setInputProcessor( im );
                 }
-                CURRENT_GAME_SPEED = Constants.PLAYER_DEATH_GAME_SPEED;
+                currentGameSpeed = Constants.PLAYER_DEATH_GAME_SPEED;
                 player.fly();
                 break;
             case Constants.GAME_INFO_SCREEN:
@@ -757,25 +772,17 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         }
     }
 
-    public void setInputProcessor(int input){
-        if(input == 1){
-            Gdx.input.setInputProcessor(im);
-        }
-        if(input == 2){
-            Gdx.input.setInputProcessor(pauseStage);
-        }
-    }
-
     /**
      * Getters.
      */
 
     public int getPreviousGameState( ) { return previousGameState; }
+    public float getCurrentGameSpeed( ) { return currentGameSpeed; }
     public MapChunk getCurrentMapChunk( ) { return currentMapChunk; }
     public UIStage getUiStage( ) { return uiStage; }
-    public PauseStage getPauseStage( ) { return pauseStage; }
     public NightmareObject getNightmare( ) { return nightmare; }
     public PlayerObject getPlayer( ) { return player; }
     public World getWorld( ) { return world; }
     public int getGameState(){ return gameState; }
+    public SleepRunner getGame( ) { return game; }
 }

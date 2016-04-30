@@ -9,6 +9,7 @@ import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
  */
 public class Tile {
 
+    public GameScreen gameScreen;
     public TextureRegion textureRegion;
     public float x;
     public float y;
@@ -16,11 +17,13 @@ public class Tile {
     /**
      * Constructor.
      *
+     * @param gameScreen    GameScreen reference.
      * @param x             Tile's x position.
      * @param y             Tile's y position.
      * @param textureRegion Tile's texture.
      */
-    public Tile( float x, float y, TextureRegion textureRegion ) {
+    public Tile( GameScreen gameScreen, float x, float y, TextureRegion textureRegion ) {
+        this.gameScreen = gameScreen;
         this.x = x;
         this.y = y;
         this.textureRegion = textureRegion;
@@ -30,7 +33,7 @@ public class Tile {
      * Updates tile's position on every frame.
      */
     public void update( float delta ) {
-        this.x += GameScreen.CURRENT_GAME_SPEED.x * delta;
+        this.x += gameScreen.getCurrentGameSpeed() * delta;
     }
 
 }

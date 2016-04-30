@@ -45,15 +45,15 @@ public class PauseStage extends Stage {
     /**
      * Constructor for the pause stage.
      *
-     * @param g             Reference to SleepRunner class.
+     * @param gameScreen    GameScreen reference.
      * @param worldCamera   Game's UI camera.
      * @param batch         The spritebatch.
      */
-    public PauseStage(SleepRunner g, OrthographicCamera worldCamera,Batch batch ){
+    public PauseStage(GameScreen gameScreen, OrthographicCamera worldCamera,Batch batch ){
         super(new ScalingViewport(Scaling.stretch, Constants.APP_WIDTH, Constants.APP_HEIGHT, worldCamera), batch);
-        this.game = g;
-        this.skin = game.getSkin();
-        this.gameScreen = game.getGameScreen();
+        this.gameScreen = gameScreen;
+        this.game = gameScreen.getGame();
+        this.skin = game.resources.skin;
         setButtons();
         setDialogs();
     }
