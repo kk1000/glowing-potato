@@ -354,6 +354,13 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
                 removalMapChunks.add(mapChunk);
             }
         }
+
+        // Check for sleep changing chunk.
+        if ( currentMapChunk.getChunkNumber() % Constants.DIFFICULTY_CHANGE_INTERVAL == 0 ) {
+            if ( player.isFlying() && !player.isDead() ) {
+                player.stopFly();
+            }
+        }
     }
 
     /**

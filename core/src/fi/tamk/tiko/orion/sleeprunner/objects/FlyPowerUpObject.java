@@ -30,6 +30,7 @@ public class FlyPowerUpObject extends PowerUpGameObject {
 
     @Override
     public void action( PlayerObject playerObject ) {
+        playerObject.fly();
         used = true;
     }
 

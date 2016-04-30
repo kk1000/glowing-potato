@@ -95,7 +95,7 @@ public class Constants {
     public static final float PLAYER_START_X = Constants.WORLD_TO_SCREEN * 3 / 100f;
     public static final float PLAYER_START_Y = Constants.WORLD_TO_SCREEN * 3 / 100f;
     public static final float PLAYER_FLY_X = Constants.WORLD_TO_SCREEN * 3 / 100f;
-    public static final float PLAYER_FLY_Y = Constants.WORLD_TO_SCREEN * 6 / 100f;
+    public static final float PLAYER_FLY_Y = Constants.WORLD_TO_SCREEN * 7 / 100f;
 
     /**
      * UI
