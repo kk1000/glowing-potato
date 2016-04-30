@@ -78,9 +78,6 @@ public class BackgroundStage extends Stage {
 
     public void reset(){
         setupBackgrounds();
-        deepLayer.setSleepPhase(1);
-        midLayer.setSleepPhase(1);
-        topLayer.setSleepPhase(1);
         resetSpeed();
     }
     @Override
