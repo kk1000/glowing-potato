@@ -47,11 +47,7 @@ public class PlayerObject extends AnimatedGameObject {
         this.currentAnimation = game.resources.playerRunAnimation;
         this.currentFrame = this.currentAnimation.getKeyFrame( stateTime, true );
 
-        /*
-        runSound = Gdx.audio.newSound(Gdx.files.internal(Constants.PLAYER_RUN_SOUND_PATH));
-        runSound.stop();
-        runSound.play(prefs.getSoundVolume());
-        */
+        game.resources.playerRunSound.play(prefs.getSoundVolume());
     }
 
     /**
@@ -59,7 +55,7 @@ public class PlayerObject extends AnimatedGameObject {
      *
      * @param powerUpGameObject PowerUpGameObject instance to use.
      */
-    public void usePowerUp( PowerUpGameObject powerUpGameObject ) {
+    public void usePowerUp( PowerUpGameObject powerUpGameObject) {
         powerUpGameObject.action(this);
     }
 
@@ -72,12 +68,12 @@ public class PlayerObject extends AnimatedGameObject {
         dodging = false;
         dead = false;
         hit = false;
-        changeAnimation( game.resources.playerFlyAnimation );
         body.setLinearVelocity(new Vector2(0, 0));
         body.setAngularVelocity(0);
         body.setTransform(new Vector2(Constants.PLAYER_FLY_X, Constants.PLAYER_FLY_Y), body.getAngle());
         body.setGravityScale(0.0f);
-        //runSound.stop();
+        changeAnimation( game.resources.playerFlyAnimation );
+        game.resources.playerRunSound.stop();
     }
 
     /**
@@ -85,9 +81,10 @@ public class PlayerObject extends AnimatedGameObject {
      */
     public void stopFly() {
         flying = false;
-        changeAnimation(game.resources.playerRunAnimation);
         body.setGravityScale(1.0f);
         jump(100);
+        changeAnimation(game.resources.playerRunAnimation);
+        game.resources.powerUpFlySound.stop();
     }
 
     /**
@@ -103,7 +100,7 @@ public class PlayerObject extends AnimatedGameObject {
             changeFPS( 1/3f );
             jumping = true;
         }
-        //runSound.stop();
+        game.resources.playerRunSound.stop();
     }
 
     /**
@@ -112,8 +109,8 @@ public class PlayerObject extends AnimatedGameObject {
     public void landed(){
         jumping = false;
         changeFPS(1 / 10f);
-        //runSound.stop();
-        //runSound.play(prefs.getSoundVolume());
+        game.resources.playerRunSound.stop();
+        game.resources.playerRunSound.play( prefs.getSoundVolume() );
     }
 
     /**
@@ -125,7 +122,7 @@ public class PlayerObject extends AnimatedGameObject {
             body.setTransform(x, y, (float) (90f * (Math.PI / 180f)));
             dodging = true;
             changeAnimation(game.resources.playerDodgeAnimation);
-            //runSound.stop();
+            game.resources.playerRunSound.stop();
         }
     }
 
@@ -133,11 +130,11 @@ public class PlayerObject extends AnimatedGameObject {
      * Stops dodging if player isn't hit by spikes.
      */
     public void stopDodge(){
-        //runSound.stop();
-        //runSound.play(prefs.getSoundVolume());
+        body.setTransform(x, y, 0f);
         dodging = false;
         changeAnimation(game.resources.playerRunAnimation);
-        body.setTransform(x, y, 0f);
+        game.resources.playerRunSound.stop();
+        game.resources.playerRunSound.play( prefs.getSoundVolume() );
     }
 
     /**
@@ -151,17 +148,16 @@ public class PlayerObject extends AnimatedGameObject {
             hit = true;
             if (!dead) {
                 deadText = "player_death_spikes";
-                //DEATH_SOUND.play(0.8f);
+                game.resources.playerDeathSound.play( prefs.getSoundVolume() );
                 dead = true;
             }
-            //runSound.stop();
+            game.resources.playerRunSound.stop();
         }
     }
 
     @Override
     public void update(float delta) {
         super.update(delta);
-        //runSound.setVolume(1, prefs.getSoundVolume());
         if (dodging) {
             dodgeTimer += delta;
             if (dodgeTimer > 1) {
@@ -176,7 +172,7 @@ public class PlayerObject extends AnimatedGameObject {
                 } else {
                     deadText = "player_death_fall";
                 }
-                //DEATH_SOUND.play( 0.8f );
+                game.resources.playerDeathSound.play( prefs.getSoundVolume() );
                 dead = true;
             }
         }

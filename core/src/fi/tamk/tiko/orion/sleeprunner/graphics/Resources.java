@@ -3,6 +3,7 @@ package fi.tamk.tiko.orion.sleeprunner.graphics;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -25,6 +26,13 @@ public class Resources {
 
     public Music mainMenuMusic;
     public Music gameMusic;
+
+    public Sound nightmareReachSound;
+    public Sound nightmareBackSound;
+    public Sound powerUpPickSound;
+    public Sound powerUpFlySound;
+    public Sound playerDeathSound;
+    public Sound playerRunSound;
 
     public BitmapFont buttonFont;
     public BitmapFont titleFont;
@@ -73,6 +81,14 @@ public class Resources {
         // Music.
         this.mainMenuMusic = assetManager.get("sounds/music/mainmenu.mp3",Music.class);
         this.gameMusic = assetManager.get("sounds/music/main.mp3", Music.class);
+
+        // Sounds.
+        this.nightmareReachSound = assetManager.get("sounds/sfx/nightmarereach.mp3", Sound.class);
+        this.nightmareBackSound = assetManager.get("sounds/sfx/nightmareback.mp3", Sound.class);
+        this.playerDeathSound = assetManager.get("sounds/sfx/death.mp3", Sound.class);
+        this.playerRunSound = assetManager.get("sounds/sfx/steps.mp3", Sound.class);
+        this.powerUpPickSound = assetManager.get("sounds/sfx/powerup.mp3", Sound.class);
+        this.powerUpFlySound = assetManager.get("sounds/sfx/fly.mp3", Sound.class);
 
         // Fonts.
         this.buttonFont = skin.getFont("button-font");

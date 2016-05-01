@@ -5,60 +5,49 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.Array;
 
 import java.util.Collections;
-import java.util.Comparator;
 
 import fi.tamk.tiko.orion.sleeprunner.utilities.Tools;
 
 /**
- * Created by joni on 13/03/2016.
+ * Handle's game's preferences.
  */
 public class Preference {
 
     private Preferences prefs;
 
+    /**
+     * Constructor for Preference.
+     */
     public Preference(){
-
         prefs = Gdx.app.getPreferences("SleepRunnerPreferences");
-        if(prefs.getBoolean("isCreated")==false){
+        if(!prefs.getBoolean("isCreated")){
             Tools.createPreferences(prefs);
         }
     }
 
-    public void setSoundVolume(float volume){
-        prefs.putFloat("soundVolume",volume);
-        prefs.flush();
-    }
-
-    public float getSoundVolume(){
-        return prefs.getFloat("soundVolume");
-    }
-
-    public void setMusicVolume(float volume){
-        prefs.putFloat("musicVolume", volume);
-        prefs.flush();
-    }
-
-    public float getMusicVolume(){
-        return prefs.getFloat("musicVolume");
-    }
-
+    /**
+     * Mutes or un mutes all sounds.
+     */
     public void setMuted(){
         if(!prefs.getBoolean("isMuted")) {
             prefs.putBoolean("isMuted", true);
-            prefs.putFloat("musicVolume", 0);
+            prefs.putFloat("gameMusicVolume", 0);
+            prefs.putFloat("menuMusicVolume", 0);
             prefs.putFloat("soundVolume", 0);
         } else {
             prefs.putBoolean("isMuted", false);
-            prefs.putFloat("musicVolume", 0.5f);
-            prefs.putFloat("soundVolume", 0.5f);
+            prefs.putFloat( "soundVolume", 0.7f );
+            prefs.putFloat( "gameMusicVolume", 0.4f );
+            prefs.putFloat( "menuMusicVolume", 0.7f );
         }
         prefs.flush();
     }
 
-    public int getHighscore(int i){
-       return prefs.getInteger("highscore"+i);
-    }
-
+    /**
+     * Sets new highscore to the given rank.
+     *
+     * @param i Highscore ranking.
+     */
     public void putHighscore(int i){
          Array<Integer> highscores = new Array<Integer>();
         for(int j = 0; j <= 4; j++) {
@@ -73,7 +62,63 @@ public class Preference {
         prefs.flush();
     }
 
+    /**
+     * @param volume New in-game music volume.
+     */
+    public void setGameMusicVolume( float volume ) {
+        prefs.putFloat("gameMusicVolume", volume);
+        prefs.flush();
+    }
 
+    /**
+     * @param volume New menu music's volume.
+     */
+    public void setMenuMusicVolume(float volume){
+        prefs.putFloat("menuMusicVolume", volume);
+        prefs.flush();
+    }
+
+    /**
+     * @param volume Sounds' new volume.
+     */
+    public void setSoundVolume(float volume){
+        prefs.putFloat("soundVolume", volume);
+        prefs.flush();
+    }
+
+    /**
+     * @param i Highscore ranking.
+     *
+     * @return given rank's highscore.
+     */
+    public int getHighscore(int i){
+        return prefs.getInteger("highscore"+i);
+    }
+
+    /**
+     * @return sounds' volume.
+     */
+    public float getSoundVolume(){
+        return prefs.getFloat("soundVolume");
+    }
+
+    /**
+     * @return in-game music volume.
+     */
+    public float getMenuMusicVolume(){
+        return prefs.getFloat("menuMusicVolume");
+    }
+
+    /**
+     * @return in-game music volume.
+     */
+    public float getGameMusicVolume(){
+        return prefs.getFloat("gameMusicVolume");
+    }
+
+    /**
+     * @return is the sounds muted.
+     */
     public boolean getMuted(){
         return prefs.getBoolean("isMuted");
     }

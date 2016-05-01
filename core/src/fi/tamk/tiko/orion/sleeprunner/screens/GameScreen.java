@@ -156,32 +156,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
     @Override
     public boolean touchDown(int x, int y, int pointer, int button) {
-        /*
-        if ( gameState == Constants.GAME_RUNNING ) {
-            touchPoint.set(x / 100f, Constants.WORLD_HEIGHT - y / 100f, 0);
-            // Check is the sign game object touched.
-            for (MapChunk mapChunk : mapChunks) {
-                Array<GameObject> mapChunkGameObjects = mapChunk.getGameObjects();
-                for (GameObject mapChunkGameObject : mapChunkGameObjects) {
-                    if (mapChunkGameObject instanceof SignObject) {
-                        SignObject signObject = (SignObject) mapChunkGameObject;
-                        if (!signObject.isClicked()) {
-                            float signHeight = mapChunkGameObject.getHeight();
-                            float signWidth = mapChunkGameObject.getWidth();
-                            float signX = mapChunkGameObject.getBody().getPosition().x - signWidth / 2;
-                            float signY = mapChunkGameObject.getBody().getPosition().y - signHeight / 2;
-                            if ((touchPoint.x <= ((signX + signWidth) * 1.3f) && touchPoint.x >= (signX * 0.7f)) &&
-                                    (touchPoint.y <= ((signY + signHeight) * 1.3f) && touchPoint.y >= (signY * 0.7f))) {
-                                // Touch position is inside the sign object.
-                                setGameState(Constants.GAME_INFO_SCREEN);
-                                signObject.click();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        */
         return super.touchDown(x, y, pointer, button);
     }
 

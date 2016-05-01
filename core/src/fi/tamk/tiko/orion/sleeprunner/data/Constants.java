@@ -88,13 +88,6 @@ public class Constants {
     public static final int QUESTION_AMOUNT = 15;
 
     /**
-     * Sign stuff
-     */
-
-    public static final int SIGN_WIDTH = 64;
-    public static final int SIGN_HEIGHT = 96;
-
-    /**
      * Player physics
      */
 

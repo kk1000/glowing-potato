@@ -75,7 +75,7 @@ public class SleepRunner extends Game {
     public void switchToMainMenuMusic( ) {
         currentMusic.stop();
         currentMusic = resources.mainMenuMusic;
-        currentMusic.setVolume(prefs.getMusicVolume());
+        currentMusic.setVolume(prefs.getMenuMusicVolume());
         currentMusic.play();
         currentMusic.setLooping(true);
     }
@@ -86,7 +86,7 @@ public class SleepRunner extends Game {
     public void switchToGameMusic( ) {
         currentMusic.stop();
         currentMusic = resources.gameMusic;
-        currentMusic.setVolume(prefs.getMusicVolume());
+        currentMusic.setVolume(prefs.getGameMusicVolume());
         currentMusic.play();
         currentMusic.setLooping(true);
     }

@@ -60,10 +60,12 @@ public class Tools {
      */
     public static void createPreferences(Preferences prefs) {
         Gdx.app.log("Tools", "Created preference-file!");
+
         prefs.putBoolean("isCreated", true);
         prefs.putBoolean("isMuted", false);
-        prefs.putFloat("soundVolume", 0.5f);
-        prefs.putFloat("musicVolume", 0.5f);
+        prefs.putFloat("soundVolume", 0.7f);
+        prefs.putFloat( "gameMusicVolume", 0.4f );
+        prefs.putFloat( "menuMusicVolume", 0.7f );
 
         for (int i = 1; i <= 5; i++) {
             prefs.putInteger("highscore" + i, 0);
@@ -81,9 +83,11 @@ public class Tools {
     public static AssetManager loadAssets(AssetManager manager) {
         //Sounds
         manager.load("sounds/sfx/steps.mp3", Sound.class);
-        manager.load("sounds/sfx/nightmare.mp3", Sound.class);
+        manager.load("sounds/sfx/nightmarereach.mp3", Sound.class);
+        manager.load("sounds/sfx/nightmareback.mp3", Sound.class );
         manager.load("sounds/sfx/powerup.mp3", Sound.class);
         manager.load("sounds/sfx/death.mp3", Sound.class);
+        manager.load("sounds/sfx/fly.mp3", Sound.class );
         manager.load("sounds/music/main.mp3", Music.class);
         manager.load("sounds/music/mainmenu.mp3", Music.class);
 

@@ -38,7 +38,7 @@ public abstract class PowerUpGameObject extends GameObject {
      * Collects power up, sets the collected attribute to true.
      */
     public void collect( ) {
-        //POWERUP_SOUND.play( 0.9f );
+        game.resources.powerUpPickSound.play( prefs.getSoundVolume() );
         collected = true;
     }
 

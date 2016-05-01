@@ -1,7 +1,7 @@
 package fi.tamk.tiko.orion.sleeprunner.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,9 +13,9 @@ import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.Preference;
 
 /**
- * Created by joni on 18/04/2016.
+ * Game's launch screen, showing mandatory logos.
  */
-public class LaunchScreen implements Screen {
+public class LaunchScreen extends ScreenAdapter {
 
     private OrthographicCamera camera;
     private SleepRunner game;
@@ -30,7 +30,7 @@ public class LaunchScreen implements Screen {
     /**
      * Constructor for main menu.
      *
-     * @param g = Game created from SleepRunner main class
+     * @param g Game created from SleepRunner main class
      */
     public LaunchScreen(SleepRunner g){
         width = Gdx.graphics.getWidth();
@@ -53,11 +53,6 @@ public class LaunchScreen implements Screen {
         logo = game.resources.assetManager.get("graphics/logos/tamk_eng_vaaka_RGB.png", Texture.class);
         currentLogo = 1;
         timer = 0;
-    }
-
-    @Override
-    public void show() {
-
     }
 
     @Override
@@ -106,29 +101,6 @@ public class LaunchScreen implements Screen {
             game.resources.assetManager.unload("graphics/logos/ukkinstitute.png");
             game.resources.assetManager.unload("graphics/logos/PETO-logo.png");
         }
-    }
-
-
-
-
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
     }
 
     @Override

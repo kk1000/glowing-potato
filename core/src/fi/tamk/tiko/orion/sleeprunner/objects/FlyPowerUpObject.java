@@ -26,6 +26,7 @@ public class FlyPowerUpObject extends PowerUpGameObject {
 
     @Override
     public void action( PlayerObject playerObject ) {
+        game.resources.powerUpFlySound.loop( prefs.getSoundVolume() );
         playerObject.fly();
         used = true;
     }
