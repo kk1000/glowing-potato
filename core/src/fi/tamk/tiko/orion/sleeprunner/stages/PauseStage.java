@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.ScalingViewport;
 
 import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
+import fi.tamk.tiko.orion.sleeprunner.data.Preference;
 import fi.tamk.tiko.orion.sleeprunner.graphics.PauseDialog;
 import fi.tamk.tiko.orion.sleeprunner.graphics.UIText;
 import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
@@ -40,7 +41,7 @@ public class PauseStage extends Stage {
     private TextButton trueTextButton;
 
     private String rightQuestionAnswer;
-
+    private Preference preference;
     private Skin skin;
 
     /**
@@ -55,6 +56,7 @@ public class PauseStage extends Stage {
         this.gameScreen = gameScreen;
         this.game = gameScreen.getGame();
         this.skin = game.resources.skin;
+        this.preference = new Preference();
         setButtons();
         setDialogs();
     }
@@ -169,6 +171,7 @@ public class PauseStage extends Stage {
     public void answeredQuestionRight( )  {
         Gdx.app.log("PauseStage", "That is a correct answer!");
         UIText uiText = gameScreen.getUiStage().getUiText();
+        game.resources.answerRightSound.play( preference.getSoundVolume() );
         uiText.setScore(uiText.getScore() + 50);
     }
 
@@ -178,6 +181,7 @@ public class PauseStage extends Stage {
     public void answeredQuestionWrong( )  {
         Gdx.app.log("PauseStage", "That is a wrong answer!");
         UIText uiText = gameScreen.getUiStage().getUiText();
+        game.resources.answerWrongSound.play( preference.getSoundVolume() );
         uiText.setScore( uiText.getScore() + 50 );
     }
 

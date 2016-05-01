@@ -33,12 +33,16 @@ public class Resources {
     public Sound powerUpFlySound;
     public Sound playerDeathSound;
     public Sound playerRunSound;
+    public Sound answerWrongSound;
+    public Sound answerRightSound;
 
     public BitmapFont buttonFont;
     public BitmapFont titleFont;
     public BitmapFont debugFont;
     public BitmapFont textFont;
     public BitmapFont tinyFont;
+
+    public Texture powerUpBox;
 
     public TextureRegion signDestroyed;
     public TextureRegion signDeepOne;
@@ -78,6 +82,9 @@ public class Resources {
         this.assetManager = new AssetManager();
         Tools.loadAssets( assetManager );
 
+        // UI
+        this.powerUpBox = assetManager.get( "graphics/powerupboxbackground.png", Texture.class );
+
         // Music.
         this.mainMenuMusic = assetManager.get("sounds/music/mainmenu.mp3",Music.class);
         this.gameMusic = assetManager.get("sounds/music/main.mp3", Music.class);
@@ -89,6 +96,8 @@ public class Resources {
         this.playerRunSound = assetManager.get("sounds/sfx/steps.mp3", Sound.class);
         this.powerUpPickSound = assetManager.get("sounds/sfx/powerup.mp3", Sound.class);
         this.powerUpFlySound = assetManager.get("sounds/sfx/fly.mp3", Sound.class);
+        this.answerRightSound = assetManager.get("sounds/sfx/success.mp3", Sound.class);
+        this.answerWrongSound = assetManager.get("sounds/sfx/mistake.mp3", Sound.class );
 
         // Fonts.
         this.buttonFont = skin.getFont("button-font");

@@ -40,7 +40,7 @@ public class PowerUpBox extends Actor {
         this.gameScreen = gameScreen;
         this.player = gameScreen.getPlayer();
 
-        powerUpBoxBackground = new Texture( Gdx.files.internal( "graphics/powerupboxbackground.png" ) );
+        powerUpBoxBackground = sleepRunner.resources.powerUpBox;
         setWidth(powerUpBoxBackground.getWidth());
         setHeight(powerUpBoxBackground.getHeight());
         setX( Constants.APP_WIDTH - powerUpBoxBackground.getWidth() - 200f );

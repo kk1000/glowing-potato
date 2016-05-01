@@ -1,8 +1,5 @@
 package fi.tamk.tiko.orion.sleeprunner.data;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -54,9 +51,6 @@ public class Constants {
 
     public static final int CHUNK_HEIGHT_PIXELS = CHUNK_MAX_TILES_HEIGHT * WORLD_TO_SCREEN;
     public static final int CHUNK_WIDTH_PIXELS = CHUNK_MAX_TILES_WIDTH * WORLD_TO_SCREEN;
-
-    public static final Texture TILESET = new Texture(Gdx.files.internal("graphics/tileset.png"));
-    public static final TextureRegion[][] TILESET_SPRITES = TextureRegion.split(TILESET, WORLD_TO_SCREEN, WORLD_TO_SCREEN);
 
     public static final int EMPTY_BLOCK = 0;
     public static final int GROUND_BLOCK = 1;

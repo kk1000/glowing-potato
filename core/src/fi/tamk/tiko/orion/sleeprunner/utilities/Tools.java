@@ -90,8 +90,11 @@ public class Tools {
         manager.load("sounds/sfx/fly.mp3", Sound.class );
         manager.load("sounds/music/main.mp3", Music.class);
         manager.load("sounds/music/mainmenu.mp3", Music.class);
+        manager.load("sounds/sfx/success.mp3", Sound.class );
+        manager.load("sounds/sfx/mistake.mp3", Sound.class );
 
         // Graphics
+
         // backgrounds
         // backgrounds-deep
         manager.load("graphics/backgrounds/texture_deep_all.png", Texture.class);
@@ -110,7 +113,7 @@ public class Tools {
 
         // UI
         manager.load("graphics/mainmenu.png", Texture.class);
-        manager.load("graphics/pausescreen.png", Texture.class);
+        manager.load( "graphics/powerupboxbackground.png", Texture.class );
 
         // Logos
         manager.load("graphics/logos/tamk_eng_vaaka_RGB.png", Texture.class);
