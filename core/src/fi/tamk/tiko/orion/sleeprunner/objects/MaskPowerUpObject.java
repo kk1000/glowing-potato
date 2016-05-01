@@ -26,6 +26,8 @@ public class MaskPowerUpObject extends PowerUpGameObject {
 
     @Override
     public void action( PlayerObject playerObject ) {
+        gameScreen.getNightmare().moveBack();
+        gameScreen.getUiStage().minusNightmareMeterByStep();
         used = true;
     }
 

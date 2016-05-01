@@ -36,7 +36,21 @@ public class NightmareObject extends AnimatedGameObject {
         float x = body.getPosition().x;
         float y = body.getPosition().y;
         body.setTransform( x + 0.5f, y, body.getAngle() );
-        game.resources.nightmareReachSound.play( prefs.getSoundVolume() );
+        game.resources.nightmareReachSound.play(prefs.getSoundVolume());
+    }
+
+    /**
+     * Moves nightmare backwards by using power up.
+     */
+    public void moveBack( ) {
+        float x = body.getPosition().x;
+        float y = body.getPosition().y;
+        if ( ( x - 0.5f ) <= Constants.NIGHTMARE_START_X ) {
+            body.setTransform( Constants.NIGHTMARE_START_X, y, body.getAngle() );
+        } else {
+            body.setTransform( x - 0.5f, y, body.getAngle() );
+        }
+        game.resources.nightmareBackSound.play( prefs.getSoundVolume() );
     }
 
 }

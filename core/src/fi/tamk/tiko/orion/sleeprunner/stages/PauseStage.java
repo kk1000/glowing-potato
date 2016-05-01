@@ -33,7 +33,8 @@ public class PauseStage extends Stage {
     private PauseDialog pauseDialog;
 
     private TextButton continueTextButton;
-    private TextButton mainMenuTextButton;
+    private TextButton gameOverMainMenuTextButton;
+    private TextButton pauseMainMenuTextButton;
     private TextButton newGameTextButton;
     private TextButton falseTextButton;
     private TextButton trueTextButton;
@@ -60,8 +61,8 @@ public class PauseStage extends Stage {
 
     private void setDialogs( ) {
         questionDialog = new PauseDialog( game, "", game.translate.get( "random_fact1" ), trueTextButton, falseTextButton );
-        gameOverDialog = new PauseDialog( game, game.translate.get( "game_over" ), "", newGameTextButton, mainMenuTextButton );
-        pauseDialog = new PauseDialog( game, game.translate.get( "game_paused" ), "", continueTextButton, mainMenuTextButton );
+        gameOverDialog = new PauseDialog( game, game.translate.get( "game_over" ), "", newGameTextButton, gameOverMainMenuTextButton );
+        pauseDialog = new PauseDialog( game, game.translate.get( "game_paused" ), "", continueTextButton, pauseMainMenuTextButton );
     }
 
     /**
@@ -93,9 +94,21 @@ public class PauseStage extends Stage {
             }
         });
 
-        // Main menu button.
-        mainMenuTextButton = new TextButton(game.translate.get("main_menu"), skin, "default");
-        mainMenuTextButton.addListener(new InputListener() {
+        // Main menu buttons.
+        gameOverMainMenuTextButton = new TextButton(game.translate.get("main_menu"), skin, "default");
+        gameOverMainMenuTextButton.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                // Main menu button changes game screen back to the main menu.
+                currentDialog.remove();
+                game.switchToMainMenuMusic();
+                game.setMainMenuScreen();
+                return true;
+            }
+        });
+
+        pauseMainMenuTextButton = new TextButton(game.translate.get("main_menu"), skin, "default");
+        pauseMainMenuTextButton.addListener(new InputListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 // Main menu button changes game screen back to the main menu.

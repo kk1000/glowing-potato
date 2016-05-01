@@ -333,6 +333,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         // Check for sleep changing chunk.
         if ( currentMapChunk.getChunkNumber() % Constants.DIFFICULTY_CHANGE_INTERVAL == 0 ) {
             if ( player.isFlying() && gameState == Constants.GAME_RUNNING ) {
+                currentGameSpeed /= 2;
                 player.stopFly();
             }
         }
@@ -520,7 +521,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
     @Override
     public void show() {
-        Gdx.app.log( "GameScreen", "SHOW" );
         Gdx.input.setInputProcessor(im);
         if ( playTimes > 0 ) {
             restartGame();
@@ -706,7 +706,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
                     backgroundStage.resetSpeed();
                     if ( !player.isShielded() ) {
                         nightmare.moveForward();
-                        uiStage.moveNightmareMeter();
+                        uiStage.addNightmareMeterByStep();
                     } else {
                         player.setShielded( false );
                     }
@@ -744,6 +744,17 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
                 pauseStage.showDialog("GAMEOVER");
                 break;
         }
+    }
+
+    /**
+     * Setters.
+     */
+
+    /**
+     * @param currentGameSpeed new game speed.
+     */
+    public void setCurrentGameSpeed( float currentGameSpeed ) {
+        this.currentGameSpeed = currentGameSpeed;
     }
 
     /**

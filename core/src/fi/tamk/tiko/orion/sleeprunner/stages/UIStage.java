@@ -51,13 +51,6 @@ public class UIStage extends Stage {
     }
 
     /**
-     * Moves Nightmare meter by one step.
-     */
-    public void moveNightmareMeter( ) {
-        nightmareMeter.setValue(nightmareMeter.getValue() + nightmareMeter.getStepSize());
-    }
-
-    /**
      * Setups the stage.
      */
     public void setupUiStage(){
@@ -88,10 +81,25 @@ public class UIStage extends Stage {
 
         uiText = new UIText(game, game.getGameScreen() );
 
-        addActor( pauseButton );
+        addActor(pauseButton);
         addActor(powerUpBox);
         addActor(nightmareMeter);
         addActor(uiText);
+    }
+
+
+    /**
+     * Moves nightmare meter up by one step.
+     */
+    public void addNightmareMeterByStep( ) {
+        nightmareMeter.setValue(nightmareMeter.getValue() + nightmareMeter.getStepSize());
+    }
+
+    /**
+     * Moves nightmare meter back by one step.
+     */
+    public void minusNightmareMeterByStep( ) {
+        nightmareMeter.setValue(nightmareMeter.getValue() - nightmareMeter.getStepSize());
     }
 
     /**
@@ -101,7 +109,7 @@ public class UIStage extends Stage {
      */
     public void collectPowerup( PowerUpGameObject powerUpGameObject ) {
         powerUpBox.setPowerUpPicked( powerUpGameObject );
-        uiText.setScore(uiText.getScore() + 50);
+        uiText.setScore(uiText.getScore() + 100);
     }
 
     /**
