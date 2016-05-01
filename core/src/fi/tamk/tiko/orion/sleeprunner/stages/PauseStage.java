@@ -63,7 +63,7 @@ public class PauseStage extends Stage {
 
     private void setDialogs( ) {
         questionDialog = new PauseDialog( game, "", game.translate.get( "random_fact1" ), trueTextButton, falseTextButton );
-        gameOverDialog = new PauseDialog( game, game.translate.get( "game_over" ), "", newGameTextButton, gameOverMainMenuTextButton );
+        gameOverDialog = new PauseDialog( game, game.translate.get("game_over"), "", newGameTextButton, gameOverMainMenuTextButton );
         pauseDialog = new PauseDialog( game, game.translate.get( "game_paused" ), "", continueTextButton, pauseMainMenuTextButton );
     }
 
@@ -181,7 +181,7 @@ public class PauseStage extends Stage {
     public void answeredQuestionWrong( )  {
         Gdx.app.log("PauseStage", "That is a wrong answer!");
         UIText uiText = gameScreen.getUiStage().getUiText();
-        game.resources.answerWrongSound.play( preference.getSoundVolume() );
+        game.resources.answerWrongSound.play(preference.getSoundVolume());
         uiText.setScore( uiText.getScore() + 50 );
     }
 
@@ -197,6 +197,7 @@ public class PauseStage extends Stage {
         } else if ( dialogType.equals("GAMEOVER")) {
             addActor(gameOverDialog);
             currentDialog = gameOverDialog;
+            currentDialog.setText( game.translate.format( "gainedScores", gameScreen.getUiStage().getUiText().getScore() ) );
         } else if ( dialogType.equals( "QUESTION" ) ) {
             // Random new question to the question dialog.
             String[] questionData = game.translate.get( "random_fact" + MathUtils.random( 1, Constants.QUESTION_AMOUNT ) ).split( ";" );
