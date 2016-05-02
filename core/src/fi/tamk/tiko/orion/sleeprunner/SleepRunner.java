@@ -55,6 +55,7 @@ public class SleepRunner extends Game {
         resources = new Resources();
 
         resources.mainMenuMusic.play();
+        resources.mainMenuMusic.setLooping( true );
         resources.mainMenuMusic.setVolume(0f);
         currentMusic = resources.mainMenuMusic;
 
