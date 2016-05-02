@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.I18NBundle;
 import java.util.Locale;
 
 import fi.tamk.tiko.orion.sleeprunner.data.Preference;
-import fi.tamk.tiko.orion.sleeprunner.graphics.Resources;
+import fi.tamk.tiko.orion.sleeprunner.data.Resources;
 import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 import fi.tamk.tiko.orion.sleeprunner.screens.GuideScreen;
 import fi.tamk.tiko.orion.sleeprunner.screens.HighscoreScreen;

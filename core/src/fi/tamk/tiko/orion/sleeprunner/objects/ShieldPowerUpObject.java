@@ -26,6 +26,7 @@ public class ShieldPowerUpObject extends PowerUpGameObject {
 
     @Override
     public void action( PlayerObject playerObject ) {
+        game.resources.powerUpShieldSound.play( prefs.getSoundVolume() );
         playerObject.setShielded( true );
         used = true;
     }

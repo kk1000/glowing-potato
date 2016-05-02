@@ -1,4 +1,4 @@
-package fi.tamk.tiko.orion.sleeprunner.graphics;
+package fi.tamk.tiko.orion.sleeprunner.data;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -32,6 +32,7 @@ public class Resources {
 
     public Sound nightmareReachSound;
     public Sound nightmareBackSound;
+    public Sound powerUpShieldSound;
     public Sound powerUpPickSound;
     public Sound powerUpFlySound;
     public Sound playerDeathSound;
@@ -87,7 +88,7 @@ public class Resources {
         Tools.loadAssets( assetManager );
 
         // UI
-        this.guideSet = TextureRegion.split(assetManager.get("graphics/guide.png", Texture.class ), 370, 172 );
+        this.guideSet = TextureRegion.split(assetManager.get("graphics/guide.png", Texture.class), 370, 172);
         this.powerUpBox = assetManager.get("graphics/powerupboxbackground.png", Texture.class);
 
         // Music.
@@ -103,6 +104,7 @@ public class Resources {
         this.powerUpFlySound = assetManager.get("sounds/sfx/fly.mp3", Sound.class);
         this.answerRightSound = assetManager.get("sounds/sfx/success.mp3", Sound.class);
         this.answerWrongSound = assetManager.get("sounds/sfx/mistake.mp3", Sound.class );
+        this.powerUpShieldSound = assetManager.get( "sounds/sfx/shield.mp3", Sound.class );
 
         // Fonts.
         this.buttonFont = skin.getFont("button-font");
@@ -144,15 +146,15 @@ public class Resources {
         // Animations.
         this.playerDodgeAnimation = Tools.createAnimation(
                 assetManager.get( "graphics/player.png", Texture.class ),
-                11, 1, 9, 2, 1/10f );
+                12, 1, 9, 2, 1/10f );
 
         this.playerRunAnimation = Tools.createAnimation(
                 assetManager.get( "graphics/player.png", Texture.class ),
-                11, 1, 1, 8, 1/10f );
+                12, 1, 1, 8, 1/10f );
 
         this.playerFlyAnimation = Tools.createAnimation(
                 assetManager.get( "graphics/player.png", Texture.class ),
-                11, 1, 11, 1, 1/10f );
+                12, 1, 11, 2, 1/10f );
 
         this.nightmareAnimation = Tools.createAnimation(
                 assetManager.get( "graphics/nightmare.png", Texture.class ),

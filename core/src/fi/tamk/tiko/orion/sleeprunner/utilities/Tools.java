@@ -93,6 +93,7 @@ public class Tools {
         manager.load("sounds/music/mainmenu.mp3", Music.class);
         manager.load("sounds/sfx/success.mp3", Sound.class );
         manager.load("sounds/sfx/mistake.mp3", Sound.class );
+        manager.load("sounds/sfx/shield.mp3", Sound.class );
 
         // Graphics
 
