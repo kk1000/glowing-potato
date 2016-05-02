@@ -62,7 +62,7 @@ public class PauseStage extends Stage {
     }
 
     private void setDialogs( ) {
-        questionDialog = new PauseDialog( game, "", game.translate.get( "random_fact1" ), trueTextButton, falseTextButton );
+        questionDialog = new PauseDialog( game, game.translate.get("question"), game.translate.get( "random_fact1" ), trueTextButton, falseTextButton );
         gameOverDialog = new PauseDialog( game, game.translate.get("game_over"), "", newGameTextButton, gameOverMainMenuTextButton );
         pauseDialog = new PauseDialog( game, game.translate.get( "game_paused" ), "", continueTextButton, pauseMainMenuTextButton );
     }
@@ -104,7 +104,7 @@ public class PauseStage extends Stage {
                 // Main menu button changes game screen back to the main menu.
                 currentDialog.remove();
                 game.switchToMainMenuMusic();
-                game.setMainMenuScreen();
+                game.setScreen( game.getMainMenuScreen() );
                 return true;
             }
         });
@@ -116,7 +116,7 @@ public class PauseStage extends Stage {
                 // Main menu button changes game screen back to the main menu.
                 currentDialog.remove();
                 game.switchToMainMenuMusic();
-                game.setMainMenuScreen();
+                game.setScreen( game.getMainMenuScreen() );
                 return true;
             }
         });

@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
+import fi.tamk.tiko.orion.sleeprunner.data.Preference;
 import fi.tamk.tiko.orion.sleeprunner.utilities.Tools;
 
 /**
@@ -19,10 +20,12 @@ import fi.tamk.tiko.orion.sleeprunner.utilities.Tools;
 public class Resources {
 
     public AssetManager assetManager;
+    public Preference preference;
     public Skin skin;
 
     public TextureRegion[][] tileSet;
     public TextureRegion[][] signTileSet;
+    public TextureRegion[][] guideSet;
 
     public Music mainMenuMusic;
     public Music gameMusic;
@@ -76,6 +79,7 @@ public class Resources {
      * Constructor for Resources.
      */
     public Resources( ) {
+        this.preference = new Preference();
         this.skin = new Skin(Gdx.files.internal(Constants.SKIN_PATH));
 
         // Load assets.
@@ -83,7 +87,8 @@ public class Resources {
         Tools.loadAssets( assetManager );
 
         // UI
-        this.powerUpBox = assetManager.get( "graphics/powerupboxbackground.png", Texture.class );
+        this.guideSet = TextureRegion.split(assetManager.get("graphics/guide.png", Texture.class ), 370, 172 );
+        this.powerUpBox = assetManager.get("graphics/powerupboxbackground.png", Texture.class);
 
         // Music.
         this.mainMenuMusic = assetManager.get("sounds/music/mainmenu.mp3",Music.class);
@@ -160,6 +165,24 @@ public class Resources {
         this.remSignAnimation = Tools.createAnimation(
                 assetManager.get( "graphics/tileset_signs.png", Texture.class ),
                 5, 1, 4, 2, 1/5f );
+    }
+
+    /**
+     * Mutes all sounds.
+     */
+    public void muteAllSounds( ) {
+        preference.muteAll();
+        this.mainMenuMusic.setVolume( preference.getMenuMusicVolume() );
+        this.gameMusic.setVolume( preference.getGameMusicVolume() );
+    }
+
+    /**
+     * Un-mutes all sounds.
+     */
+    public void unMuteAllSounds( ) {
+        preference.unMuteAll();
+        this.mainMenuMusic.setVolume( preference.getMenuMusicVolume() );
+        this.gameMusic.setVolume( preference.getGameMusicVolume() );
     }
 
 }

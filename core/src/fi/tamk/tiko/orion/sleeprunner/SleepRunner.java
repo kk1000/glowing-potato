@@ -11,6 +11,7 @@ import java.util.Locale;
 import fi.tamk.tiko.orion.sleeprunner.data.Preference;
 import fi.tamk.tiko.orion.sleeprunner.graphics.Resources;
 import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
+import fi.tamk.tiko.orion.sleeprunner.screens.GuideScreen;
 import fi.tamk.tiko.orion.sleeprunner.screens.HighscoreScreen;
 import fi.tamk.tiko.orion.sleeprunner.screens.LaunchScreen;
 import fi.tamk.tiko.orion.sleeprunner.screens.MainMenuScreen;
@@ -35,6 +36,7 @@ public class SleepRunner extends Game {
     private HighscoreScreen highscoreScreen;
 	private MainMenuScreen mainMenuScreen;
     private LaunchScreen launchScreen;
+    private GuideScreen guideScreen;
     private GameScreen gameScreen;
 
     private Preference prefs;
@@ -56,7 +58,7 @@ public class SleepRunner extends Game {
         resources.mainMenuMusic.setVolume(0f);
         currentMusic = resources.mainMenuMusic;
 
-		setLaunchScreen();
+		setScreen( getLaunchScreen() );
 	}
 
     @Override
@@ -95,18 +97,6 @@ public class SleepRunner extends Game {
 		return batch;
 	}
 
-	public void setLaunchScreen() { setScreen( getLaunchScreen()) ; }
-
-	public void setGameScreen(){
-		setScreen( getGameScreen() );
-	}
-
-	public void setMainMenuScreen(){
-		setScreen( getMainMenuScreen() );
-	}
-
-	public void setHighscoreScreen() {setScreen ( getHighscoreScreen() );}
-
 	public MainMenuScreen getMainMenuScreen() {
 		if ( mainMenuScreen == null ) {
             Gdx.app.log( "SleepRunner", "Creating new MainMenuScreen instance" );
@@ -114,6 +104,14 @@ public class SleepRunner extends Game {
 		}
 		return mainMenuScreen;
 	}
+
+    public GuideScreen getGuideScreen( ) {
+        if ( guideScreen == null ) {
+            Gdx.app.log( "SleepRunner", "Creating new GuideScreen instance." );
+            guideScreen = new GuideScreen( this );
+        }
+        return guideScreen;
+    }
 
 	public GameScreen getGameScreen() {
         if ( gameScreen == null ) {

@@ -95,7 +95,7 @@ public class LaunchScreen extends ScreenAdapter {
 
         }
         if((timer > 0.8 && currentLogo == 4) || (Gdx.input.justTouched() && currentLogo == 4 && timer > 0.1)){
-            game.setMainMenuScreen();
+            game.setScreen( game.getMainMenuScreen() );
             game.resources.assetManager.unload("graphics/logos/tamk_eng_vaaka_RGB.png");
             game.resources.assetManager.unload("graphics/logos/tiko_musta_eng.png");
             game.resources.assetManager.unload("graphics/logos/ukkinstitute.png");

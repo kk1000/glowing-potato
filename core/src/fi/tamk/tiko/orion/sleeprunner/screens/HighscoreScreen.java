@@ -1,7 +1,7 @@
 package fi.tamk.tiko.orion.sleeprunner.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -22,7 +22,7 @@ import fi.tamk.tiko.orion.sleeprunner.data.Preference;
 /**
  * Screen for displaying high scores.
  */
-public class HighscoreScreen implements Screen {
+public class HighscoreScreen extends ScreenAdapter {
 
     public Stage stage;
     private OrthographicCamera camera;
@@ -81,7 +81,7 @@ public class HighscoreScreen implements Screen {
         backButton.setBounds(width / 12, height / 11, width / 5, height / 7);
         backButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
-                game.setMainMenuScreen();
+                game.setScreen( game.getMainMenuScreen() );
             }
         });
 
@@ -89,23 +89,28 @@ public class HighscoreScreen implements Screen {
         muteButton.setBounds(width * 0.8f, height * 0.8f, width / 9, height / 8);
         muteButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
-                prefs.setMuted();
-                if (prefs.getMuted()) {
-                    muteButton.setColor(Color.RED);
-                } else {
-                    muteButton.setColor(Color.WHITE);
-                }
+                checkSoundState();
             }
         });
 
+        checkSoundState();
 
         stage.addActor(backButton);
         stage.addActor(muteButton);
     }
 
-    @Override
-    public void show() {
-
+    /**
+     * Checks are the sounds muted or not.
+     * If they are muted, un mutes them and if they are not, mutes them.
+     */
+    public void checkSoundState( ) {
+        if(prefs.isMuted()){
+            game.resources.unMuteAllSounds();
+            muteButton.setColor(Color.WHITE);
+        } else{
+            game.resources.muteAllSounds();
+            muteButton.setColor(Color.RED);
+        }
     }
 
     @Override
@@ -131,26 +136,6 @@ public class HighscoreScreen implements Screen {
         stage.act();
         stage.draw();
         batch.end();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
     }
 
     @Override

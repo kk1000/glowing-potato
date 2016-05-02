@@ -1,7 +1,6 @@
 package fi.tamk.tiko.orion.sleeprunner.graphics;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -54,7 +53,7 @@ public class PauseDialog extends Dialog {
         headerLabel = new Label( header, skin, "header" );
         headerLabel.setAlignment(Align.center);
         textLabel = new Label( text, skin, "default" );
-        textLabel.setAlignment( Align.center );
+        textLabel.setAlignment( Align.center);
 
         // Add texts to the text table.
         textTable.add( headerLabel ).center().pad(5f);
@@ -65,7 +64,6 @@ public class PauseDialog extends Dialog {
         getContentTable().add( textTable ).center();
 
         // Buttons.
-
         Table buttonTable = new Table();
 
         // Add buttons to the button table.
@@ -100,7 +98,7 @@ public class PauseDialog extends Dialog {
      * @param text Text of the dialog.
      */
     public void setText( String text ) {
-        textLabel.setText( text );
+        textLabel.setText(text);
     }
 
 }

@@ -26,20 +26,24 @@ public class Preference {
     }
 
     /**
-     * Mutes or un mutes all sounds.
+     * Mutes all sounds.
      */
-    public void setMuted(){
-        if(!prefs.getBoolean("isMuted")) {
-            prefs.putBoolean("isMuted", true);
-            prefs.putFloat("gameMusicVolume", 0);
-            prefs.putFloat("menuMusicVolume", 0);
-            prefs.putFloat("soundVolume", 0);
-        } else {
-            prefs.putBoolean("isMuted", false);
-            prefs.putFloat( "soundVolume", 0.7f );
-            prefs.putFloat( "gameMusicVolume", 0.4f );
-            prefs.putFloat( "menuMusicVolume", 0.7f );
-        }
+    public void muteAll( ) {
+        prefs.putBoolean("isMuted", true);
+        prefs.putFloat("gameMusicVolume", 0);
+        prefs.putFloat("menuMusicVolume", 0);
+        prefs.putFloat("soundVolume", 0);
+        prefs.flush();
+    }
+
+    /**
+     * Un-mutes all sounds.
+     */
+    public void unMuteAll( ) {
+        prefs.putBoolean("isMuted", false);
+        prefs.putFloat( "soundVolume", 0.7f );
+        prefs.putFloat( "gameMusicVolume", 0.4f );
+        prefs.putFloat( "menuMusicVolume", 0.7f );
         prefs.flush();
     }
 
@@ -87,6 +91,19 @@ public class Preference {
     }
 
     /**
+     * @param hasSeenGuide Has player seen the guide.
+     */
+    public void setHasSeenGuide( boolean hasSeenGuide ) {
+        prefs.putBoolean( "hasSeenGuide", hasSeenGuide );
+        prefs.flush();
+    }
+
+    /**
+     * @return has player seen the guide.
+     */
+    public boolean hasSeenGuide( ) { return prefs.getBoolean( "hasSeenGuide" ); }
+
+    /**
      * @param i Highscore ranking.
      *
      * @return given rank's highscore.
@@ -119,7 +136,7 @@ public class Preference {
     /**
      * @return is the sounds muted.
      */
-    public boolean getMuted(){
+    public boolean isMuted(){
         return prefs.getBoolean("isMuted");
     }
 }

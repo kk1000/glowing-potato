@@ -70,7 +70,11 @@ public class MainMenuScreen extends ScreenAdapter {
         gameButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
                 game.switchToGameMusic();
-                game.setGameScreen();
+                if ( prefs.hasSeenGuide() ) {
+                    game.setScreen( game.getGameScreen() );
+                } else {
+                    game.setScreen( game.getGuideScreen() );
+                }
             }
         });
 
@@ -78,7 +82,7 @@ public class MainMenuScreen extends ScreenAdapter {
         highscoreButton.setBounds(width / 2.9f, height / 11, width / 4, height / 7);
         highscoreButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
-                game.setHighscoreScreen();
+                game.setScreen( game.getHighscoreScreen() );
             }
         });
 
@@ -86,21 +90,32 @@ public class MainMenuScreen extends ScreenAdapter {
         muteButton.setBounds(width * 0.8f, height * 0.8f, width / 9, height / 8);
         muteButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
-                    prefs.setMuted();
-                        if(prefs.getMuted()){
-                            muteButton.setColor(Color.RED);
-                        } else{
-                            muteButton.setColor(Color.WHITE);
-                        }
+                checkSoundState();
             }
         });
 
-        Gdx.app.log( "MainMenuScreen", "Menu music vol: " + prefs.getMenuMusicVolume() );
+        Gdx.app.log("MainMenuScreen", "Menu music vol: " + prefs.getMenuMusicVolume());
         game.getCurrentMusic().setVolume(prefs.getMenuMusicVolume());
+
+        checkSoundState();
 
         stage.addActor(highscoreButton);
         stage.addActor(muteButton);
         stage.addActor(gameButton);
+    }
+
+    /**
+     * Checks are the sounds muted or not.
+     * If they are muted, un mutes them and if they are not, mutes them.
+     */
+    public void checkSoundState( ) {
+        if(prefs.isMuted()){
+            game.resources.unMuteAllSounds();
+            muteButton.setColor(Color.WHITE);
+        } else{
+            game.resources.muteAllSounds();
+            muteButton.setColor(Color.RED);
+        }
     }
 
     @Override
