@@ -197,10 +197,10 @@ public abstract class GameObject {
                         textureRegion = gameObjectsTextureRegions[2];
                     } else if (j == 0 && pixelWidth > 32) {
                         // Body's first tile and it's larger than one tile length.
-                        textureRegion = gameObjectsTextureRegions[0];
+                        textureRegion = gameObjectsTextureRegions[2];
                     } else if (j == pixelWidth - 32) {
                         // Body's last tile.
-                        textureRegion = gameObjectsTextureRegions[3];
+                        textureRegion = gameObjectsTextureRegions[2];
                     } else {
                         // Body's middle tile.
                         textureRegion = gameObjectsTextureRegions[2];

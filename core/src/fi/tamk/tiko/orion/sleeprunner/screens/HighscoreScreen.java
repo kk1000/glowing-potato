@@ -81,7 +81,7 @@ public class HighscoreScreen extends ScreenAdapter {
         backButton.setBounds(width / 12, height / 11, width / 5, height / 7);
         backButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
-                game.setScreen( game.getMainMenuScreen() );
+                game.setScreen(game.getMainMenuScreen());
             }
         });
 
@@ -89,26 +89,24 @@ public class HighscoreScreen extends ScreenAdapter {
         muteButton.setBounds(width * 0.8f, height * 0.8f, width / 9, height / 8);
         muteButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
-                checkSoundState();
+                setMuteButtonState();
+                game.resources.setMute();
             }
         });
 
-        checkSoundState();
+        setMuteButtonState();
 
         stage.addActor(backButton);
         stage.addActor(muteButton);
     }
 
     /**
-     * Checks are the sounds muted or not.
-     * If they are muted, un mutes them and if they are not, mutes them.
+     * Sets mute button's state.
      */
-    public void checkSoundState( ) {
+    public void setMuteButtonState( ) {
         if(prefs.isMuted()){
-            game.resources.unMuteAllSounds();
             muteButton.setColor(Color.WHITE);
         } else{
-            game.resources.muteAllSounds();
             muteButton.setColor(Color.RED);
         }
     }

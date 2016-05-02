@@ -87,7 +87,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      *
      * @param sleepRunner Reference to SleepRunner.
      */
-
     public GameScreen(SleepRunner sleepRunner) {
         game = sleepRunner;
 
@@ -556,11 +555,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
     @Override
     public void dispose() {
-        nightmare.dispose();
-        player.dispose();
-        for ( MapChunk mapChunk : mapChunks ) {
-            mapChunk.destroy();
-        }
         debugRenderer.dispose();
         world.dispose();
         backgroundStage.dispose();

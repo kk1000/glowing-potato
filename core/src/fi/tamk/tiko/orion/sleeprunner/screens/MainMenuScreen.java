@@ -90,14 +90,16 @@ public class MainMenuScreen extends ScreenAdapter {
         muteButton.setBounds(width * 0.8f, height * 0.8f, width / 9, height / 8);
         muteButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
-                checkSoundState();
+                setMuteButtonState();
+                game.resources.setMute();
             }
         });
 
         Gdx.app.log("MainMenuScreen", "Menu music vol: " + prefs.getMenuMusicVolume());
         game.getCurrentMusic().setVolume(prefs.getMenuMusicVolume());
 
-        checkSoundState();
+        setMuteButtonState();
+        game.resources.setMute();
 
         stage.addActor(highscoreButton);
         stage.addActor(muteButton);
@@ -105,15 +107,12 @@ public class MainMenuScreen extends ScreenAdapter {
     }
 
     /**
-     * Checks are the sounds muted or not.
-     * If they are muted, un mutes them and if they are not, mutes them.
+     * Sets mute button's state.
      */
-    public void checkSoundState( ) {
+    public void setMuteButtonState( ) {
         if(prefs.isMuted()){
-            game.resources.unMuteAllSounds();
             muteButton.setColor(Color.WHITE);
         } else{
-            game.resources.muteAllSounds();
             muteButton.setColor(Color.RED);
         }
     }

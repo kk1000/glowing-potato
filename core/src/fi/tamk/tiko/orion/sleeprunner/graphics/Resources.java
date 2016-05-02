@@ -168,9 +168,20 @@ public class Resources {
     }
 
     /**
+     * Un mutes or mutes all sounds.
+     */
+    public void setMute( ) {
+        if ( preference.isMuted() ) {
+            unMuteAllSounds();
+        } else {
+            muteAllSounds();
+        }
+    }
+
+    /**
      * Mutes all sounds.
      */
-    public void muteAllSounds( ) {
+    private void muteAllSounds( ) {
         preference.muteAll();
         this.mainMenuMusic.setVolume( preference.getMenuMusicVolume() );
         this.gameMusic.setVolume( preference.getGameMusicVolume() );
@@ -179,7 +190,7 @@ public class Resources {
     /**
      * Un-mutes all sounds.
      */
-    public void unMuteAllSounds( ) {
+    private void unMuteAllSounds( ) {
         preference.unMuteAll();
         this.mainMenuMusic.setVolume( preference.getMenuMusicVolume() );
         this.gameMusic.setVolume( preference.getGameMusicVolume() );
