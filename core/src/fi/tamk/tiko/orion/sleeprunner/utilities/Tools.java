@@ -101,10 +101,12 @@ public class Tools {
         manager.load("graphics/backgrounds/texture_deep_all.png", Texture.class);
         manager.load("graphics/backgrounds/stars.png", Texture.class);
         manager.load("graphics/backgrounds/clouds.png", Texture.class);
+        manager.load("graphics/backgrounds/items.png", Texture.class);
 
         // Backgrounds-rem
         manager.load("graphics/backgrounds/texture_rem_all.png", Texture.class);
         manager.load("graphics/backgrounds/sky_green2.png", Texture.class);
+        manager.load("graphics/backgrounds/items2.png", Texture.class);
 
         // Player
         manager.load("graphics/player.png", Texture.class);

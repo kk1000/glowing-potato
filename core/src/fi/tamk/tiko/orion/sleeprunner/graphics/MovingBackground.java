@@ -61,6 +61,18 @@ public class MovingBackground extends Actor {
                 sleepPhase = 1;
             }
         }
+        if(layer == 3) {
+            if (game.getGameScreen().getCurrentMapChunk().getSleepStage().equals("DEEP") && sleepPhase == 1) {
+                texture = game.resources.assetManager.get("graphics/backgrounds/items.png", Texture.class);
+                texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+                sleepPhase = 2;
+            }
+            if (game.getGameScreen().getCurrentMapChunk().getSleepStage().equals("REM") && sleepPhase == 2) {
+                texture = game.resources.assetManager.get("graphics/backgrounds/items2.png", Texture.class);
+                texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+                sleepPhase = 1;
+            }
+        }
 
     }
 

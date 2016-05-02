@@ -24,6 +24,7 @@ public class BackgroundStage extends Stage {
     private MovingBackground deepLayer;
     private MovingBackground midLayer;
     private MovingBackground topLayer;
+    private MovingBackground itemLayer;
 
     /**
      * Constructor.
@@ -48,17 +49,21 @@ public class BackgroundStage extends Stage {
     private void setupBackgrounds(){
         deepLayer = new MovingBackground(game, game.resources.assetManager.get("graphics/backgrounds/stars.png",Texture.class), 2.5f, 1);
         addActor(deepLayer);
+        itemLayer = new MovingBackground(game,game.resources.assetManager.get("graphics/backgrounds/items.png", Texture.class),1.5f,3);
+        addActor(itemLayer);
         midLayer = new MovingBackground(game,game.resources.assetManager.get("graphics/backgrounds/texture_deep_all.png",Texture.class), 1f,2);
         addActor(midLayer);
-        topLayer = new MovingBackground(game, game.resources.assetManager.get("graphics/backgrounds/clouds.png",Texture.class), 0.5f, 3);
+        topLayer = new MovingBackground(game, game.resources.assetManager.get("graphics/backgrounds/clouds.png",Texture.class), 0.5f,4);
         addActor(topLayer);
-        // additional top layer
-       //addActor(new MovingBackground(game,Constants.BACKGROUND_CLOUDS_IMAGE_PATH,0.05f,3));
+
     }
 
     public void increaseSpeed(){
         if(deepLayer.getSpeed()>1) {
             deepLayer.setSpeed(deepLayer.getSpeed() - 0.2f);
+        }
+        if(itemLayer.getSpeed()>1f) {
+            itemLayer.setSpeed(itemLayer.getSpeed() - 0.2f);
         }
         if(midLayer.getSpeed()>0.3f) {
             midLayer.setSpeed(midLayer.getSpeed() - 0.15f);
@@ -66,15 +71,18 @@ public class BackgroundStage extends Stage {
         if(topLayer.getSpeed()>0.05f) {
             topLayer.setSpeed(topLayer.getSpeed() - 0.10f);
         }
+
     }
     public void resetSpeed(){
         deepLayer.setSpeed(2.5f);
+        itemLayer.setSpeed(1.5f);
         midLayer.setSpeed(1);
         topLayer.setSpeed(0.5f);
     }
 
     public void setSpikeSpeed(){
         deepLayer.setSpeed(6f);
+        itemLayer.setSpeed(5f);
         midLayer.setSpeed(6f);
         topLayer.setSpeed(2f);
     }
