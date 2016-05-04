@@ -521,6 +521,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     @Override
     public void show() {
         Gdx.input.setInputProcessor(im);
+        pauseStage.refreshTexts();
         if ( playTimes > 0 ) {
             restartGame();
         }

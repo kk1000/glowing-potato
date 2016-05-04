@@ -9,6 +9,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.I18NBundle;
 
 /**
  * Helper methods for animating a textureregion.
@@ -128,9 +129,15 @@ public class Tools {
 
         // Tileset.
         manager.load("graphics/tileset_new.png", Texture.class);
-        manager.load("graphics/tileset_signs.png",Texture.class);
+        manager.load("graphics/tileset_signs.png", Texture.class);
         manager.finishLoading();
 
+
+        // Languages (finnish and english)
+        manager.load("localization/languages_en_EN", I18NBundle.class);
+        manager.load("localization/languages_fi_FI", I18NBundle.class);
+
+        manager.finishLoading();
         Gdx.app.log("LaunchScreen", "manager loaded!");
         return manager;
     }

@@ -16,6 +16,7 @@ import fi.tamk.tiko.orion.sleeprunner.screens.HighscoreScreen;
 import fi.tamk.tiko.orion.sleeprunner.screens.LaunchScreen;
 import fi.tamk.tiko.orion.sleeprunner.screens.MainMenuScreen;
 
+
 /**
  * SleepRunner is an upcoming sidescroller android game.
  * Learn more about our team from our website.
@@ -32,6 +33,9 @@ public class SleepRunner extends Game {
 
     public I18NBundle translate;
     public Resources resources;
+
+    //1 = finnish 2 = english
+    private int language;
 
     private HighscoreScreen highscoreScreen;
 	private MainMenuScreen mainMenuScreen;
@@ -51,13 +55,18 @@ public class SleepRunner extends Game {
 
 		batch = new SpriteBatch();
 
-		translate = I18NBundle.createBundle(Gdx.files.internal("localization/languages"), defaultLocale, "UTF-8" );
         resources = new Resources();
 
         resources.mainMenuMusic.play();
-        resources.mainMenuMusic.setLooping( true );
+        resources.mainMenuMusic.setLooping(true);
         resources.mainMenuMusic.setVolume(0f);
         currentMusic = resources.mainMenuMusic;
+
+        if(defaultLocale.getCountry().equals("fi_FI")) {
+            language = 1;
+        }
+        else {language = 2;}
+        changeLanguage(language);
 
 		setScreen( getLaunchScreen() );
 	}
@@ -93,6 +102,21 @@ public class SleepRunner extends Game {
         currentMusic.play();
         currentMusic.setLooping(true);
     }
+
+    /**
+     * Switches languages
+     */
+    public void changeLanguage(int i){
+        if(i == 1) {
+             translate = resources.assetManager.get("localization/languages_fi_FI",I18NBundle.class);
+             language = 1;
+        }
+        if(i == 2) {
+            translate = resources.assetManager.get("localization/languages_en_EN",I18NBundle.class);
+            language = 2;
+        }
+    }
+
 
 	public SpriteBatch getBatch() {
 		return batch;
@@ -139,5 +163,8 @@ public class SleepRunner extends Game {
 	}
 
     public Music getCurrentMusic( ) { return currentMusic; }
+    public int getLanguage(){
+        return language;
+    }
 
 }

@@ -208,4 +208,15 @@ public class PauseStage extends Stage {
         }
     }
 
+    public void refreshTexts(){
+        continueTextButton.setText(game.translate.get("continue"));
+        newGameTextButton.setText(game.translate.get("play_again"));
+        gameOverMainMenuTextButton.setText(game.translate.get("main_menu"));
+        pauseMainMenuTextButton.setText(game.translate.get("main_menu"));
+        falseTextButton.setText(game.translate.get("false_text"));
+        trueTextButton.setText(game.translate.get("true_text"));
+        gameOverDialog.setHeader(game.translate.get("game_over"));
+        questionDialog.setHeader(game.translate.get("question"));
+        pauseDialog.setHeader(game.translate.get( "game_paused" ));
+    }
 }

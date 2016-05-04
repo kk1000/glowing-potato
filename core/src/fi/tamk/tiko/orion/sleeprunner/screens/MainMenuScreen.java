@@ -35,6 +35,7 @@ public class MainMenuScreen extends ScreenAdapter {
     private TextButton gameButton;
     private TextButton muteButton;
     private TextButton highscoreButton;
+    private TextButton languageButton;
     private Skin skin;
     private Preference prefs;
 
@@ -82,7 +83,7 @@ public class MainMenuScreen extends ScreenAdapter {
         highscoreButton.setBounds(width / 2.9f, height / 11, width / 4, height / 7);
         highscoreButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
-                game.setScreen( game.getHighscoreScreen() );
+                game.setScreen(game.getHighscoreScreen());
             }
         });
 
@@ -101,12 +102,43 @@ public class MainMenuScreen extends ScreenAdapter {
             }
         });
 
+        languageButton = new TextButton("Language", skin);
+        if (game.getLanguage()==1) {
+            languageButton.setText("In English");
+        } else {
+            languageButton.setText("Suomeksi");
+        }
+        languageButton.setBounds(width * 0.1f, height * 0.8f, width / 9, height / 8);
+        languageButton.addListener(new ClickListener() {
+            public void clicked(InputEvent e, float x, float y) {
+                if (game.getLanguage()==1) {
+                    game.changeLanguage(2);
+                    languageButton.setText("Suomeksi");
+                    refreshTexts();
+                } else {
+                    game.changeLanguage(1);
+                    languageButton.setText("In English");
+                    refreshTexts();
+                }
+            }
+        });
+
         Gdx.app.log("MainMenuScreen", "Menu music vol: " + prefs.getMenuMusicVolume());
         game.getCurrentMusic().setVolume(prefs.getMenuMusicVolume());
 
         stage.addActor(highscoreButton);
         stage.addActor(muteButton);
         stage.addActor(gameButton);
+        stage.addActor(languageButton);
+    }
+
+    /**
+     * Refreshes all text in main menu (after language change).
+     */
+    private void refreshTexts(){
+        muteButton.setText(game.translate.get("mute"));
+        highscoreButton.setText(game.translate.get("highscores"));
+        gameButton.setText(game.translate.get("play"));
     }
 
     /**

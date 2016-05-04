@@ -115,6 +115,16 @@ public class HighscoreScreen extends ScreenAdapter {
         }
     }
 
+    /**
+     * Refreshes all text in highscore menu (after language change).
+     */
+
+    private void refreshTexts(){
+        backButton.setText(game.translate.get("back"));
+        titleText = game.translate.get("top_scores");
+        muteButton.setText(game.translate.get("mute"));
+    }
+
     @Override
     public void show( ) {
         setMuteButtonState();
@@ -122,6 +132,7 @@ public class HighscoreScreen extends ScreenAdapter {
         if ( prefs.isMuted() ) {
             game.resources.muteAllSounds();
         }
+        refreshTexts();
     }
 
     @Override
