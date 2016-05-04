@@ -62,7 +62,7 @@ public class SleepRunner extends Game {
         resources.mainMenuMusic.setVolume(0f);
         currentMusic = resources.mainMenuMusic;
 
-        if(defaultLocale.getCountry().equals("fi_FI")) {
+        if(defaultLocale.getCountry().equals("FI")) {
             language = 1;
         }
         else {language = 2;}
