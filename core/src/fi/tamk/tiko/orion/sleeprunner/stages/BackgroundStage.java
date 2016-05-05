@@ -106,16 +106,6 @@ public class BackgroundStage extends Stage {
         resetSpeed();
     }
 
-    @Override
-    public void act(float delta) {
-        super.act(delta);
-    }
-
-    @Override
-    public void draw() {
-        super.draw();
-    }
-
     /**
      * Setters & getters
      */

@@ -26,6 +26,14 @@ public class MovingBackground extends Actor {
     private int sleepPhase;
     private SleepRunner game;
 
+    /**
+     * Constructor for MovingBackground.
+     *
+     * @param g         SleepRunner reference.
+     * @param t         Background's texture.
+     * @param speed     Background's moving speed.
+     * @param i         Background's layer.
+     */
     public MovingBackground(SleepRunner g,Texture t, float speed, int i){
         this.game = g;
         this.speed = speed;
@@ -38,7 +46,6 @@ public class MovingBackground extends Actor {
     /**
      * Changes the texture of the background layer depending on what sleep phase is active.
      */
-
     public void changePhase(){
         if(layer == 1) {
             if (game.getGameScreen().getCurrentMapChunk().getSleepStage().equals("DEEP") && sleepPhase == 1 ) {
@@ -83,23 +90,20 @@ public class MovingBackground extends Actor {
     /**
      * Resets all graphics back to normal.
      */
-
     public void resetPhase() {
         if (layer == 1) {
-                texture = game.resources.assetManager.get("graphics/backgrounds/stars.png", Texture.class);
-                texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-            }
-
-        if (layer == 2) {
-                texture = game.resources.assetManager.get("graphics/backgrounds/texture_deep_all.png", Texture.class);
-                texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-            }
-        if (layer == 3) {
-                texture = game.resources.assetManager.get("graphics/backgrounds/items.png", Texture.class);
-                texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-            }
-
+            texture = game.resources.assetManager.get("graphics/backgrounds/stars.png", Texture.class);
+            texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
         }
+        if (layer == 2) {
+            texture = game.resources.assetManager.get("graphics/backgrounds/texture_deep_all.png", Texture.class);
+            texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+        }
+        if (layer == 3) {
+            texture = game.resources.assetManager.get("graphics/backgrounds/items.png", Texture.class);
+            texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+        }
+    }
 
 
     @Override
@@ -117,26 +121,21 @@ public class MovingBackground extends Actor {
         if(updateTimer > speed/60) {
             if(speed < 0.1f){
                 srcX += 5;
-            }
-            else if(speed < 0.2){
+            } else if(speed < 0.2){
                 srcX += 4;
-            }
-            else if(speed < 0.3){
+            } else if(speed < 0.3){
                 srcX += 3;
-            }
-            else if(speed < 0.5f){
+            } else if(speed < 0.5f){
                 srcX += 2;
-            }
-            else if (speed < 5){
+            } else if (speed < 5){
                 srcX += 1;
+            } else {
+                srcX += 0;
             }
-            else {srcX += 0;}
             updateTimer = 0;
-              }
-            changePhase();
-
+        }
+        changePhase();
         updateTimer += delta;
-
     }
 
     /**

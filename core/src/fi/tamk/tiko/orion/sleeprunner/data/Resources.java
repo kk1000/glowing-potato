@@ -156,7 +156,7 @@ public class Resources {
 
         this.playerFlyAnimation = Tools.createAnimation(
                 assetManager.get( "graphics/player.png", Texture.class ),
-                12, 1, 11, 2, 1/10f );
+                12, 1, 11, 2, 1/2f );
 
         this.nightmareAnimation = Tools.createAnimation(
                 assetManager.get( "graphics/nightmare.png", Texture.class ),

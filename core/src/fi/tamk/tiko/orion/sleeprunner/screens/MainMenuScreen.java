@@ -185,5 +185,10 @@ public class MainMenuScreen extends ScreenAdapter {
         batch.end();
     }
 
+    @Override
+    public void dispose( ) {
+        stage.dispose();
+    }
+
 }
 

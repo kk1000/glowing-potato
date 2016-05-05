@@ -103,9 +103,4 @@ public class LaunchScreen extends ScreenAdapter {
         }
     }
 
-    @Override
-    public void dispose() {
-        logo.dispose();
-    }
-
 }

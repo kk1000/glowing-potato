@@ -79,9 +79,9 @@ public class HighscoreScreen extends ScreenAdapter {
 
         backButton = new TextButton(game.translate.get("back"), skin);
         backButton.setWidth(100f);
-        backButton.setHeight( 80f );
-        backButton.setX( 0 );
-        backButton.setY( height - backButton.getHeight() );
+        backButton.setHeight(80f);
+        backButton.setX(0);
+        backButton.setY(height - backButton.getHeight());
         backButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
                 game.setScreen(game.getMainMenuScreen());
@@ -90,7 +90,7 @@ public class HighscoreScreen extends ScreenAdapter {
 
         muteButton = new TextButton(game.translate.get("mute"), skin);
         muteButton.setWidth(100f);
-        muteButton.setHeight( 80f );
+        muteButton.setHeight(80f);
         muteButton.setX(width - muteButton.getWidth());
         muteButton.setY(height - muteButton.getHeight());
         muteButton.addListener(new ClickListener() {
@@ -164,6 +164,11 @@ public class HighscoreScreen extends ScreenAdapter {
         stage.act();
         stage.draw();
         batch.end();
+    }
+
+    @Override
+    public void dispose( ) {
+        stage.dispose();
     }
 
 }
