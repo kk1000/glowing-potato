@@ -76,11 +76,14 @@ public class PauseStage extends Stage {
         continueTextButton = new TextButton(game.translate.get("continue"), skin, "default");
         continueTextButton.addListener(new InputListener() {
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button){
+                return true;
+            }
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 // Continue button changes the game state back to the previous one.
                 currentDialog.remove();
                 gameScreen.setGameState(gameScreen.getPreviousGameState());
-                return true;
             }
         });
 
