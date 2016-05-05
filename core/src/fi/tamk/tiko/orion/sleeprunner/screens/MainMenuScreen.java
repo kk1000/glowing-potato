@@ -30,8 +30,8 @@ public class MainMenuScreen extends ScreenAdapter {
     private SpriteBatch batch;
     private float height;
     private float width;
-    private Texture logo;
     private float delta;
+    private Texture mainMenuBackground;
     private TextButton gameButton;
     private TextButton muteButton;
     private TextButton highscoreButton;
@@ -51,6 +51,8 @@ public class MainMenuScreen extends ScreenAdapter {
 
         game = g;
 
+        mainMenuBackground = game.resources.menuBackground;
+
         prefs = new Preference();
 
         batch = game.getBatch();
@@ -64,17 +66,15 @@ public class MainMenuScreen extends ScreenAdapter {
         skin = new Skin(Gdx.files.internal(Constants.SKIN_PATH));
         delta = Gdx.graphics.getDeltaTime();
 
-        logo = new Texture(Gdx.files.internal(Constants.MAINMENU_LOGO_IMAGE_PATH));
-
         gameButton = new TextButton(game.translate.get("play"), skin);
         gameButton.setBounds(width / 2.9f, height / 4, width / 4, height / 7);
         gameButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
                 game.switchToGameMusic();
-                if ( prefs.hasSeenGuide() ) {
-                    game.setScreen( game.getGameScreen() );
+                if (prefs.hasSeenGuide()) {
+                    game.setScreen(game.getGameScreen());
                 } else {
-                    game.setScreen( game.getGuideScreen() );
+                    game.setScreen(game.getGuideScreen());
                 }
             }
         });
@@ -88,7 +88,11 @@ public class MainMenuScreen extends ScreenAdapter {
         });
 
         muteButton = new TextButton(game.translate.get("mute"), skin);
-        muteButton.setBounds(width * 0.8f, height * 0.8f, width / 9, height / 8);
+        muteButton.setWidth( 100f );
+        muteButton.setHeight( 80f );
+        muteButton.setX(width - muteButton.getWidth());
+        muteButton.setY(height - muteButton.getHeight());
+
         muteButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
                 setMuteButtonState();
@@ -108,10 +112,13 @@ public class MainMenuScreen extends ScreenAdapter {
         } else {
             languageButton.setText("Suomeksi");
         }
-        languageButton.setBounds(width * 0.1f, height * 0.8f, width / 9, height / 8);
+        languageButton.setWidth( 100f );
+        languageButton.setHeight( 80f );
+        languageButton.setX( 0 );
+        languageButton.setY( height - languageButton.getHeight() );
         languageButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
-                if (game.getLanguage()==1) {
+                if (game.getLanguage() == 1) {
                     game.changeLanguage(2);
                     languageButton.setText("Suomeksi");
                     refreshTexts();
@@ -123,7 +130,6 @@ public class MainMenuScreen extends ScreenAdapter {
             }
         });
 
-        Gdx.app.log("MainMenuScreen", "Menu music vol: " + prefs.getMenuMusicVolume());
         game.getCurrentMusic().setVolume(prefs.getMenuMusicVolume());
 
         stage.addActor(highscoreButton);
@@ -171,17 +177,12 @@ public class MainMenuScreen extends ScreenAdapter {
         batch.begin();
         Gdx.input.setInputProcessor(stage);
         batch.setProjectionMatrix(camera.combined);
-        batch.draw(logo, 0, 0, logo.getWidth(), logo.getHeight());
+        batch.draw(mainMenuBackground, 0, 0, mainMenuBackground.getWidth(), mainMenuBackground.getHeight());
 
         batch.setProjectionMatrix(camera2.combined);
         stage.act();
         stage.draw();
         batch.end();
-    }
-
-    @Override
-    public void dispose() {
-        logo.dispose();
     }
 
 }

@@ -31,7 +31,7 @@ public class HighscoreScreen extends ScreenAdapter {
     private SpriteBatch batch;
     private float height;
     private float width;
-    private Texture logo;
+    private Texture menuBackground;
     private float delta;
     private String titleText;
     private BitmapFont titleFont;
@@ -67,7 +67,7 @@ public class HighscoreScreen extends ScreenAdapter {
         skin = new Skin(Gdx.files.internal(Constants.SKIN_PATH));
         delta = Gdx.graphics.getDeltaTime();
 
-        logo = new Texture(Gdx.files.internal(Constants.MAINMENU_LOGO_IMAGE_PATH));
+        menuBackground = game.resources.menuBackground;
 
         titleFont = game.resources.titleFont;
         textFont = game.resources.textFont;
@@ -78,7 +78,10 @@ public class HighscoreScreen extends ScreenAdapter {
         titleY = Constants.APP_HEIGHT/2 + (glyphLayout.height/2);
 
         backButton = new TextButton(game.translate.get("back"), skin);
-        backButton.setBounds(width / 12, height / 11, width / 5, height / 7);
+        backButton.setWidth(100f);
+        backButton.setHeight( 80f );
+        backButton.setX( 0 );
+        backButton.setY( height - backButton.getHeight() );
         backButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
                 game.setScreen(game.getMainMenuScreen());
@@ -86,7 +89,10 @@ public class HighscoreScreen extends ScreenAdapter {
         });
 
         muteButton = new TextButton(game.translate.get("mute"), skin);
-        muteButton.setBounds(width * 0.8f, height * 0.8f, width / 9, height / 8);
+        muteButton.setWidth(100f);
+        muteButton.setHeight( 80f );
+        muteButton.setX(width - muteButton.getWidth());
+        muteButton.setY(height - muteButton.getHeight());
         muteButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
                 setMuteButtonState();
@@ -118,7 +124,6 @@ public class HighscoreScreen extends ScreenAdapter {
     /**
      * Refreshes all text in highscore menu (after language change).
      */
-
     private void refreshTexts(){
         backButton.setText(game.translate.get("back"));
         titleText = game.translate.get("top_scores");
@@ -146,7 +151,8 @@ public class HighscoreScreen extends ScreenAdapter {
         game.getCurrentMusic().setVolume(prefs.getMenuMusicVolume());
         Gdx.input.setInputProcessor(stage);
         batch.setProjectionMatrix(camera.combined);
-        batch.draw(logo, 0, 0, logo.getWidth(), logo.getHeight());
+
+        batch.draw(menuBackground, 0, 0, menuBackground.getWidth(), menuBackground.getHeight());
 
         titleFont.draw(batch, titleText, titleX, titleY );
         for(int i = 1; i <= 5; i++){
@@ -158,11 +164,6 @@ public class HighscoreScreen extends ScreenAdapter {
         stage.act();
         stage.draw();
         batch.end();
-    }
-
-    @Override
-    public void dispose() {
-        logo.dispose();
     }
 
 }

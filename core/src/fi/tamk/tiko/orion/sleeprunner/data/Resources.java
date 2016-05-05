@@ -46,6 +46,7 @@ public class Resources {
     public BitmapFont textFont;
     public BitmapFont tinyFont;
 
+    public Texture menuBackground;
     public Texture powerUpBox;
 
     public TextureRegion signDestroyed;
@@ -90,6 +91,7 @@ public class Resources {
         // UI
         this.guideSet = TextureRegion.split(assetManager.get("graphics/guide.png", Texture.class), 370, 172);
         this.powerUpBox = assetManager.get("graphics/powerupboxbackground.png", Texture.class);
+        this.menuBackground = assetManager.get( "graphics/mainmenu.png", Texture.class );
 
         // Music.
         this.mainMenuMusic = assetManager.get("sounds/music/mainmenu.mp3",Music.class);
