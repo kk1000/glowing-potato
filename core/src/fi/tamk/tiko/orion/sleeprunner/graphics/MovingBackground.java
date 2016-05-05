@@ -35,6 +35,10 @@ public class MovingBackground extends Actor {
         texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
     }
 
+    /**
+     * Changes the texture of the background layer depending on what sleep phase is active.
+     */
+
     public void changePhase(){
         if(layer == 1) {
             if (game.getGameScreen().getCurrentMapChunk().getSleepStage().equals("DEEP") && sleepPhase == 1 ) {
@@ -76,15 +80,37 @@ public class MovingBackground extends Actor {
 
     }
 
-    public void setSleepPhase(int i){
-        i = sleepPhase;
-    }
+    /**
+     * Resets all graphics back to normal.
+     */
+
+    public void resetPhase() {
+        if (layer == 1) {
+                texture = game.resources.assetManager.get("graphics/backgrounds/stars.png", Texture.class);
+                texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+            }
+
+        if (layer == 2) {
+                texture = game.resources.assetManager.get("graphics/backgrounds/texture_deep_all.png", Texture.class);
+                texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+            }
+        if (layer == 3) {
+                texture = game.resources.assetManager.get("graphics/backgrounds/items.png", Texture.class);
+                texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+            }
+
+        }
+
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
         batch.draw(texture, 0, 0, srcX, 0, Constants.APP_WIDTH, Constants.APP_HEIGHT);
     }
 
+    /**
+     * Updates srcX depending on the "speed" float from the Background-actor
+     * @param delta
+     */
     @Override
     public void act(float delta){
         super.act(delta);
@@ -122,6 +148,9 @@ public class MovingBackground extends Actor {
     }
     public float getSpeed(){
         return speed;
+    }
+    public void setSleepPhase(int i){
+        sleepPhase = i;
     }
 }
 

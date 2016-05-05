@@ -58,6 +58,10 @@ public class BackgroundStage extends Stage {
 
     }
 
+    /**
+     * Increases speed of each background layer depending on what their current speed is.
+     */
+
     public void increaseSpeed(){
         if(deepLayer.getSpeed()>1) {
             deepLayer.setSpeed(deepLayer.getSpeed() - 0.2f);
@@ -71,7 +75,9 @@ public class BackgroundStage extends Stage {
         if(topLayer.getSpeed()>0.05f) {
             topLayer.setSpeed(topLayer.getSpeed() - 0.05f);
         }
-
+    /**
+    * Resets speed.
+    */
     }
     public void resetSpeed(){
         deepLayer.setSpeed(2.5f);
@@ -80,17 +86,26 @@ public class BackgroundStage extends Stage {
         topLayer.setSpeed(0.5f);
     }
 
-    public void setSpikeSpeed(){
-        deepLayer.setSpeed(6f);
-        itemLayer.setSpeed(5f);
-        midLayer.setSpeed(6f);
-        topLayer.setSpeed(2f);
+    /**
+     * Resets sleep phase back to normal.
+     */
+    public void resetPhase(){
+        deepLayer.setSleepPhase(1);
+        midLayer.setSleepPhase(1);
+        itemLayer.setSleepPhase(1);
+        deepLayer.resetPhase();
+        midLayer.resetPhase();
+        itemLayer.resetPhase();
     }
 
+    /**
+     * Calls both resets.
+     */
     public void reset(){
-        setupBackgrounds();
+        resetPhase();
         resetSpeed();
     }
+
     @Override
     public void act(float delta) {
         super.act(delta);
@@ -101,4 +116,13 @@ public class BackgroundStage extends Stage {
         super.draw();
     }
 
+    /**
+     * Setters & getters
+     */
+    public void setSpikeSpeed(){
+        deepLayer.setSpeed(6f);
+        itemLayer.setSpeed(5f);
+        midLayer.setSpeed(6f);
+        topLayer.setSpeed(2f);
+    }
 }
