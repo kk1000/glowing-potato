@@ -202,7 +202,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
         // Update different game states.
         switch ( gameState ) {
             case Constants.GAME_READY:
-                // Character menu?
                 updateGameReady();
                 break;
             case Constants.GAME_RUNNING:
