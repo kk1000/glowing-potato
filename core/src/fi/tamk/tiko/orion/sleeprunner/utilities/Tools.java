@@ -120,6 +120,10 @@ public class Tools {
         manager.load("graphics/mainmenu.png", Texture.class);
         manager.load( "graphics/powerupboxbackground.png", Texture.class );
         manager.load( "graphics/guide.png", Texture.class );
+        manager.load("graphics/flags/english.png", Texture.class);
+        manager.load("graphics/flags/finnish.png", Texture.class);
+        manager.load("graphics/mutebutton.png", Texture.class);
+        manager.load("graphics/mutedbutton.png", Texture.class);
 
         // Logos
         manager.load("graphics/logos/tamk_eng_vaaka_RGB.png", Texture.class);

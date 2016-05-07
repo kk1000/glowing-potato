@@ -8,16 +8,19 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.Preference;
+import fi.tamk.tiko.orion.sleeprunner.graphics.GraphicButton;
 
 /**
  * Screen for displaying high scores.
@@ -39,7 +42,11 @@ public class HighscoreScreen extends ScreenAdapter {
     private float titleX;
     private float titleY;
     private TextButton backButton;
-    private TextButton muteButton;
+    private GraphicButton muteButton;
+
+    private SpriteDrawable mutebutton;
+    private SpriteDrawable mutedbutton;
+
     private Skin skin;
     private Preference prefs;
 
@@ -88,19 +95,23 @@ public class HighscoreScreen extends ScreenAdapter {
             }
         });
 
-        muteButton = new TextButton(game.translate.get("mute"), skin);
-        muteButton.setWidth(100f);
-        muteButton.setHeight(80f);
+        mutebutton = new SpriteDrawable(new Sprite(game.resources.assetManager.get("graphics/mutebutton.png", Texture.class)));
+        mutedbutton = new SpriteDrawable(new Sprite(game.resources.assetManager.get("graphics/mutedbutton.png", Texture.class)));
+
+        muteButton = new GraphicButton(mutebutton, mutebutton, mutedbutton);
+        muteButton.setWidth( 100f );
+        muteButton.setHeight( 80f );
         muteButton.setX(width - muteButton.getWidth());
         muteButton.setY(height - muteButton.getHeight());
+
         muteButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
                 setMuteButtonState();
                 if (prefs.isMuted()) {
-                    muteButton.setColor(Color.WHITE);
+                    muteButton.setChecked(false);
                     game.resources.unMuteAllSounds();
                 } else {
-                    muteButton.setColor(Color.RED);
+                    muteButton.setChecked(true);
                     game.resources.muteAllSounds();
                 }
             }
@@ -115,9 +126,9 @@ public class HighscoreScreen extends ScreenAdapter {
      */
     public void setMuteButtonState( ) {
         if(prefs.isMuted()){
-            muteButton.setColor(Color.RED);
+            muteButton.setChecked(true);
         } else{
-            muteButton.setColor(Color.WHITE);
+            muteButton.setChecked(false);
         }
     }
 
@@ -127,7 +138,6 @@ public class HighscoreScreen extends ScreenAdapter {
     private void refreshTexts(){
         backButton.setText(game.translate.get("back"));
         titleText = game.translate.get("top_scores");
-        muteButton.setText(game.translate.get("mute"));
     }
 
     @Override

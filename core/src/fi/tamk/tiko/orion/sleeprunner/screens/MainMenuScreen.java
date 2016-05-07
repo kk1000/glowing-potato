@@ -2,20 +2,24 @@ package fi.tamk.tiko.orion.sleeprunner.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
 import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.Preference;
+import fi.tamk.tiko.orion.sleeprunner.graphics.GraphicButton;
 
 
 /**
@@ -33,9 +37,16 @@ public class MainMenuScreen extends ScreenAdapter {
     private float delta;
     private Texture mainMenuBackground;
     private TextButton gameButton;
-    private TextButton muteButton;
     private TextButton highscoreButton;
-    private TextButton languageButton;
+
+    private SpriteDrawable finnishFlag;
+    private SpriteDrawable englishFlag;
+    private SpriteDrawable mutebutton;
+    private SpriteDrawable mutedbutton;
+
+
+    private GraphicButton muteButton;
+    private GraphicButton languageButton;
     private Skin skin;
     private Preference prefs;
 
@@ -66,6 +77,13 @@ public class MainMenuScreen extends ScreenAdapter {
         skin = new Skin(Gdx.files.internal(Constants.SKIN_PATH));
         delta = Gdx.graphics.getDeltaTime();
 
+        finnishFlag = new SpriteDrawable(new Sprite(game.resources.assetManager.get("graphics/flags/finnish.png", Texture.class)));
+        englishFlag = new SpriteDrawable(new Sprite(game.resources.assetManager.get("graphics/flags/english.png", Texture.class)));
+
+        mutebutton = new SpriteDrawable(new Sprite(game.resources.assetManager.get("graphics/mutebutton.png", Texture.class)));
+        mutedbutton = new SpriteDrawable(new Sprite(game.resources.assetManager.get("graphics/mutedbutton.png", Texture.class)));
+
+
         gameButton = new TextButton(game.translate.get("play"), skin);
         gameButton.setBounds(width / 2.9f, height / 4, width / 4, height / 7);
         gameButton.addListener(new ClickListener() {
@@ -87,7 +105,7 @@ public class MainMenuScreen extends ScreenAdapter {
             }
         });
 
-        muteButton = new TextButton(game.translate.get("mute"), skin);
+        muteButton = new GraphicButton(mutebutton, mutebutton, mutedbutton);
         muteButton.setWidth( 100f );
         muteButton.setHeight( 80f );
         muteButton.setX(width - muteButton.getWidth());
@@ -97,34 +115,34 @@ public class MainMenuScreen extends ScreenAdapter {
             public void clicked(InputEvent e, float x, float y) {
                 setMuteButtonState();
                 if (prefs.isMuted()) {
-                    muteButton.setColor(Color.WHITE);
+                    muteButton.setChecked(false);
                     game.resources.unMuteAllSounds();
                 } else {
-                    muteButton.setColor(Color.RED);
+                    muteButton.setChecked(true);
                     game.resources.muteAllSounds();
                 }
             }
         });
 
-        languageButton = new TextButton("Language", skin);
+        languageButton = new GraphicButton(finnishFlag,finnishFlag, englishFlag);
         if (game.getLanguage()==1) {
-            languageButton.setText("In English");
+            languageButton.setBackground(englishFlag);
         } else {
-            languageButton.setText("Suomeksi");
+            languageButton.setBackground(finnishFlag);
         }
         languageButton.setWidth( 100f );
-        languageButton.setHeight( 80f );
+        languageButton.setHeight( 100f );
         languageButton.setX( 0 );
         languageButton.setY( height - languageButton.getHeight() );
         languageButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
                 if (game.getLanguage() == 1) {
                     game.changeLanguage(2);
-                    languageButton.setText("Suomeksi");
+                    languageButton.setChecked(false);
                     refreshTexts();
                 } else {
                     game.changeLanguage(1);
-                    languageButton.setText("In English");
+                    languageButton.setChecked(true);
                     refreshTexts();
                 }
             }
@@ -141,8 +159,7 @@ public class MainMenuScreen extends ScreenAdapter {
     /**
      * Refreshes all text in main menu (after language change).
      */
-    private void refreshTexts(){
-        muteButton.setText(game.translate.get("mute"));
+    private void refreshTexts(){;
         highscoreButton.setText(game.translate.get("highscores"));
         gameButton.setText(game.translate.get("play"));
     }
@@ -152,9 +169,9 @@ public class MainMenuScreen extends ScreenAdapter {
      */
     public void setMuteButtonState( ) {
         if(prefs.isMuted()){
-            muteButton.setColor(Color.RED);
+            muteButton.setChecked(true);
         } else{
-            muteButton.setColor(Color.WHITE);
+            muteButton.setChecked(false);
         }
     }
 
