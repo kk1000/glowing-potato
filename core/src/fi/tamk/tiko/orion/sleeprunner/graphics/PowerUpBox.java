@@ -89,10 +89,6 @@ public class PowerUpBox extends Actor {
     }
 
     /**
-     * Setters.
-     */
-
-    /**
      * Sets powerUpPicked and powerUpGameObject
      *
      * @param powerUpGameObject What power up player picked.
@@ -103,11 +99,7 @@ public class PowerUpBox extends Actor {
     }
 
     /**
-     * Getters.
-     */
-
-    /**
-     * @return boolean Has the player collected power up to the power up box.
+     * @return Has the player collected power up to the power up box.
      */
     public boolean hasPowerUp( ) {
         return powerUpPicked;

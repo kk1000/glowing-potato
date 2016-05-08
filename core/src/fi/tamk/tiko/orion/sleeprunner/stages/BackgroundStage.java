@@ -55,13 +55,11 @@ public class BackgroundStage extends Stage {
         addActor(midLayer);
         topLayer = new MovingBackground(game, game.resources.assetManager.get("graphics/backgrounds/clouds.png",Texture.class), 0.5f,4);
         addActor(topLayer);
-
     }
 
     /**
      * Increases speed of each background layer depending on what their current speed is.
      */
-
     public void increaseSpeed(){
         if(deepLayer.getSpeed()>1) {
             deepLayer.setSpeed(deepLayer.getSpeed() - 0.2f);
@@ -75,10 +73,11 @@ public class BackgroundStage extends Stage {
         if(topLayer.getSpeed()>0.05f) {
             topLayer.setSpeed(topLayer.getSpeed() - 0.05f);
         }
-    /**
-    * Resets speed.
-    */
     }
+
+    /**
+     * Resets speed.
+     */
     public void resetSpeed(){
         deepLayer.setSpeed(2.5f);
         itemLayer.setSpeed(1.5f);
@@ -107,7 +106,7 @@ public class BackgroundStage extends Stage {
     }
 
     /**
-     * Setters & getters
+     * Sets background moving speed slower when player hits spikes.
      */
     public void setSpikeSpeed(){
         deepLayer.setSpeed(6f);

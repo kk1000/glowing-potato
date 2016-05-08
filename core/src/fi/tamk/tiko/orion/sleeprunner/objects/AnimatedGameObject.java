@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 
-import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.UserData;
 import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 import fi.tamk.tiko.orion.sleeprunner.utilities.Tools;
@@ -139,6 +138,7 @@ public abstract class AnimatedGameObject extends GameObject {
         animationPaused = false;
     }
 
+    @Override
     public void reset( ) {
         super.reset();
         if ( animationPaused ) {
@@ -146,6 +146,7 @@ public abstract class AnimatedGameObject extends GameObject {
         }
     }
 
+    @Override
     public void update(float delta) {
         // Remember to call this or implement this for child classes.
         if ( !animationPaused ) {
@@ -154,6 +155,7 @@ public abstract class AnimatedGameObject extends GameObject {
         }
     }
 
+    @Override
     public void draw( Batch batch) {
         batch.draw(currentFrame,
                 body.getPosition().x - currentFrame.getRegionWidth() / 100f / 2,

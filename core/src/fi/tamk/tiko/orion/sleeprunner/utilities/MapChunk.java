@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
-import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.objects.GameObject;
 import fi.tamk.tiko.orion.sleeprunner.objects.PowerUpGameObject;
@@ -195,9 +194,8 @@ public class MapChunk {
     }
 
     /**
-     * Setters.
+     * @param maxGroundBlocks How many ground blocks there can be in a row.
      */
-
     public void setMaxGroundBlocks( int maxGroundBlocks ) {
         // Minimum of maximum ground blocks is 1. (yes, it's pretty trippy!)
         if ( maxGroundBlocks < 1 ) {
@@ -207,6 +205,9 @@ public class MapChunk {
         }
     }
 
+    /**
+     * @param minGroundBlocks How many ground blocks there must be in a row.
+     */
     public void setMinGroundBlocks( int minGroundBlocks ) {
         if ( minGroundBlocks < 1 ) {
             this.minGroundBlocks = 1;
@@ -215,27 +216,84 @@ public class MapChunk {
         }
     }
 
+    /**
+     * @param maxEmptyBlocks How many empty blocks there can be in a row.
+     */
     public void setMaxEmptyBlocks( int maxEmptyBlocks ) { this.maxEmptyBlocks = maxEmptyBlocks; }
+
+    /**
+     * @param minEmptyBlocks How many empty blocks there must be in a row.
+     */
     public void setMinEmptyBlocks( int minEmptyBlocks ) { this.minEmptyBlocks = minEmptyBlocks; }
 
     /**
-     * Getters.
+     * @return How many ground blocks there can be in a row.
      */
-
     public int getMaxGroundBlocks( ) { return maxGroundBlocks; }
+
+    /**
+     * @return How many ground blocks there must be in a row.
+     */
     public int getMinGroundBlocks( ) { return minGroundBlocks; }
+
+    /**
+     * @return How many empty blocks there can be in a row.
+     */
     public int getMaxEmptyBlocks( ) { return maxEmptyBlocks; }
+
+    /**
+     * @return How many empty blocks there must be in a row.
+     */
     public int getMinEmptyBlocks( ) { return minEmptyBlocks; }
 
+    /**
+     * @return Can the map chunk contain flying obstacle.
+     */
     public boolean canContainFlyingObstacle( ) { return canContainFlyingObstacle; }
+
+    /**
+     * @return Can the map chunk contain power up.
+     */
     public boolean canContainPowerUp( ) { return canContainPowerup; }
+
+    /**
+     * @return Map chunk's game objects.
+     */
     public Array<GameObject> getGameObjects( ) { return gameObjects; }
+
+    /**
+     * @return Map chunk's previous map chunk.
+     */
     public MapChunk getPreviousMapChunk( ) { return previousMapChunk; }
+
+    /**
+     * @return Map chunk's sleep stage (phase).
+     */
     public String getSleepStage( ) { return sleepStage; }
+
+    /**
+     * @return Map chunk's number.
+     */
     public int getChunkNumber( ) { return chunkNumber; }
+
+    /**
+     * @return Map chunk's position in the game screen's array.
+     */
     public int getPosition( ) { return position; }
+
+    /**
+     * @return Map chunk's game object grid.
+     */
     public int[][] getGrid( ) { return grid; }
+
+    /**
+     * @return Box2D world.
+     */
     public World getWorld( ) { return world; }
+
+    /**
+     * @return Game screen.
+     */
     public GameScreen getGameScreen( ) { return gameScreen; }
 
 }

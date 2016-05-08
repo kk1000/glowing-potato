@@ -211,6 +211,9 @@ public class PauseStage extends Stage {
         }
     }
 
+    /**
+     * Refresh all texts, called on language change.
+     */
     public void refreshTexts(){
         continueTextButton.setText(game.translate.get("continue"));
         newGameTextButton.setText(game.translate.get("play_again"));

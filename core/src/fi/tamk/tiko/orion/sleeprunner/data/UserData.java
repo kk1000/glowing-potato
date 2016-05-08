@@ -7,7 +7,7 @@ import com.badlogic.gdx.Gdx;
  */
 public class UserData {
 
-    public String id; // PLAYER, GROUND, SPIKES
+    public String id; // PLAYER, GROUND, SPIKES...
     public int symbol; //        1       2
 
     /**
@@ -23,7 +23,7 @@ public class UserData {
     /**
      * Set's integer symbol according to ID.
      *
-     * @param id
+     * @param id Game object's object id.
      */
     private void setSymbol( String id ) {
         if ( id.equals( "GROUND" ) ) {

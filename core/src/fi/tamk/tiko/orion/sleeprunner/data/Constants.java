@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class Constants {
 
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
     /**
      * World & Screen
@@ -95,34 +95,6 @@ public class Constants {
      * UI
      */
 
-    // Skins
     public static final String SKIN_PATH = "ui/uiskin.json";
-
-    /**
-     * Texture image paths
-     */
-
-
-    // Player
-    public static final String PLAYER_RUNNING_IMAGE_PATH = "graphics/player.png";
-
-    // Nightmare
-    public static final String NIGHTMARE_BACKGROUND_IMAGE_PATH = "graphics/nightmare.png";
-
-    // UI
-    public static final String MAINMENU_LOGO_IMAGE_PATH = "graphics/mainmenu.png";
-    public static final String PAUSEMENU_IMAGE_PATH = "graphics/pausescreen.png";
-
-    /**
-     * Sound paths
-     */
-
-    public static final String PLAYER_RUN_SOUND_PATH = "sounds/sfx/steps.mp3";
-    public static final String GAME_MUSIC_PATH = "sounds/music/main.mp3";
-    public static final String NIGHTMARE_SOUND_PATH = "sounds/sfx/nightmare.mp3";
-    public static final String POWERUP_SOUND_PATH = "sounds/sfx/powerup.mp3";
-    public static final String PLAYER_DEATH_SOUND = "sounds/sfx/death.mp3";
-
-    public static float PLAYER_DENSITY = 0.5f;
 
 }

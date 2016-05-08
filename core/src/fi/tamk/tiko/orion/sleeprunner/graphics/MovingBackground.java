@@ -8,8 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 
-// TODO: Horizontal background movement.
-
 /**
  * Class for backgrounds.
  * Backgrounds are moving in the Scene2D stages as actors.
@@ -111,10 +109,6 @@ public class MovingBackground extends Actor {
         batch.draw(texture, 0, 0, srcX, 0, Constants.APP_WIDTH, Constants.APP_HEIGHT);
     }
 
-    /**
-     * Updates srcX depending on the "speed" float from the Background-actor
-     * @param delta
-     */
     @Override
     public void act(float delta){
         super.act(delta);
@@ -139,17 +133,25 @@ public class MovingBackground extends Actor {
     }
 
     /**
-     * Setters & getters
+     * @param i New sleep phase.
      */
-
-    public void setSpeed(float s){
-        speed = s;
-    }
-    public float getSpeed(){
-        return speed;
-    }
     public void setSleepPhase(int i){
         sleepPhase = i;
     }
+
+    /**
+     * @param s New background moving speed.
+     */
+    public void setSpeed(float s){
+        speed = s;
+    }
+
+    /**
+     * @return background moving speed.
+     */
+    public float getSpeed(){
+        return speed;
+    }
+
 }
 

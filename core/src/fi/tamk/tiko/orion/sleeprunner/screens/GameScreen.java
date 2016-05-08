@@ -744,10 +744,6 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     }
 
     /**
-     * Setters.
-     */
-
-    /**
      * @param currentGameSpeed new game speed.
      */
     public void setCurrentGameSpeed( float currentGameSpeed ) {
@@ -755,16 +751,48 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
     }
 
     /**
-     * Getters.
+     * @return current map chunk player is in.
      */
-
-    public int getPreviousGameState( ) { return previousGameState; }
-    public float getCurrentGameSpeed( ) { return currentGameSpeed; }
     public MapChunk getCurrentMapChunk( ) { return currentMapChunk; }
-    public UIStage getUiStage( ) { return uiStage; }
+
+    /**
+     * @return current game speed.
+     */
+    public float getCurrentGameSpeed( ) { return currentGameSpeed; }
+
+    /**
+     * @return previous game state.
+     */
+    public int getPreviousGameState( ) { return previousGameState; }
+
+    /**
+     * @return nightmare.
+     */
     public NightmareObject getNightmare( ) { return nightmare; }
-    public PlayerObject getPlayer( ) { return player; }
-    public World getWorld( ) { return world; }
+
+    /**
+     * @return current game state.
+     */
     public int getGameState(){ return gameState; }
+
+    /**
+     * @return player.
+     */
+    public PlayerObject getPlayer( ) { return player; }
+
+    /**
+     * @return UI stage.
+     */
+    public UIStage getUiStage( ) { return uiStage; }
+
+    /**
+     * @return game (SleepRunner instance)
+     */
     public SleepRunner getGame( ) { return game; }
+
+    /**
+     * @return Box2D world.
+     */
+    public World getWorld( ) { return world; }
+
 }

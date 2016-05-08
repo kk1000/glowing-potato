@@ -1,6 +1,5 @@
 package fi.tamk.tiko.orion.sleeprunner.utilities;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
@@ -57,7 +56,6 @@ public class Tools {
 
     /**
      * Creates preferences-file when launching first time.
-     * TODO: Overrides earlier preference-file at the moment
      */
     public static void createPreferences(Preferences prefs) {
         Gdx.app.log("Tools", "Created preference-file!");
@@ -135,7 +133,6 @@ public class Tools {
         manager.load("graphics/tileset_new.png", Texture.class);
         manager.load("graphics/tileset_signs.png", Texture.class);
         manager.finishLoading();
-
 
         // Languages (finnish and english)
         manager.load("localization/languages_en_EN", I18NBundle.class);

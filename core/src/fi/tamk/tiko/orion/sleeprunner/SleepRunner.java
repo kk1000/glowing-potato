@@ -26,7 +26,7 @@ import fi.tamk.tiko.orion.sleeprunner.screens.MainMenuScreen;
  * @author   Eetu "mehxit" Järvinen
  * @author   Joni "steiner3k" Korpisalo
  * @author   Sonja Moisio (Graphics)
- * @version  0.0.0
+ * @version  1.0.0
  * @since    0.0.0
  */
 public class SleepRunner extends Game {
@@ -117,11 +117,16 @@ public class SleepRunner extends Game {
         }
     }
 
-
+    /**
+     * @return Sprite batch.
+     */
 	public SpriteBatch getBatch() {
 		return batch;
 	}
 
+    /**
+     * @return Main menu screen.
+     */
 	public MainMenuScreen getMainMenuScreen() {
 		if ( mainMenuScreen == null ) {
             Gdx.app.log( "SleepRunner", "Creating new MainMenuScreen instance" );
@@ -130,6 +135,9 @@ public class SleepRunner extends Game {
 		return mainMenuScreen;
 	}
 
+    /**
+     * @return Guide screen.
+     */
     public GuideScreen getGuideScreen( ) {
         if ( guideScreen == null ) {
             Gdx.app.log( "SleepRunner", "Creating new GuideScreen instance." );
@@ -138,6 +146,9 @@ public class SleepRunner extends Game {
         return guideScreen;
     }
 
+    /**
+     * @return Game screen.
+     */
 	public GameScreen getGameScreen() {
         if ( gameScreen == null ) {
 			Gdx.app.log( "SleepRunner", "Creating new GameScreen instance" );
@@ -146,6 +157,9 @@ public class SleepRunner extends Game {
 		return gameScreen;
 	}
 
+    /**
+     * @return Highscore screen.
+     */
 	public HighscoreScreen getHighscoreScreen (){
 		if (highscoreScreen == null) {
 			Gdx.app.log( "SleepRunner", "Creating new highscoreScreen instance" );
@@ -154,6 +168,9 @@ public class SleepRunner extends Game {
 		return highscoreScreen;
 	}
 
+    /**
+     * @return Launch screen.
+     */
 	public LaunchScreen getLaunchScreen(){
 		if (launchScreen == null) {
 			Gdx.app.log( "SleepRunner", "Creating new launchScreen instance" );
@@ -162,9 +179,14 @@ public class SleepRunner extends Game {
 		return launchScreen;
 	}
 
+    /**
+     * @return Currently playing music.
+     */
     public Music getCurrentMusic( ) { return currentMusic; }
-    public int getLanguage(){
-        return language;
-    }
+
+    /**
+     * @return Integer symbol representing current game language.
+     */
+    public int getLanguage(){ return language; }
 
 }

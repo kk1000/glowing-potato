@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -82,7 +81,6 @@ public class MainMenuScreen extends ScreenAdapter {
 
         mutebutton = new SpriteDrawable(new Sprite(game.resources.assetManager.get("graphics/mutebutton.png", Texture.class)));
         mutedbutton = new SpriteDrawable(new Sprite(game.resources.assetManager.get("graphics/mutedbutton.png", Texture.class)));
-
 
         gameButton = new TextButton(game.translate.get("play"), skin);
         gameButton.setBounds(width / 2.9f, height / 4, width / 4, height / 7);
@@ -159,7 +157,7 @@ public class MainMenuScreen extends ScreenAdapter {
     /**
      * Refreshes all text in main menu (after language change).
      */
-    private void refreshTexts(){;
+    private void refreshTexts(){
         highscoreButton.setText(game.translate.get("highscores"));
         gameButton.setText(game.translate.get("play"));
     }

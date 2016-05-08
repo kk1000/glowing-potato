@@ -37,8 +37,8 @@ public class PlayerObject extends AnimatedGameObject {
     public PlayerObject( GameScreen gameScreen, World world) {
         super( gameScreen, world, Constants.PLAYER_START_X, Constants.PLAYER_START_Y,
                 Constants.WORLD_TO_SCREEN * 0.85f / 100f, Constants.WORLD_TO_SCREEN * 2 / 100f,
-                Constants.PLAYER_DENSITY,
-                new Texture(Gdx.files.internal(Constants.PLAYER_RUNNING_IMAGE_PATH)),
+                0.5f,
+                gameScreen.getGame().resources.assetManager.get( "graphics/player.png", Texture.class ),
                 BodyDef.BodyType.DynamicBody,
                 new UserData("PLAYER"));
 
@@ -204,32 +204,53 @@ public class PlayerObject extends AnimatedGameObject {
     }
 
     /**
-     * Setters.
+     * @param shielded Is the player shielded by power up.
      */
-
     public void setShielded( boolean shielded ) { this.shielded = shielded; }
 
     /**
-     * Getters.
+     * @return Is player shielded by power up.
      */
-
     public boolean isShielded( ) { return shielded; }
+
+    /**
+     * @return Is player dodging.
+     */
     public boolean isDodging() {
         return dodging;
     }
+
+    /**
+     * @return Is player flying.
+     */
     public boolean isFlying( ) {
         return flying;
     }
 
+    /**
+     * @return Is player dead.
+     */
     public boolean isDead() {
         return dead;
     }
+
+    /**
+     * @return Is player hit by spikes.
+     */
     public boolean isHit() {
         return hit;
     }
+
+    /**
+     * @return Is player jumping.
+     */
     public boolean isJumping(){
         return jumping;
     }
+
+    /**
+     * @return How player died text.
+     */
     public String getDeadText() { return deadText; }
 
 }

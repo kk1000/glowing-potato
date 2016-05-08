@@ -127,11 +127,18 @@ public class UIStage extends Stage {
     }
 
     /**
-     * Getters
+     * @return nightmare meter.
      */
-
     public NightmareMeter getNightmareMeter( ) { return nightmareMeter; }
+
+    /**
+     * @return power up box.
+     */
     public PowerUpBox getPowerUpBox( ) { return powerUpBox; }
+
+    /**
+     * @return UI text.
+     */
     public UIText getUiText(){
         return uiText;
     }

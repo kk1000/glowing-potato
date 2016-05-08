@@ -2,10 +2,8 @@ package fi.tamk.tiko.orion.sleeprunner.objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -48,8 +46,6 @@ public abstract class GameObject {
     protected Array<Tile> tiles = new Array<Tile>();
 
     protected Preference prefs;
-
-    protected boolean hidden = false;
 
     /**
      * Constructor for game objects with texture region.
@@ -219,19 +215,17 @@ public abstract class GameObject {
      * @param batch Spritebatch.
      */
     public void draw(Batch batch) {
-        if ( !hidden ) {
-            for (Tile tile : tiles) {
-                batch.draw(tile.textureRegion,
-                        tile.x,
-                        tile.y,
-                        Constants.WORLD_TO_SCREEN / 2,
-                        Constants.WORLD_TO_SCREEN / 2,
-                        Constants.WORLD_TO_SCREEN / 100f,
-                        Constants.WORLD_TO_SCREEN / 100f,
-                        1.0f,
-                        1.0f,
-                        0);
-            }
+        for (Tile tile : tiles) {
+            batch.draw(tile.textureRegion,
+                    tile.x,
+                    tile.y,
+                    Constants.WORLD_TO_SCREEN / 2,
+                    Constants.WORLD_TO_SCREEN / 2,
+                    Constants.WORLD_TO_SCREEN / 100f,
+                    Constants.WORLD_TO_SCREEN / 100f,
+                    1.0f,
+                    1.0f,
+                    0);
         }
     }
 
@@ -275,28 +269,42 @@ public abstract class GameObject {
     }
 
     /**
-     * Setters.
+     * @return Game object's userdata.
      */
-
-    public void setHidden( boolean hidden ) { this.hidden = hidden; }
-
-    /**
-     * Getters.
-     */
-
     public UserData getUserData() {
         return userData;
     }
-    public TextureRegion getTextureRegion( ) { return  textureRegion; }
 
+    /**
+     * @return Game object's texture region.
+     */
+    public TextureRegion getTextureRegion( ) { return textureRegion; }
+
+    /**
+     * @return Game object's initial height.
+     */
     public float getHeight( ) { return height; }
+
+    /**
+     * @return Game object's initial width.
+     */
     public float getWidth() {
         return width;
     }
 
+    /**
+     * @return Game object's initial x position.
+     */
     public float getX( ) { return x; }
+
+    /**
+     * @return Game object''s initial y position.
+     */
     public float getY( ) { return y; }
 
+    /**
+     * @return Game object's Box2D body.
+     */
     public Body getBody() {
         return body;
     }

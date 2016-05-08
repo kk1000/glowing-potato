@@ -2,7 +2,6 @@ package fi.tamk.tiko.orion.sleeprunner.objects;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
@@ -79,7 +78,7 @@ public class SignObject extends AnimatedGameObject {
     }
 
     /**
-     * @return clicked Is the sign clicked.
+     * @return Is the sign "used"
      */
     public boolean isClicked( ) { return clicked; }
 

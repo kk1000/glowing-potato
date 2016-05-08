@@ -82,9 +82,8 @@ public class UIText extends Actor {
     }
 
     /**
-     * Setters.
+     * @param score New score, there's a minimum of zero.
      */
-
     public void setScore( int score ) {
         this.score = score;
         if ( this.score < 0 ) {
@@ -93,9 +92,8 @@ public class UIText extends Actor {
     }
 
     /**
-     * Getters
+     * @return Player scores.
      */
-
     public int getScore(){
         return (int)score;
     }
