@@ -231,7 +231,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
             uiStage.setupUiStage();
             setupReady = true;
         }
-        if ( Gdx.input.isTouched() ) {
+        if ( Gdx.input.justTouched() ) {
             setGameState(Constants.GAME_RUNNING);
         }
     }
@@ -255,7 +255,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
      * Updates when player has died but game is running.
      */
     private void updateGamePlayerDeath( ) {
-        if ( Gdx.input.isTouched() ) {
+        if ( Gdx.input.justTouched() ) {
             setGameState(Constants.GAME_RUNNING);
         }
     }

@@ -87,10 +87,11 @@ public class MainMenuScreen extends ScreenAdapter {
         gameButton.addListener(new ClickListener() {
             public void clicked(InputEvent e, float x, float y) {
                 game.switchToGameMusic();
-                if (prefs.hasSeenGuide()) {
-                    game.setScreen(game.getGameScreen());
-                } else {
+                if (!game.hasSeenGuide() || Constants.FAIR_VERSION ) {
+                    Gdx.app.log( "MainMenuScreen", "Setting guide screen instead of game screen." );
                     game.setScreen(game.getGuideScreen());
+                } else {
+                    game.setScreen(game.getGameScreen());
                 }
             }
         });

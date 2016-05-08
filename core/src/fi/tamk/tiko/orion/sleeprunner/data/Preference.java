@@ -91,19 +91,6 @@ public class Preference {
     }
 
     /**
-     * @param hasSeenGuide Has player seen the guide.
-     */
-    public void setHasSeenGuide( boolean hasSeenGuide ) {
-        prefs.putBoolean( "hasSeenGuide", hasSeenGuide );
-        prefs.flush();
-    }
-
-    /**
-     * @return has player seen the guide.
-     */
-    public boolean hasSeenGuide( ) { return prefs.getBoolean( "hasSeenGuide" ); }
-
-    /**
      * @param i Highscore ranking.
      *
      * @return given rank's highscore.

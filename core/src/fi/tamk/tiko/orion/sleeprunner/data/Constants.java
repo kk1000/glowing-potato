@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class Constants {
 
+    public static final boolean FAIR_VERSION = true;
     public static final boolean DEBUG = false;
 
     /**

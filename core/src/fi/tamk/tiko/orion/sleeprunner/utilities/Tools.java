@@ -62,7 +62,6 @@ public class Tools {
 
         prefs.putBoolean("isCreated", true);
         prefs.putBoolean("isMuted", false);
-        prefs.putBoolean("hasSeenGuide", false );
         prefs.putFloat("soundVolume", 0.7f);
         prefs.putFloat( "gameMusicVolume", 0.4f );
         prefs.putFloat( "menuMusicVolume", 0.7f );

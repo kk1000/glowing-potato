@@ -83,13 +83,12 @@ public class GuideScreen extends ScreenAdapter {
             // We're done, exit from this screen to the game screen.
             Gdx.app.log("GuideScreen", "Exiting guide screen to the game screen.");
             sleepRunner.setScreen(sleepRunner.getGameScreen());
-
         }
     }
 
     @Override
     public void show( ) {
-        prefs.setHasSeenGuide( true );
+        sleepRunner.setSeenGuide( true );
         currentGuideNumber = 1;
         changeGuide();
     }
@@ -124,7 +123,6 @@ public class GuideScreen extends ScreenAdapter {
                 glyphLayout.height * 2 );
 
         batch.end();
-
     }
 
 }

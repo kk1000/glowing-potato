@@ -47,6 +47,8 @@ public class SleepRunner extends Game {
     private SpriteBatch batch;
     private Music currentMusic;
 
+    private boolean seenGuide = false;
+
 	@Override
 	public void create() {
         prefs = new Preference();
@@ -64,8 +66,10 @@ public class SleepRunner extends Game {
 
         if(defaultLocale.getCountry().equals("FI")) {
             language = 1;
+        }  else {
+            language = 2;
         }
-        else {language = 2;}
+
         changeLanguage(language);
 
 		setScreen( getLaunchScreen() );
@@ -116,6 +120,11 @@ public class SleepRunner extends Game {
             language = 2;
         }
     }
+
+    /**
+     * @param seenGuide Has the player seen the game instructions.
+     */
+    public void setSeenGuide( boolean seenGuide ) { this.seenGuide = seenGuide; }
 
     /**
      * @return Sprite batch.
@@ -188,5 +197,10 @@ public class SleepRunner extends Game {
      * @return Integer symbol representing current game language.
      */
     public int getLanguage(){ return language; }
+
+    /**
+     * @return Has the player seen the game instructions.
+     */
+    public boolean hasSeenGuide( ) { return seenGuide; }
 
 }
