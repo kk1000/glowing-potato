@@ -540,12 +540,14 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
 
     @Override
     public void pause() {
-        setGameState(Constants.GAME_PAUSED);
+        if ( gameState != Constants.GAME_PAUSED ) {
+            setGameState(Constants.GAME_PAUSED);
+        }
     }
 
     @Override
     public void resume() {
-
+        Gdx.app.log( "GameSccreen", "Previous game state: " + previousGameState );
     }
 
     @Override
@@ -719,6 +721,7 @@ public class GameScreen extends InputAdapter implements Screen, ContactListener 
                 break;
             case Constants.GAME_PAUSED:
                 Gdx.input.setInputProcessor(pauseStage);
+                Gdx.app.log( "GameScreen", "PAUSED! Prev game state: " + previousGameState );
                 pauseStage.showDialog( "PAUSE" );
                 nightmare.pauseAnimation();
                 player.pauseAnimation();
