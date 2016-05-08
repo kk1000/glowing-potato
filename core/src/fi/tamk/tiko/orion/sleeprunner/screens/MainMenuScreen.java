@@ -18,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.Preference;
-import fi.tamk.tiko.orion.sleeprunner.graphics.GraphicButton;
 
 
 /**
@@ -44,8 +43,8 @@ public class MainMenuScreen extends ScreenAdapter {
     private SpriteDrawable mutedbutton;
 
 
-    private GraphicButton muteButton;
-    private GraphicButton languageButton;
+    private ImageButton muteButton;
+    private ImageButton languageButton;
     private Skin skin;
     private Preference prefs;
 
@@ -104,7 +103,7 @@ public class MainMenuScreen extends ScreenAdapter {
             }
         });
 
-        muteButton = new GraphicButton(mutebutton, mutebutton, mutedbutton);
+        muteButton = new ImageButton(mutebutton, mutebutton, mutedbutton);
         muteButton.setWidth( 100f );
         muteButton.setHeight( 80f );
         muteButton.setX(width - muteButton.getWidth());
@@ -123,11 +122,11 @@ public class MainMenuScreen extends ScreenAdapter {
             }
         });
 
-        languageButton = new GraphicButton(finnishFlag,finnishFlag, englishFlag);
+        languageButton = new ImageButton(finnishFlag,finnishFlag, englishFlag);
         if (game.getLanguage()==1) {
-            languageButton.setBackground(englishFlag);
+            languageButton.setChecked(true);
         } else {
-            languageButton.setBackground(finnishFlag);
+            languageButton.setChecked(false);
         }
         languageButton.setWidth( 100f );
         languageButton.setHeight( 100f );

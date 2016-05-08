@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -19,7 +20,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import fi.tamk.tiko.orion.sleeprunner.SleepRunner;
 import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 import fi.tamk.tiko.orion.sleeprunner.data.Preference;
-import fi.tamk.tiko.orion.sleeprunner.graphics.GraphicButton;
 
 /**
  * Screen for displaying high scores.
@@ -41,7 +41,7 @@ public class HighscoreScreen extends ScreenAdapter {
     private float titleX;
     private float titleY;
     private TextButton backButton;
-    private GraphicButton muteButton;
+    private ImageButton muteButton;
 
     private SpriteDrawable mutebutton;
     private SpriteDrawable mutedbutton;
@@ -97,7 +97,7 @@ public class HighscoreScreen extends ScreenAdapter {
         mutebutton = new SpriteDrawable(new Sprite(game.resources.assetManager.get("graphics/mutebutton.png", Texture.class)));
         mutedbutton = new SpriteDrawable(new Sprite(game.resources.assetManager.get("graphics/mutedbutton.png", Texture.class)));
 
-        muteButton = new GraphicButton(mutebutton, mutebutton, mutedbutton);
+        muteButton = new ImageButton(mutebutton, mutebutton, mutedbutton);
         muteButton.setWidth( 100f );
         muteButton.setHeight( 80f );
         muteButton.setX(width - muteButton.getWidth());
