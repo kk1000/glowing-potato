@@ -45,7 +45,7 @@ public class LaunchScreen extends ScreenAdapter {
         currentLogo = 0;
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, Constants.APP_WIDTH, Constants.APP_HEIGHT);
+        camera.setToOrtho(false, width, height);
 
         timer = Gdx.graphics.getDeltaTime();
 
