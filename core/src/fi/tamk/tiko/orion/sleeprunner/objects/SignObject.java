@@ -11,6 +11,9 @@ import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 
 /**
  * Sign object is a sign telling player which sleep stage is next.
+ *
+ * @author   Eetu "mehxit" Järvinen
+ * @author   Joni "steiner3k" Korpisalo
  */
 public class SignObject extends AnimatedGameObject {
 

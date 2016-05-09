@@ -7,6 +7,9 @@ import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 
 /**
  * Mask power up.
+ *
+ * @author   Eetu "mehxit" Järvinen
+ * @author   Joni "steiner3k" Korpisalo
  */
 public class MaskPowerUpObject extends PowerUpGameObject {
 

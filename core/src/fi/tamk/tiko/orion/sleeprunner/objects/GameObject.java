@@ -22,6 +22,9 @@ import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 /**
  * Superclass of every game object.
  * Not designed to construct object from this class.
+ *
+ * @author   Eetu "mehxit" Järvinen
+ * @author   Joni "steiner3k" Korpisalo
  */
 public abstract class GameObject {
 

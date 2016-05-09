@@ -14,6 +14,9 @@ import fi.tamk.tiko.orion.sleeprunner.data.Preference;
 
 /**
  * Game's launch screen, showing mandatory logos.
+ *
+ * @author   Eetu "mehxit" Järvinen
+ * @author   Joni "steiner3k" Korpisalo
  */
 public class LaunchScreen extends ScreenAdapter {
 

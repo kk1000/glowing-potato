@@ -14,6 +14,8 @@ import fi.tamk.tiko.orion.sleeprunner.utilities.Tools;
 
 /**
  * Splits all the tiles and holds them.
+ * @author   Eetu "mehxit" Järvinen
+ * @author   Joni "steiner3k" Korpisalo
  */
 public class Resources {
 

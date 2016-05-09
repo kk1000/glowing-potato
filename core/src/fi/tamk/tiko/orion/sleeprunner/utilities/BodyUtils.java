@@ -8,6 +8,9 @@ import fi.tamk.tiko.orion.sleeprunner.objects.GameObject;
 
 /**
  * Helper methods for checking a body's datatype (for collisions for example).
+ *
+ * @author   Eetu "mehxit" Järvinen
+ * @author   Joni "steiner3k" Korpisalo
  */
 public class BodyUtils {
 

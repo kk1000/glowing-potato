@@ -4,6 +4,9 @@ import com.badlogic.gdx.Gdx;
 
 /**
  * Box2D Body's specific details.
+ *
+ * @author   Eetu "mehxit" Järvinen
+ * @author   Joni "steiner3k" Korpisalo
  */
 public class UserData {
 

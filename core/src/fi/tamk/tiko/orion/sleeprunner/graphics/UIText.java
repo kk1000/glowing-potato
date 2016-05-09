@@ -14,6 +14,9 @@ import fi.tamk.tiko.orion.sleeprunner.utilities.MapChunk;
 
 /**
  * Handle's UIStage's drawable texts.
+ *
+ * @author   Eetu "mehxit" Järvinen
+ * @author   Joni "steiner3k" Korpisalo
  */
 public class UIText extends Actor {
 

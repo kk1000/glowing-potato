@@ -14,6 +14,9 @@ import fi.tamk.tiko.orion.sleeprunner.data.Preference;
 
 /**
  * Game's guide screen, shows instructions to the game.
+ *
+ * @author   Eetu "mehxit" Järvinen
+ * @author   Joni "steiner3k" Korpisalo
  */
 public class GuideScreen extends ScreenAdapter {
 

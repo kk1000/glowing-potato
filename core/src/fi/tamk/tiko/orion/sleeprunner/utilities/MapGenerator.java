@@ -19,6 +19,9 @@ import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 
 /**
  * Methods for generating map chunks.
+ *
+ * @author   Eetu "mehxit" Järvinen
+ * @author   Joni "steiner3k" Korpisalo
  */
 public class MapGenerator {
 

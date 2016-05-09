@@ -9,6 +9,9 @@ import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 
 /**
  * Ground object, its width is random.
+ *
+ * @author   Eetu "mehxit" Järvinen
+ * @author   Joni "steiner3k" Korpisalo
  */
 public class GroundObject extends GameObject {
 

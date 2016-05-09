@@ -15,6 +15,9 @@ import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 
 /**
  * PlayerObject
+ *
+ * @author   Eetu "mehxit" Järvinen
+ * @author   Joni "steiner3k" Korpisalo
  */
 public class PlayerObject extends AnimatedGameObject {
 

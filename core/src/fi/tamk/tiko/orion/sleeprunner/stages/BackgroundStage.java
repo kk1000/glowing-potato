@@ -16,6 +16,9 @@ import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 /**
  * Class for backgrounds.
  * Uses its own viewport (non-metric).
+ *
+ * @author   Eetu "mehxit" Järvinen
+ * @author   Joni "steiner3k" Korpisalo
  */
 public class BackgroundStage extends Stage {
 

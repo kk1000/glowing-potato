@@ -10,6 +10,9 @@ import fi.tamk.tiko.orion.sleeprunner.utilities.Tools;
 
 /**
  * Handle's game's preferences.
+ *
+ * @author   Eetu "mehxit" Järvinen
+ * @author   Joni "steiner3k" Korpisalo
  */
 public class Preference {
 

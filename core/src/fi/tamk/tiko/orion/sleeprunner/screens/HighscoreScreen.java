@@ -23,6 +23,9 @@ import fi.tamk.tiko.orion.sleeprunner.data.Preference;
 
 /**
  * Screen for displaying high scores.
+ *
+ * @author   Eetu "mehxit" Järvinen
+ * @author   Joni "steiner3k" Korpisalo
  */
 public class HighscoreScreen extends ScreenAdapter {
 

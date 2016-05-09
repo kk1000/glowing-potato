@@ -4,6 +4,9 @@ import com.badlogic.gdx.math.Vector2;
 
 /**
  * Global constants
+ *
+ * @author   Eetu "mehxit" Järvinen
+ * @author   Joni "steiner3k" Korpisalo
  */
 public class Constants {
 

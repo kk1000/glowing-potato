@@ -10,6 +10,9 @@ import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 
 /**
  * Nightmare is following player throughout the whole game.
+ *
+ * @author   Eetu "mehxit" Järvinen
+ * @author   Joni "steiner3k" Korpisalo
  */
 public class NightmareObject extends AnimatedGameObject {
 

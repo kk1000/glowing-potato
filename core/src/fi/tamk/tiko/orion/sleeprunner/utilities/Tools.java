@@ -12,6 +12,9 @@ import com.badlogic.gdx.utils.I18NBundle;
 
 /**
  * Helper methods for animating a textureregion.
+ *
+ * @author   Eetu "mehxit" Järvinen
+ * @author   Joni "steiner3k" Korpisalo
  */
 public class Tools {
 

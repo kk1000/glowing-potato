@@ -35,6 +35,9 @@ import fi.tamk.tiko.orion.sleeprunner.utilities.MapChunk;
 
 /**
  * Screen for the gameplay.
+ *
+ * @author   Eetu "mehxit" Järvinen
+ * @author   Joni "steiner3k" Korpisalo
  */
 public class GameScreen extends InputAdapter implements Screen, ContactListener {
 

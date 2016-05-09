@@ -11,6 +11,9 @@ import fi.tamk.tiko.orion.sleeprunner.data.Constants;
 /**
  * Class for backgrounds.
  * Backgrounds are moving in the Scene2D stages as actors.
+ *
+ * @author   Eetu "mehxit" Järvinen
+ * @author   Joni "steiner3k" Korpisalo
  */
 public class MovingBackground extends Actor {
 

@@ -22,6 +22,9 @@ import fi.tamk.tiko.orion.sleeprunner.data.Preference;
 
 /**
  * Screen for main menu.
+ *
+ * @author   Eetu "mehxit" Järvinen
+ * @author   Joni "steiner3k" Korpisalo
  */
 public class MainMenuScreen extends ScreenAdapter {
 

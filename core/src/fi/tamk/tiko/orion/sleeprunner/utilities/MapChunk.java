@@ -13,6 +13,9 @@ import fi.tamk.tiko.orion.sleeprunner.stages.UIStage;
 
 /**
  * Contains one map chunks game objects and information.
+ *
+ * @author   Eetu "mehxit" Järvinen
+ * @author   Joni "steiner3k" Korpisalo
  */
 public class MapChunk {
 

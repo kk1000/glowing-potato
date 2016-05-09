@@ -22,6 +22,9 @@ import fi.tamk.tiko.orion.sleeprunner.screens.GameScreen;
 /**
  * Class for pause stage, don't let the name fool you.
  * It is used to create question and game over dialog as well as pause dialog.
+ *
+ * @author   Eetu "mehxit" Järvinen
+ * @author   Joni "steiner3k" Korpisalo
  */
 public class PauseStage extends Stage {
 
